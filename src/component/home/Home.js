@@ -29,7 +29,6 @@ function Home() {
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTucvpHtMVPdMy3xB6DlJ_pRk-bUFOv1eziNXzF1QMK4eRJbPNb" style={{height:"50px"}}></img>
                                 <h5 className="mt-3">Student Portal</h5><br />
                                 <span>View assignments, submit work, and track your <br />progress</span><br />
-                                {/* <button className="btn btn-success mt-3">Login as Student</button> */}
                                 <Link to="/sign-in" ><button className="btn btn-success mt-3" >Login as Student</button></Link>
 
                             </div>
@@ -43,7 +42,6 @@ function Home() {
                     </div>
                 </div>
             </div>
-            {/* key fatures */}
             <div>
                 <div style={{ boxShadow: "1px 0px 2px 0px grey" ,borderRadius:"5px"}}>
                     <h4 className="text-center mt-3">Key Features</h4>

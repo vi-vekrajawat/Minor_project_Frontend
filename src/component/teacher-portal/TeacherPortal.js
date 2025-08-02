@@ -1,14 +1,15 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import Backend from "../../apis/Backend"
+import Backend, { BASE_URL } from "../../apis/Backend"
 import { Link } from "react-router-dom"
+import { getCurrentUser } from "../auth/Auth"
 
 function TeacherPortal() {
 
     const [assignment,setAssignment] = useState([])
 
-
-
+// const user = JSON.parse(sessionStorage.getItem("current-user"))
+const user = getCurrentUser()
     useEffect(()=>{
         loadAssignment()
     },[])
@@ -35,9 +36,15 @@ function TeacherPortal() {
                 </div>
 
 
-                <div className="d-flex" style={{ marginLeft: "700px" }}>
-                    <div className="ml-3">imgage</div>
-                    <div className="ml-3 ">TeacherName</div>
+               <div className="d-flex" style={{ marginLeft: "800px" }}>
+                    <div className="ml-3">
+                        <img
+                            src={`${BASE_URL}/uploads/profile/${user.profile}`}
+                            alt="Profile"
+                            style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                    </div>
+                    <div className="ml-3 mt-2 ">{user.name}</div>
                 </div>
             </div>
             <div className="d-flex">
@@ -46,7 +53,7 @@ function TeacherPortal() {
                     <div className="mt-5">
                         <div className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</div>
                         <Link to="/create-assignment" className="mt-5 mr-3 list-group-item list-group-item-action">Create Assignment</Link>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Profile</div>
+                        <Link to="/teacher-profile" className="mt-5 mr-3 list-group-item list-group-item-action">Profile</Link>
                         <Link to="/submitted" className="mt-5 mr-3 list-group-item list-group-item-action">Submitted Assignment</Link>
 
                     </div>
@@ -81,10 +88,10 @@ function TeacherPortal() {
                         </div>
 
                     </div>
-                    <div className="mt-5 p-2" style={{boxShadow:"0px 0px 3px 0px grey"}}>
+                    <div className="mt-5 p-2" style={{boxShadow:"0px 0px 3px 0px grey",maxHeight:"300px",overflowY:"auto"}}>
                     <div>
                         <div className="d-flex" >
-                            <div>
+                            <div style={{position:"sticky",top:0,  zIndex: 1,}}>
                                 <h6>Recent Assignment</h6>
                             </div>
                             <div style={{marginLeft:"630px"}}>

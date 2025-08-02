@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import Backend from "../../apis/Backend"
+import Backend, { BASE_URL } from "../../apis/Backend"
+import { Link } from "react-router-dom"
 
 function SubmittedAssignment(){
 const [viewMore,setViewMore] = useState([3])
@@ -8,6 +9,8 @@ const [viewMore,setViewMore] = useState([3])
     useEffect(()=>{
         loadsubmitAssignment()
     },[])
+
+    const user = JSON.parse(sessionStorage.getItem("current-user"))
 
     const loadsubmitAssignment = async() =>{
         try{
@@ -27,15 +30,21 @@ const [viewMore,setViewMore] = useState([3])
             <div className="d-flex bg-primary text-white p-2">
                 <div className="d-flex">
                     <div >ITEP</div>
-                    <div className="ml-3">Dashboard</div>
-                    <div className="ml-3">Create Assignment</div>
-                    <div className="ml-3">Profile</div>
+                    <Link to="/teacher-portal" style={{textDecoration: "none",color: "inherit"}}   className="ml-3">Dashboard</Link>
+                    <Link to="/create-assignment" style={{textDecoration: "none",color: "inherit"}}  className="ml-3">Create Assignment</Link>
+                    <Link to="/profile" style={{textDecoration: "none",color: "inherit"}}  className="ml-3">Profile</Link>
                 </div>
 
 
-                <div className="d-flex" style={{ marginLeft: "700px" }}>
-                    <div className="ml-3">imgage</div>
-                    <div className="ml-3 ">TeacherName</div>
+                      <div className="d-flex" style={{ marginLeft: "820px" }}>
+                    <div className="ml-3">
+                        <img
+                            src={`${BASE_URL}/uploads/profile/${user.profile}`}
+                            alt="Profile"
+                            style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                    </div>
+                    <div className="ml-3 mt-2 ">{user.name}</div>
                 </div>
             </div>
             </div>
@@ -43,10 +52,10 @@ const [viewMore,setViewMore] = useState([3])
 
                 <div className="text-center" style={{ boxShadow: "0px 0px 3px 0px grey", height: "500px", width:"180px" }}>
                     <div className="mt-5">
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</div>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Create Assignment</div>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Profile</div>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Submitted Assignment</div>
+                        <Link to="/teacher-portal" style={{textDecoration: "none",color: "inherit"}}  className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</Link>
+                        <Link  to="/create-assignment" className="mt-5 mr-3 list-group-item list-group-item-action">Create Assignment</Link>
+                        <Link to="/teacher-profile" style={{textDecoration: "none",color: "inherit"}}  className="mt-5 mr-3 list-group-item list-group-item-action">Profile</Link>
+                        <Link  style={{textDecoration: "none",color: "inherit"}}  className="mt-5 mr-3 list-group-item list-group-item-action">Submitted Assignment</Link>
 
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import Backend from "../../apis/Backend"; 
+import { toast, ToastContainer } from "react-toastify";
 
 function ExcelFileUpload() {
   const [excelFile, setExcelFile] = useState(null);
@@ -9,7 +10,7 @@ function ExcelFileUpload() {
     event.preventDefault(); 
 
     if (!excelFile) {
-      alert("Please select a file first.");
+      toast("Please select a file first.");
       return;
     }
 
@@ -19,18 +20,19 @@ function ExcelFileUpload() {
     try {
       const response = await axios.post(Backend.STUDENT_FILE, formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Important!
+          "Content-Type": "multipart/form-data", 
         },
       });
-      console.log("Upload success:", response.data);
+      toast.success("Upload success:");
     } catch (err) {
       console.error("Upload error:", err);
-      alert("Failed to upload file.");
+      toast.error("Failed to upload file.");
     }
   };
 
   return (
     <>
+    <ToastContainer/>
     <div className="container ml-5 bg-danger" style={{height:"500px"}}>
       <form onSubmit={uploadFile} className="form-control">
         <div className="container bg-primary ml-5" >

@@ -1,10 +1,12 @@
 import axios from "axios";
-import Backend from "../../apis/Backend";
+import Backend, { BASE_URL } from "../../apis/Backend";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { getCurrentUser } from "../auth/Auth";
 
 function StudentProfile() {
-  const user = JSON.parse(sessionStorage.getItem("current-user"))
+  // const user = JSON.parse(sessionStorage.getItem("current-user"))
+  const user = getCurrentUser()
   console.log(user.role)
   const [profile, setFile] = useState(null);
   const handleChange = (event) => {
@@ -33,13 +35,21 @@ function StudentProfile() {
         <div className="d-flex bg-primary text-white p-2 justify-content-between  align-items-center flex-wrap">
           <div className="d-flex flex-wrap align-items-center">
             <div className="mr-3 font-weight-bold">ITEP</div>
-            <Link to='/student' className="mr-3">Dashboard</Link>
-            <Link to="/submission" className="mr-3">My Submissions</Link>
-            <Link className="mr-3">Profile</Link>
+            <Link to='/student' style={{ textDecoration: "none", color: "inherit" }} className="mr-3">Dashboard</Link>
+            <Link to="/submission" style={{ textDecoration: "none", color: "inherit" }} className="mr-3">My Submissions</Link>
+            <Link className="mr-3" style={{ textDecoration: "none", color: "inherit" }} >Profile</Link>
           </div>
           <div className="d-flex align-items-center mt-2 mt-md-0">
-            <div className="mr-3">image</div>
-            <div className="mr-3">Student Name</div>
+            <div className="d-flex" style={{ marginLeft: "700px" }}>
+              <div className="ml-3">
+                <img
+                  src={`${BASE_URL}/uploads/profile/${user.profile}`}
+                  alt="Profile"
+                  style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                />
+              </div>
+              <div className="ml-3 mt-2 ">{user.name}</div>
+            </div>
           </div>
         </div>
 
@@ -85,7 +95,7 @@ function StudentProfile() {
                   <img
                     src={
                       user?.profile
-                        ? `http://localhost:3000/uploads/profile/${user.profile}`
+                        ? `${BASE_URL}/uploads/profile/${user.profile}`
                         : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                     }
                     alt="Profile"
@@ -143,10 +153,6 @@ function StudentProfile() {
       </div>
     </>
     );
-    {/* } */}
-
-    {/* export default Profile; */}
-
   </>
 }
 

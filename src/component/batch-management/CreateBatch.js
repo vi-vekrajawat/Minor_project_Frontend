@@ -19,7 +19,6 @@ function CreateBatch() {
             const response = await axios.post(Backend.CREATE_BATCH, batchInfo)
             toast.success("Batch Created")
             console.log(response)
-            // alert("batch Created")
             setBatchInfo({
                 batchName: '',
                 launchDate: "",

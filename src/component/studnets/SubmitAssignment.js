@@ -1,15 +1,16 @@
 import { useContext, useEffect, useState } from "react"
 import { AssignmentContext } from "../../context/AssignmentProvider"
 import axios from "axios"
-import Backend from "../../apis/Backend"
+import Backend, { BASE_URL } from "../../apis/Backend"
 import { toast, ToastContainer } from "react-toastify"
 import { Link } from "react-router-dom"
+import { getCurrentUser } from "../auth/Auth"
 function SubmitAssignment() {
     const { task } = useContext(AssignmentContext)
-    const [visible, setVisible] = useState([3])
     const [fileName, setFileName] = useState(null);
 
-    const user = JSON.parse(sessionStorage.getItem("current-user"))
+    // const user = JSON.parse(sessionStorage.getItem("current-user"))
+    const user = getCurrentUser()
     console.log(user)
 
     const [submitData, setSubmitData] = useState({
@@ -21,9 +22,7 @@ function SubmitAssignment() {
         status:""
     })
 
-    const handleViewMore = () => {
-        setVisible((prev) => prev + 3)
-    }
+    
 
     const slectAssignment = (index) => {
         let selectedBox = document.getElementById(index);
@@ -54,7 +53,7 @@ function SubmitAssignment() {
         feedback.rows = 3;
         feedback.style.resize = "none";
         feedback.style.width = "100%";
-        description.addEventListener("input", (event) => {
+        feedback.addEventListener("input", (event) => {
             setSubmitData((prev) => ({ ...prev, feedback: event.target.value, assignmentId: task[index]?._id }))
         })
 
@@ -71,7 +70,7 @@ function SubmitAssignment() {
         formData.append("description", submitData.description)
         formData.append("feedback", submitData.feedback)
         formData.append("fileName", fileName)
-        formData.append("status",submitData.status) // assuming you are storing file in a state called `file`
+        formData.append("status",submitData.status) 
 
         try {
             const response = await axios.post(Backend.SUBMISSION, formData, {
@@ -89,18 +88,26 @@ function SubmitAssignment() {
     return <>
         <ToastContainer></ToastContainer>
         <div>
-            <div className="d-flex bg-primary text-white p-2" >
-                <div className="d-flex">
-                    <div >ITEP</div>
-                    <Link to="/student" className="ml-3">Dashboard</Link>
-                    <Link  className="ml-3">My Assignment</Link>
-                    <Link to="student-profile" className="ml-3">Profile</Link>
+            <div className="d-flex bg-primary text-white "  style={{ backgroundColor: "#f0f0f0",  width: "1290px" }} >
+                <div className="d-flex bg-primary text-white  justify-content-between  align-items-center flex-wrap">
+                    <div className="d-flex flex-wrap align-items-center">
+                    <div className="mr-3 font-weight-bold ml-3 mt-2">ITEP</div>
+                    <Link  style={{textDecoration: "none",color: "inherit"}}  to="/student" className="ml-3 mt-2">Dashboard</Link>
+                    <Link  style={{textDecoration: "none",color: "inherit"}}  className="ml-3 mt-2">My Assignment</Link>
+                    <Link  style={{textDecoration: "none",color: "inherit"}}  to="student-profile" className="ml-3 mt-2">Profile</Link>
                 </div>
 
 
-                <div className="d-flex" style={{ marginLeft: "700px" }}>
-                    <div className="ml-3">imgage</div>
-                    <div className="ml-3 ">Student Name</div>
+               <div className="d-flex " style={{ marginLeft: "1100px" }}>
+                    <div className="ml-3 " style={{position:"relative",bottom:"15px"}}>
+                        <img
+                            src={`${BASE_URL}/uploads/profile/${user.profile}`}
+                            alt="Profile"
+                            style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                    </div>
+                    <div className="ml-3 "style={{position:"relative",bottom:"15px"}}>{user.name}</div>
+                </div>
                 </div>
             </div>
             <div className="d-flex">
@@ -143,7 +150,7 @@ function SubmitAssignment() {
                                             <input onChange={(event) => setFileName(event.target.files[0])} className="mt-4 ml-5" type="file" />
                                         </div>
                                         <button className="btn btn-primary mt-2 ml-1">Submit</button>
-                                        <select className="btn btn-secondary mt-2" style={{marginLeft:"85px"}} name="" id="">
+                                        <select className="btn btn-secondary mt-2" style={{marginLeft:"85px"}} name="" id=""   value={submitData.status} onChange={(e) => setSubmitData((prev) => ({ ...prev, status: e.target.value }))}>
                                             <option value="pending">Pending</option>
                                             <option value="complete">Complete</option>
                                         </select>
@@ -167,3 +174,5 @@ function SubmitAssignment() {
 }
 
 export default SubmitAssignment
+
+

@@ -20,7 +20,6 @@ function BatchManage() {
       const tchrcount = batches.reduce((acc, batch) => acc + (batch.teachers?.length), 0)
       setTotal(count)
       settchr(tchrcount)
-      // setGetBatch(response)
       console.log(response)
     }
     catch (err) {
@@ -32,9 +31,10 @@ function BatchManage() {
       <aside class="sidebar">
         <h2>EduAssign</h2>
         <ul>
-          <li>📊 Dashboard</li>
+          <Link to="/admin"
+            style={{textDecoration: "none",color: "inherit"}} ><li>📊 Dashboard</li></Link>
           <li>📚 Batch Management</li>
-          <li>👤 Profile</li>
+        <Link to="/admin-profile"  style={{textDecoration: "none",color: "inherit"}}>👤 Profile</Link>
         </ul>
       </aside>
 
@@ -64,7 +64,7 @@ function BatchManage() {
           <Link to='/create-batch' class="btn blue" id="batch-create" >+ Create Batch</Link>
         </section>
 
-        <section class="batches" style={{overflowY:"auto",maxHeight:"370px"}}>
+        <section class="batches" style={{ overflowY: "auto", maxHeight: "370px" }}>
           {getBatch.map((element, index) => {
             return <div key={index} id="divbatch" class="batch-card">
               <p><b>{element.batchName}</b></p>

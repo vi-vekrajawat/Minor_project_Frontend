@@ -18,17 +18,9 @@ function Admin() {
         setStudnet(response.data.allStudents)
         // console.log(response)
     }
-    const [excelFile,setExcelFile] = useState([null])
-    const uploadFile = async(event)=>{
-        try{
-            const response = await axios.post(Backend.STUDENT_FILE,excelFile)
-            console.log(response)
-        }
-        catch(err){
-            console.log(err)
-        }
+   
 
-    }
+   
     return <>
         <div>
             <div className="d-flex bg-primary text-white p-2">
@@ -36,7 +28,7 @@ function Admin() {
                     <div >ITEP</div>
                     <div className="ml-3">Dashboard</div>
                     <div className="ml-3">Batch Management</div>
-                    <div className="ml-3">Profile</div>
+                    <Link to="/admin-profile" className="ml-3">Profile</Link>
                 </div>
 
 
@@ -46,12 +38,11 @@ function Admin() {
                 </div>
             </div>
             <div className="d-flex">
-
                 <div className="text-center" style={{ boxShadow: "0px 0px 3px 0px grey", height: "500px", width: "180px" }}>
                     <div className="mt-5">
                         <div className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</div>
                         <Link to='/batch-management' className="mt-5 mr-3 list-group-item list-group-item-action">Batch Management</Link>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Profile</div>
+                        <Link to="/admin-profile" className="mt-5 mr-3 list-group-item list-group-item-action">Profile</Link>
                     </div>
                 </div>
                 <div className="ml-5">
@@ -71,7 +62,7 @@ function Admin() {
                                 <span>{studnet.filter(user => user.role === 'student').length}</span>
                                 <img className="ml-5" src="https://downloadr2.apkmirror.com/wp-content/uploads/2024/08/50/66c88e18416fc_com.android.contacts-384x384.png" alt="" style={{ height: "20px" }} />
                             </div>
-                            <div className="ml-5 text-center" style={{ width: "200px", boxShadow: '0px 0px 3px 0px grey', backgroundColor: "purple" }}>
+                            <div className="ml-5 text-center" style={{ width: "200px", boxShadow: '0px 0px 3px 0px grey', backgroundColor: "pink" }}>
                                 <span>Total Teachers</span><br />
                                 <span>{studnet.filter(user => user.role === 'teacher').length}</span>
                                 <img className="ml-5" src="https://static.vecteezy.com/system/resources/previews/008/057/414/non_2x/assignment-line-icon-vector.jpg" alt="" style={{ height: "20px" }} />

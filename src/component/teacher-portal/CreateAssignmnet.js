@@ -320,6 +320,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Backend from "../../apis/Backend";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { Toast } from "bootstrap";
 
 function CreateAssignmnet() {
   const [task, setTask] = useState({
@@ -332,6 +334,8 @@ function CreateAssignmnet() {
     file: "",
   });
 
+  const user = JSON.parse(sessionStorage.getItem("current-user"))
+
   const [batch, setAllBatch] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -341,17 +345,17 @@ function CreateAssignmnet() {
 
     try {
       if (!task.title.trim()) {
-        alert("Assignment title required hai");
+        toast.error("Assignment title required ");
         return;
       }
 
       if (!task.batchId) {
-        alert("Please select a batch");
+        toast.error("Please select a batch");
         return;
       }
 
       if (!task.subject) {
-        alert("Please select subject");
+        toast.error("Please select subject");
         return;
       }
 
@@ -367,7 +371,7 @@ function CreateAssignmnet() {
 
       const response = await axios.post(Backend.ASSIGNMENT_CREATE, assignmentData);
       if (response.data.message) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         setTask({
           title: "",
           description: '',
@@ -380,7 +384,7 @@ function CreateAssignmnet() {
       }
     } catch (err) {
       console.log("Error:", err);
-      alert(err.response?.data?.message || "Something went wrong");
+      toast.success(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -400,29 +404,36 @@ function CreateAssignmnet() {
     }
   };
 
-  return (
+  return <>
+      <ToastContainer></ToastContainer>
      <div>
             <div className="d-flex bg-primary text-white p-2">
                 <div className="d-flex">
                     <div >ITEP</div>
-                    <div className="ml-3">Dashboard</div>
-                    <div className="ml-3">Create Assignment</div>
-                    <div className="ml-3">Profile</div>
+                    <Link to="/teacher-portal"  style={{textDecoration: "none",color: "inherit"}} className="ml-3">Dashboard</Link>
+                   <div> <Link  style={{textDecoration: "none",color: "inherit"}}  className="ml-3">Create Assignment</Link></div>
+                    <Link to="/teacher-profile"  style={{textDecoration: "none",color: "inherit"}}  className="ml-3">Profile</Link>
                 </div>
 
 
-                <div className="d-flex" style={{ marginLeft: "700px" }}>
-                    <div className="ml-3">imgage</div>
-                    <div className="ml-3 ">TeacherName</div>
+                  <div className="d-flex" style={{ marginLeft: "820px" }}>
+                    <div className="ml-3">
+                        <img
+                            src={`http://localhost:3000/uploads/profile/${user.profile}`}
+                            alt="Profile"
+                            style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                    </div>
+                    <div className="ml-3 mt-2 ">{user.name}</div>
                 </div>
             </div>
             <div className="d-flex">
 
                 <div className="text-center" style={{ boxShadow: "0px 0px 3px 0px grey", height: "500px", width:"180px" }}>
                     <div className="mt-5">
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</div>
+                        <Link to="/teacher-portal" className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</Link>
                         <Link to="/create-assignment" className="mt-5 mr-3 list-group-item list-group-item-action">Create Assignment</Link>
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Profile</div>
+                        <Link to="/teacher-profile" className="mt-5 mr-3 list-group-item list-group-item-action">Profile</Link>
                         <Link to="/submitted" className="mt-5 mr-3 list-group-item list-group-item-action">Submitted Assignment</Link>
 
                     </div>
@@ -543,7 +554,8 @@ function CreateAssignmnet() {
     </div>
     </div>
     </div>
-  );
+  </>
+
 }
 
 export default CreateAssignmnet;
