@@ -1,64 +1,98 @@
-import axios from "axios"
-import { useState } from "react"
-import Backend from "../../apis/Backend"
-import { toast, ToastContainer } from "react-toastify"
+
+import { useState } from "react";
+import Backend from "../../apis/Backend";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 function CreateBatch() {
+  const [batchInfo, setBatchInfo] = useState({
+    batchName: "",
+    launchDate: "",
+    expireDate: "",
+  });
 
-
-    const [batchInfo, setBatchInfo] = useState({
-        batchName: '',
+  const submitBatch = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(Backend.CREATE_BATCH, batchInfo);
+      toast.success("Batch Created");
+      console.log(response);
+      setBatchInfo({
+        batchName: "",
         launchDate: "",
         expireDate: "",
-
-    })
-
-    const submitBatch = async (event) => {
-        try {
-            event.preventDefault()
-            const response = await axios.post(Backend.CREATE_BATCH, batchInfo)
-            toast.success("Batch Created")
-            console.log(response)
-            setBatchInfo({
-                batchName: '',
-                launchDate: "",
-                expireDate: "",
-
-            })
-        }
-        catch (err) {
-            console.log(err)
-            toast.error("Something went Wrong")
-        }
+      });
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went Wrong");
     }
+  };
 
+  return (
+    <>
+      <ToastContainer />
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{
+          width: "100%",
+          height: "100vh", // full viewport height
+        }}
+      >
+        <form
+          onSubmit={submitBatch}
+          className="bg-white shadow p-4 rounded"
+          style={{
+            width: "100%",
+            maxWidth: "500px", // form size limit
+          }}
+        >
+          <div className="form-group">
+            <label>Batch Name:</label>
+            <input
+              value={batchInfo.batchName}
+              onChange={(event) =>
+                setBatchInfo({ ...batchInfo, batchName: event.target.value })
+              }
+              className="form-control"
+              type="text"
+              placeholder="Enter Batch Name"
+              required
+            />
+          </div>
 
+          <div className="form-group mt-3">
+            <label>Launch Date:</label>
+            <input
+              value={batchInfo.launchDate}
+              onChange={(event) =>
+                setBatchInfo({ ...batchInfo, launchDate: event.target.value })
+              }
+              className="form-control"
+              type="date"
+              required
+            />
+          </div>
 
-    return <>
-        <ToastContainer></ToastContainer>
-        <div className=" p-5 mt-5 " style={{ marginLeft: "450px", boxShadow: "0px 0px 5px 0px grey" }}>
-            <form action="" onSubmit={submitBatch} className="form-group  form">
-                <div className="form-group">
-                    <div className="form-group">
-                        <label htmlFor="">Batch Name:</label>
-                        <input onChange={(event) => setBatchInfo({ ...batchInfo, batchName: event.target.value })} className="form-group form-control" type="text" placeholder="Enter Batch Name" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Lauch Date:</label>
-                        <input onChange={(event) => setBatchInfo({ ...batchInfo, launchDate: event.target.value })} className="form-group form-control" type="date" placeholder="" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="">Expiry Date:</label>
-                        <input onChange={(event) => setBatchInfo({ ...batchInfo, expireDate: event.target.value })} className="form-group form-control" type="date" name="" id="" />
-                    </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary form-control">Create</button>
-                    </div>
+          <div className="form-group mt-3">
+            <label>Expiry Date:</label>
+            <input
+              value={batchInfo.expireDate}
+              onChange={(event) =>
+                setBatchInfo({ ...batchInfo, expireDate: event.target.value })
+              }
+              className="form-control"
+              type="date"
+              required
+            />
+          </div>
 
-                </div>
-            </form>
-        </div>
+          <button type="submit" className="btn btn-primary form-control mt-4">
+            Create
+          </button>
+        </form>
+      </div>
     </>
+  );
 }
 
-export default CreateBatch
+export default CreateBatch;

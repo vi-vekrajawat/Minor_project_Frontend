@@ -1,124 +1,141 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
-import backend from "../../apis/Backend"
-import { Link } from "react-router-dom"
-import Backend from "../../apis/Backend"
+
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
+import backend, { BASE_URL } from "../../apis/Backend";
+import { Link } from "react-router-dom";
+import AssignmentProvider, { AssignmentContext } from "../../context/AssignmentProvider";
+import { BatchContext } from "../../context/BatchProvider";
+import { getCurrentUser } from "../auth/Auth";
 
 function Admin() {
-
-    const [studnet, setStudnet] = useState([])
-
+    const [studnet, setStudnet] = useState([]);
+    const { task } = useContext(AssignmentContext)
+    const { batchState } = useContext(BatchContext)
+    const user = getCurrentUser()
+    // console.log(batch)
     useEffect(() => {
-        loadStudents()
-    }, [])
+        loadStudents();
+    }, []);
 
     const loadStudents = async () => {
-        const response = await axios.get(backend.STUDENT_LIST)
-        console.log(response)
-        setStudnet(response.data.allStudents)
-        // console.log(response)
-    }
-   
+        const response = await axios.get(backend.STUDENT_LIST);
+        setStudnet(response.data.allStudents);
+    };
 
-   
-    return <>
-        <div>
-            <div className="d-flex bg-primary text-white p-2">
-                <div className="d-flex">
-                    <div >ITEP</div>
-                    <div className="ml-3">Dashboard</div>
-                    <div className="ml-3">Batch Management</div>
-                    <Link to="/admin-profile" className="ml-3">Profile</Link>
+    return (
+        <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
+
+            {/* Header - Full Width */}
+            <div
+                className="d-flex justify-content-between align-items-center bg-primary text-white p-3"
+                style={{ width: "100vw" }}
+            >
+                <div className="d-flex flex-wrap">
+                    <div className="mr-3">ITEP</div>
+                    <div className="mr-3">Dashboard</div>
+                    <div className="mr-3">Batch Management</div>
+                    <Link to="/admin-profile" className="text-white">Profile</Link>
                 </div>
-
-
-                <div className="d-flex" style={{ marginLeft: "700px" }}>
-                    <div className="ml-3">imgage</div>
-                    <div className="ml-3 ">TeacherName</div>
+                <div className="d-flex mt-2 mt-md-0">
+                    {/* <div className="mr-3">image</div> */}
+                    <img
+                                src={`${BASE_URL}/uploads/profile/${user.profile}`}
+                                alt="Profile"
+                                style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
+                              />
+                    <div>{user.name}</div>
                 </div>
             </div>
-            <div className="d-flex">
-                <div className="text-center" style={{ boxShadow: "0px 0px 3px 0px grey", height: "500px", width: "180px" }}>
+
+            {/* Sidebar + Main Content */}
+            <div className="d-flex flex-column flex-md-row" style={{ width: "100vw", minHeight: "calc(100vh - 50px)" }}>
+
+                {/* Sidebar */}
+                <div
+                    style={{
+                        width: "200px",
+                        backgroundColor: "#f8f9fa",
+                        boxShadow: "0px 0px 3px grey"
+                    }}
+                    className="text-center"
+                >
                     <div className="mt-5">
-                        <div className="mt-5 mr-3 list-group-item list-group-item-action">Dashboard</div>
-                        <Link to='/batch-management' className="mt-5 mr-3 list-group-item list-group-item-action">Batch Management</Link>
-                        <Link to="/admin-profile" className="mt-5 mr-3 list-group-item list-group-item-action">Profile</Link>
+                        <div className="list-group-item list-group-item-action mt-5">Dashboard</div>
+                        <Link to="/batch-management" className="list-group-item list-group-item-action mt-5">Batch Management</Link>
+                        <Link to="/admin-profile" className="list-group-item list-group-item-action mt-5">Profile</Link>
                     </div>
                 </div>
-                <div className="ml-5">
-                    <div>
-                        <div>
-                            <h2>Admin Dashboard</h2>
-                            <p>Manage your educational platform</p>
-                        </div>
-                        <div className="d-flex ">
-                            <div className="text-center bg-primary text-white " style={{ width: "200px", height: "60px", boxShadow: '0px 0px 3px 0px grey' }}>
-                                <span>Total Batches</span><br />
-                                <span >3</span>
-                                <img className="ml-5" src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7Av_WNQOfLg8elfZ-Zg2QHuPXRIEtMgoSQ-43jTOZRyTBAhKp" alt="" style={{ height: "20px" }} />
-                            </div>
-                            <div className="ml-5 text-center bg-success text-white" style={{ width: "200px", boxShadow: '0px 0px 3px 0px grey' }}>
-                                <span>Total Students</span><br></br>
-                                <span>{studnet.filter(user => user.role === 'student').length}</span>
-                                <img className="ml-5" src="https://downloadr2.apkmirror.com/wp-content/uploads/2024/08/50/66c88e18416fc_com.android.contacts-384x384.png" alt="" style={{ height: "20px" }} />
-                            </div>
-                            <div className="ml-5 text-center" style={{ width: "200px", boxShadow: '0px 0px 3px 0px grey', backgroundColor: "pink" }}>
-                                <span>Total Teachers</span><br />
-                                <span>{studnet.filter(user => user.role === 'teacher').length}</span>
-                                <img className="ml-5" src="https://static.vecteezy.com/system/resources/previews/008/057/414/non_2x/assignment-line-icon-vector.jpg" alt="" style={{ height: "20px" }} />
-                            </div>
-                            <div className="ml-5  text-center" style={{ width: "200px", boxShadow: '0px 0px 3px 0px grey', backgroundColor: "orange" }}>
-                                <span className="">Active Assignments</span><br />
-                                <span>34</span>
-                                <img className="ml-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFPHiti9Fs_7BQ0yPl-cwSBxq-aC3_91FEvA&s" alt="" style={{ height: "20px" }} />
-                            </div>
-                        </div>
 
+                {/* Main Content */}
+                <div className="flex-grow-1 p-4">
+                    <h2>Admin Dashboard</h2>
+                    <p>Manage your educational platform</p>
+
+                    {/* Cards Section */}
+                    <div className="d-flex flex-wrap">
+                        <div
+                            className="text-center bg-primary text-white p-3 m-2 flex-fill"
+                            style={{ minWidth: "200px", maxWidth: "250px" }}
+                        >
+                            <span>Total Batches</span><br />
+                            <span>{batchState.length}</span>
+                        </div>
+                        <div
+                            className="text-center bg-success text-white p-3 m-2 flex-fill"
+                            style={{ minWidth: "200px", maxWidth: "250px" }}
+                        >
+                            <span>Total Students</span><br />
+                            <span>{(studnet?.filter(user => user.role === 'student') || []).length}</span>                        </div>
+                        <div
+                            className="text-center p-3 m-2 flex-fill"
+                            style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "pink" }}
+                        >
+                            <span>Total Teachers</span><br />
+                            <span>{(studnet?.filter(user => user.role === 'teacher') || []).length}</span>                        </div>
+                        <div
+                            className="text-center p-3 m-2 flex-fill"
+                            style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "orange" }}
+                        >
+                            <span>Active Assignments</span><br />
+                            <span>{task.length}</span>
+                        </div>
                     </div>
-                    <div className="mt-5 p-2" style={{ boxShadow: "0px 0px 3px 0px grey" }}>
-                        <div>
-                            <div className="d-flex" >
-                                <div>
-                                    <h6>Recent Users</h6>
-                                </div>
-                                <div style={{ marginLeft: "630px" }}>
-                                    <Link to="/add-student" className="btn btn-primary">+ Add Users</Link>
-                                </div>
-                                <div >
-                                    <Link to="/excel-file" className="btn btn-primary">+ Upload File</Link>
-                                </div>
-                            </div>
+
+                    {/* Table Section */}
+                    <div className="mt-5 p-2" style={{ boxShadow: "0px 0px 3px grey" }}>
+                        <div className="d-flex justify-content-between flex-wrap">
+                            <h6><b>Recent Users</b></h6>
                             <div>
-                                <table className="table mt-1">
-                                    <thead className="table-dark">
-                                        <tr>
-                                            <td>name</td>
-                                            <td>Email</td>
-                                            <td>Role</td>
-                                            <td>Batch</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {studnet.map((data, index) => {
-                                            return <tr>
-                                                <td>{data.name}</td>
-                                                <td>{data.email}</td>
-                                                <td>{data.role}</td>
-                                                <td>{data.batch?.batchName}</td>
-                                            </tr>
-                                        })}
-                                    </tbody>
-                                </table>
+                                <Link to="/add-student" className="btn btn-primary mr-2">+ Add Users</Link>
+                                <Link to="/excel-file" className="btn btn-primary">+ Upload File</Link>
                             </div>
-
+                        </div>
+                        <div className="table-responsive">
+                            <table className="table mt-1">
+                                <thead className="table-dark">
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>Email</td>
+                                        <td>Role</td>
+                                        <td>Batch</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {studnet.map((data, index) => (
+                                        <tr key={index}>
+                                            <td>{data.name}</td>
+                                            <td>{data.email}</td>
+                                            <td>{data.role}</td>
+                                            <td>{data.batch?.batchName}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
                 </div>
             </div>
-
-
         </div>
-    </>
+    );
 }
-export default Admin
+export default Admin;

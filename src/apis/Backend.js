@@ -1,4 +1,5 @@
-export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
+// export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
+export const BASE_URL = "http://localhost:3000"
 export default {
     STUDENT_LIST: BASE_URL+'/admin',
     USER_LOGIN: BASE_URL+'/admin/login',
@@ -11,6 +12,8 @@ export default {
     STUDENT_PROFILE: BASE_URL+'/admin/profile',
     STUDENT_FILE: BASE_URL+'/admin/insert-students',
     GET_AAASIGNMENT_Id: BASE_URL+"/teacher/submitted",
+    DELTE_BATCH : BASE_URL+"/batch",
+    GOOGLE_LOGIN : BASE_URL+"/admin/google-login"
 
 
 

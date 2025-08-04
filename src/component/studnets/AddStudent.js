@@ -1,137 +1,135 @@
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Backend from "../../apis/Backend";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddStudent() {
-    const [allbatch, setAllBatch] = useState([])
-
+    const [allbatch, setAllBatch] = useState([]);
     const [state, setState] = useState({
         name: "",
         email: "",
-        role: "student",  
+        role: "student",
         batch: ""
-    })
+    });
 
     useEffect(() => {
-        loadBatches()
-    }, [])
+        loadBatches();
+    }, []);
 
     const loadBatches = async () => {
         try {
-            const response = await axios.get(Backend.ALL_BATCHES)
-            console.log(response)
-            setAllBatch(response.data.getAll)
+            const response = await axios.get(Backend.ALL_BATCHES);
+            setAllBatch(response.data.getAll);
+        } catch (err) {
+            console.log(err);
         }
-        catch (err) {
-            console.log(err)
-        }
-    }
+    };
 
     const formSubmit = async (event) => {
+        event.preventDefault();
+
+        if (!state.name.trim()) return toast.error("Please enter name");
+        if (!state.email.trim()) return toast.error("Please enter email");
+        if (!state.role) return toast.error("Please select role");
+        if (!state.batch) return toast.error("Please select batch");
+
         try {
-            event.preventDefault()
-
-            if (!state.name.trim()) {
-                toast.error("Please enter name");
-                return;
-            }
-            if (!state.email.trim()) {
-                toast.error("Please enter email");
-                return;
-            }
-            if (!state.role || state.role === "") {
-                toast.error("Please select role");
-                return;
-            }
-            if (!state.batch || state.batch === "") {
-                toast.error("Please select batch");
-                return;
-            }
-
-            const response = await axios.post(Backend.ADD_USER, state)
-            setState({
-                name: "",
-                email: "",
-                role: "student",
-                batch: ""
-            })
-
-            toast.success("Student Addes")
+            await axios.post(Backend.ADD_USER, state);
+            toast.success("Student Added Successfully");
+            setState({ name: "", email: "", role: "student", batch: "" });
+        } catch (err) {
+            console.log(err);
+            toast.error("User Already Exists");
         }
-        catch (err) {
-            console.log(err)
-toast.error("User Already Exist")        
-}
-    }
+    };
 
     return (
         <>
-        <ToastContainer/>
-            <div style={{ marginLeft: '400px', marginTop: "200px" }}>
-                <form onSubmit={formSubmit} className="form">
-                    <div style={{ boxShadow: "0px 0px 3px 0px grey", padding: "20px" }}>
-                        <div>
+            <ToastContainer />
+            <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "100vh", width:"100vw", backgroundColor: "#f8f9fa" }}
+            >
+                <div
+                    className="card shadow-lg p-4"
+                    style={{ maxWidth: "450px", width: "100%", borderRadius: "15px" }}
+                >
+                    <h3 className="text-center mb-3 text-primary">Add Student</h3>
+                    <p className="text-center text-muted">
+                        Enter student details and assign a batch
+                    </p>
+
+                    <form onSubmit={formSubmit}>
+                        {/* Name */}
+                        <div className="form-group">
+                            <label className="font-weight-bold">Full Name</label>
                             <input
                                 value={state.name}
-                                onChange={(event) => setState({ ...state, name: event.target.value })}
-                                className="form-control"
+                                onChange={(e) => setState({ ...state, name: e.target.value })}
                                 type="text"
+                                className="form-control"
                                 placeholder="Enter Name"
-                                required
                             />
                         </div>
-                        <div>
+
+                        {/* Email */}
+                        <div className="form-group mt-3">
+                            <label className="font-weight-bold">Email Address</label>
                             <input
                                 value={state.email}
-                                onChange={(event) => setState({ ...state, email: event.target.value })}
-                                className="form-control mt-3"
+                                onChange={(e) => setState({ ...state, email: e.target.value })}
                                 type="email"
+                                className="form-control"
                                 placeholder="Enter Email"
-                                required
                             />
                         </div>
-                        <div>
+
+                        {/* Role */}
+                        <div className="form-group mt-3">
+                            <label className="font-weight-bold">Role</label>
                             <select
                                 value={state.role}
-                                name="role"
-                                className="form-control mt-3"
-                                onChange={(event) => setState({ ...state, role: event.target.value })}
-                                required
+                                onChange={(e) => setState({ ...state, role: e.target.value })}
+                                className="form-control"
                             >
-                                <option value="">Select Role</option> 
+                                <option value="">Select Role</option>
                                 <option value="student">Student</option>
                                 <option value="teacher">Teacher</option>
                             </select>
                         </div>
-                        <div>
+
+                        {/* Batch */}
+                        <div className="form-group mt-3">
+                            <label className="font-weight-bold">Batch</label>
                             <select
                                 value={state.batch}
-                                name="batch"
-                                className="form-control mt-3"
-                                onChange={(event) => setState({ ...state, batch: event.target.value })}
-                                required
+                                onChange={(e) => setState({ ...state, batch: e.target.value })}
+                                className="form-control"
                             >
-                                <option value="">Select Batch</option>  
-                                {allbatch.map((batch, index) => {
-                                    return (
-                                        <option key={index} value={batch.batchName}>
-                                            {batch.batchName}
-                                        </option>
-                                    )
-                                })}
+                                <option value="">Select Batch</option>
+                                {allbatch.map((batch, index) => (
+                                    <option key={index} value={batch.batchName}>
+                                        {batch.batchName}
+                                    </option>
+                                ))}
                             </select>
                         </div>
-                        <div>
-                            <button className="btn btn-primary mt-3 form-control">
-                                Add Student
-                            </button>
-                        </div>
-                    </div>
-                </form>
+
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-block mt-4"
+                            style={{ borderRadius: "10px" }}
+                        >
+                            Add Student
+                        </button>
+                    </form>
+                </div>
             </div>
         </>
-    )
+    );
 }
 
 export default AddStudent;

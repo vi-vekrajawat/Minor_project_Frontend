@@ -1,90 +1,113 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import "./BatchManage.css"
+import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import "./BatchManage.css";
 import axios from "axios";
 import Backend from "../../apis/Backend";
-function BatchManage() {
-  const [getBatch, setGetBatch] = useState([])
-  const [total, setTotal] = useState(0)
-  const [tchr, settchr] = useState(0)
-  useEffect(() => {
-    allBatches();
-  }, [])
+import { button } from "framer-motion/client";
+import { BatchContext } from "../../context/BatchProvider";
 
-  const allBatches = async () => {
+function BatchManage() {
+  const { batchState } = useContext(BatchContext)
+  const totalStudent = batchState.reduce((acc, batch) => acc + (batch.students?.length), 0);
+  const totalTeacher = batchState.reduce((acc, batch) => acc + (batch.teachers?.length), 0);
+
+  const deleteBatch = async (id) => {
     try {
-      const response = await axios.get(Backend.ALL_BATCHES)
-      const batches = response.data.getAll
-      setGetBatch(batches)
-      const count = batches.reduce((acc, batch) => acc + (batch.students?.length), 0)
-      const tchrcount = batches.reduce((acc, batch) => acc + (batch.teachers?.length), 0)
-      setTotal(count)
-      settchr(tchrcount)
+      const response = await axios.delete(`${Backend.DELTE_BATCH}/${id}`)
       console.log(response)
+      alert("Batch Deleted Successfully")
     }
     catch (err) {
-      console.log(err)
+      console.log('something is error')
+      alert("Something is error")
     }
   }
-  return <>
-    <div class="container" id="div1">
-      <aside class="sidebar">
-        <h2>EduAssign</h2>
-        <ul>
-          <Link to="/admin"
-            style={{textDecoration: "none",color: "inherit"}} ><li>📊 Dashboard</li></Link>
-          <li>📚 Batch Management</li>
-        <Link to="/admin-profile"  style={{textDecoration: "none",color: "inherit"}}>👤 Profile</Link>
-        </ul>
-      </aside>
-
-      <main class="main-content">
-        <header class="top-bar">
-          <nav>
-            <span>Dashboard</span>
-            <span>Batch Management</span>
-            <span>Profile</span>
-          </nav>
-          <div class="admin-profile">👤 Admin User</div>
-        </header>
-
-        <section class="page-header">
-          <h1>Batch Management</h1>
-          <p>Manage student batches and teacher assignments</p>
-        </section>
-
-        <section class="summary-cards">
-          <div class="card blue">Total Batches <span>{getBatch.length}</span></div>
-          <div class="card green">Active Batches <span>{getBatch.length}</span></div>
-          <div class="card purple" id="showstd">Total Students <span>{total}</span></div>
-          <div class="card orange">Available Teachers <span>{tchr}</span></div>
-        </section>
-
-        <section class="actions">
-          <Link to='/create-batch' class="btn blue" id="batch-create" >+ Create Batch</Link>
-        </section>
-
-        <section class="batches" style={{ overflowY: "auto", maxHeight: "370px" }}>
-          {getBatch.map((element, index) => {
-            return <div key={index} id="divbatch" class="batch-card">
-              <p><b>{element.batchName}</b></p>
-              <p>Launch Date : {element.launchDate?.slice(0, 10)}</p>
-              <p>Expire Date : {element.expireDate?.slice(0, 10)}</p>
-              <p id="std">Total Students :  {element.students.length}</p>
-              <p id="teacher">Total Teachers : {element.teachers.length}</p>
+  return (
+    <div style={{ width: "100vw", minHeight: "100vh", backgroundColor: "#f8f9fa", overflowX: "hidden" }}>
+      <div className="d-flex flex-column flex-md-row" style={{ width: "100vw", minHeight: "100vh" }}>
+        <aside
+          className="bg-white"
+          style={{
+            boxShadow: "0px 0px 3px grey",
+            width: "100%",
+            maxWidth: "220px",
+            padding: "20px",
+          }}
+        >
+          <h2>EduAssign</h2>
+          <ul className="list-unstyled mt-4">
+            <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
+              <li className="mb-3">📊 Dashboard</li>
+            </Link>
+            <li className="mb-3">📚 Batch Management</li>
+            <Link to="/admin-profile" style={{ textDecoration: "none", color: "inherit" }}>
+              <li className="mb-3">👤 Profile</li>
+            </Link>
+          </ul>
+        </aside>
+        <main className="flex-grow-1 p-3">
+          <header
+            className="d-flex justify-content-between align-items-center bg-primary text-white p-2 flex-wrap"
+            style={{ width: "100%" }}
+          >
+            <nav className="d-flex flex-wrap">
+              <span className="mr-3">Dashboard</span>
+              <span className="mr-3">Batch Management</span>
+              <span className="mr-3">Profile</span>
+            </nav>
+            <div className="admin-profile">👤 Admin User</div>
+          </header>
+          <section className="mt-4">
+            <h1>Batch Management</h1>
+            <p>Manage student batches and teacher assignments</p>
+          </section>
+          <section className="d-flex flex-wrap mt-3">
+            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#007bff", flex: "1 1 200px" }}>
+              Total Batches <span>{batchState.length}</span>
             </div>
+            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#28a745", flex: "1 1 200px" }}>
+              Active Batches <span>{batchState.length}</span>
+            </div>
+            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#6f42c1", flex: "1 1 200px" }}>
+              Total Students <span>{totalStudent}</span>
+            </div>
+            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#fd7e14", flex: "1 1 200px" }}>
+              Available Teachers <span>{totalTeacher}</span>
+            </div>
+          </section>
+          <section className="mt-3">
+            <Link to="/create-batch" className="btn btn-primary">
+              + Create Batch
+            </Link>
+          </section>
+          <section className="mt-4" style={{ overflowY: "auto", maxHeight: "370px" }}>
+            {batchState.map((element, index) => (
+              <div
+                key={index}
+                className="p-3 m-2 bg-white position-relative"
+                style={{ boxShadow: "0px 0px 3px grey", borderRadius: "5px" }}
+              >
+                <button
 
-          })}
+                  className="btn btn-danger btn-sm position-absolute"
+                  style={{ top: "5px", right: "5px" }} onClick={() => deleteBatch(element._id)}
 
+                >
+                  Delete
+                </button>
 
-
-
-        </section>
-      </main>
+                <p><b>{element.batchName}</b></p>
+                <p>Launch Date: {element.launchDate?.slice(0, 10)}</p>
+                <p>Expire Date: {element.expireDate?.slice(0, 10)}</p>
+                <p>Total Students: {element.students?.length || 0}</p>
+                <p>Total Teachers: {element.teachers?.length || 0}</p>
+              </div>
+            ))}
+          </section>
+        </main>
+      </div>
     </div>
-
-
-  </>
+  );
 }
 
-export default BatchManage
+export default BatchManage;

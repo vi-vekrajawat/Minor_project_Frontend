@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import Backend from "../apis/Backend";
+import App from "../App";
 export const AssignmentContext = createContext()
 const AssignmentProvider = ({ children }) => {
   const [task, setTask] = useState([]);
@@ -19,7 +20,7 @@ const AssignmentProvider = ({ children }) => {
 
   return (
     <AssignmentContext.Provider value={{ task, setTask }}>
-      {children}
+{children}
     </AssignmentContext.Provider>
   );
 };
