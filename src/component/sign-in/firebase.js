@@ -5,7 +5,9 @@ const firebaseConfig = {
     apiKey: "AIzaSyAg-hKqcrysR_yc7B2pwu76Ato1jnCZzck",
     authDomain: "assignment-management-eb1a7.firebaseapp.com",
     projectId: "assignment-management-eb1a7",
-    storageBucket: "assignment-management-eb1a7.firebasestorage.app",
+    storageBucket: "assignment-management-eb1a7.appspot.com", // <-- FIXED
+
+    // storageBucket: "assignment-management-eb1a7.firebasestorage.app",
     messagingSenderId: "91382432463",
     appId: "1:91382432463:web:d701788af956704f2e6dba"
 };
