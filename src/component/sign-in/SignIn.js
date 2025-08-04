@@ -79,7 +79,7 @@ function SignIn() {
             }
         } catch (err) {
             console.error(err);
-            alert(err)
+            // alert(err)
             toast.error(err)
 
             // toast.error("Google Sign-In Failed");
