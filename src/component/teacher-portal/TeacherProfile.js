@@ -128,7 +128,7 @@ function TeacherProfile() {
                 <div className="d-flex flex-wrap mt-3">
                   <div>
                     <p className="mb-1 font-weight-bold">Join Date</p>
-                    <p>{user.createdAt ? user.createdAt.slice(0, 10) : "N/A"}</p>
+                    <p>{user.date}</p>
                   </div>
                   <div className="ml-5">
                     <p className="mb-1 font-weight-bold">Role</p>

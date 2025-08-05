@@ -14,7 +14,8 @@ export default {
     STUDENT_FILE: BASE_URL+'/admin/insert-students',
     GET_AAASIGNMENT_Id: BASE_URL+"/teacher/submitted",
     DELTE_BATCH : BASE_URL+"/batch",
-    GOOGLE_LOGIN : BASE_URL+"/admin/google-login"
+    GOOGLE_LOGIN : BASE_URL+"/admin/google-login",
+    COUNT_ASSIGNMENT : BASE_URL+"/student/submission"
 
 
 

@@ -9,6 +9,24 @@ function Student() {
   const user = JSON.parse(sessionStorage.getItem("current-user"));
   const {task} = useContext(AssignmentContext)
 
+  const[submmit,setSubmit] = useState([])
+
+useEffect(() => {
+  const submitassignment = async () => {
+    try {
+      const response = await axios.get(`${Backend.COUNT_ASSIGNMENT}/${user._id}`);
+      console.log(response.data); 
+      console.log(response.data.submissionCount)
+      setSubmit(response.data)
+    } catch (error) {
+      console.error("Error fetching assignment count:", error);
+    }
+  };
+
+  submitassignment();
+}, []);
+
+
   const overdueCount = task.filter(a => new Date(a.deadline) < new Date()).length;
   const filteredTasks = task.filter(t => t.batchId === user.batch);
   return (
@@ -68,14 +86,14 @@ function Student() {
             <div className="col-6 col-md-3 mb-3">
               <div className="text-center bg-success text-white p-3 rounded" style={{ boxShadow: "0px 0px 3px grey" }}>
                 <span>Submitting</span><br />
-                <h4>4</h4>
+                <h4>{submmit.submissionCount}</h4>
                 <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2024/08/50/66c88e18416fc_com.android.contacts-384x384.png" alt="" style={{ height: "20px" }} />
               </div>
             </div>
             <div className="col-6 col-md-3 mb-3">
               <div className="text-center text-white p-3 rounded" style={{ boxShadow: "0px 0px 3px grey", background: "linear-gradient(135deg, #ff416c, #ff4b2b)" }}>
                 <span>Pending</span><br />
-                <h4>5</h4>
+                <h4>{task.length-submmit.submissionCount}</h4>
                 <img src="https://static.vecteezy.com/system/resources/previews/008/057/414/non_2x/assignment-line-icon-vector.jpg" alt="" style={{ height: "20px" }} />
               </div>
             </div>
@@ -102,7 +120,7 @@ function Student() {
                   <small>
                     <b>File:</b>{" "}
                     <a
-                      href={`${BASE_URL}/assignment/files/${data.file}`}
+                      href={`${BASE_URL}/assignment/files/${data?.file}`}
                       download
                       target="_blank"
                       rel="noopener noreferrer"
