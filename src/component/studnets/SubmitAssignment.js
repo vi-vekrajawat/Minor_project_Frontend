@@ -6,10 +6,14 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
+import { BatchContext } from "../../context/BatchProvider";
 
 function SubmitAssignment() {
   const { task } = useContext(AssignmentContext);
+  const {batchState} = useContext(BatchContext)
   const user = getCurrentUser();
+
+  const filteredTask = task.filter((t)=>t.batchId===user.batch)
   const [fileName, setFileName] = useState(null);
 
   const [submitData, setSubmitData] = useState({
@@ -131,7 +135,7 @@ function SubmitAssignment() {
               {/* Available Assignments */}
               <div className="p-2 flex-grow-1" style={{ boxShadow: "0px 0px 3px grey", maxHeight: "370px", overflowY: "auto" }}>
                 <h6 style={{ position: "sticky", top: 0, backgroundColor: "grey", color: "white" }}>Available Assignment</h6>
-                {task.map((data, index) => (
+                {filteredTask.map((data, index) => (
                   <div
                     key={index}
                     id={index}

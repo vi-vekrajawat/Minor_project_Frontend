@@ -9,6 +9,10 @@ import { BASE_URL } from "../../apis/Backend";
 function TeacherPortal() {
     const { task } = useContext(AssignmentContext);
     const { batchState } = useContext(BatchContext);
+    const totalStudents = batchState.reduce(
+  (acc, batch) => acc + (batch.students?.length || 0),
+  0
+);
     const user = getCurrentUser();
     const [selectedBatch, setSelectedBatch] = useState("all");
     const filteredAssignments = task.filter((assignment) => {
@@ -25,19 +29,6 @@ function TeacherPortal() {
                     <div className="mr-3">Profile</div>
                 </div>
                 <div className="col-12 col-lg-6 d-flex justify-content-lg-end align-items-center mt-2 mt-lg-0">
-                    <img
-                        src={`${BASE_URL}/uploads/profile/${user.profile}`}
-                        alt="Profile"
-                        style={{ height: "40px", width: "40px", borderRadius: "50%", objectFit: "cover" }}
-                    />
-                    <span className="ml-2">{user.name}</span>
-                </div>
-            </div>
-            <div className="row m-0">
-                <div
-                    className="col-12 col-md-3 col-lg-2 p-0 text-center"
-                    style={{ boxShadow: "0px 0px 3px 0px grey", minHeight: "500px" }}
-                >
                     <div className="mt-5">
                         <div className="mt-4 list-group-item list-group-item-action">Dashboard</div>
                         <Link to="/create-assignment" className="mt-4 list-group-item list-group-item-action">
@@ -63,7 +54,7 @@ function TeacherPortal() {
                         <div className="text-center bg-success text-white p-3 m-2 flex-fill" style={{ minWidth: "200px", maxWidth: "250px" }}>
                             <span>Total Students</span>
                             <br />
-                            <span>4</span>
+                            <span>{totalStudents}</span>
                         </div>
                         <div className="text-center text-white p-3 m-2 flex-fill" style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "purple" }}>
                             <span>Total Assignment</span>

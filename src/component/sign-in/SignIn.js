@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { useState } from "react";
 import Backend from "../../apis/Backend";
@@ -7,9 +6,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { signInWithPopup } from "firebase/auth";
 // import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../sign-in/firebase";
-
-// import { auth, provider, signInWithPopup } from "../../firebaseConfig"; // Import Firebase
-
 function SignIn() {
     const navigate = useNavigate();
 
@@ -45,6 +41,7 @@ function SignIn() {
 
         try {
             const response = await axios.post(Backend.USER_LOGIN, state);
+            console.log("here is finduser", response)
             sessionStorage.setItem("current-user", JSON.stringify(response.data.findUser));
 
             toast.success("Sign In Successfully");
@@ -61,6 +58,7 @@ function SignIn() {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             const response = await axios.post(Backend.GOOGLE_LOGIN, { email: user.email });
+            console.log(JSON.stringify(response.data, null, 2));
             const chk = response.data.findUser
             console.log(chk)
             sessionStorage.setItem("current-user", JSON.stringify(response.data.findUser));
