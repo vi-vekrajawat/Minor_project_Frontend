@@ -36,6 +36,7 @@ function SignIn() {
 
     // Normal Login
     const handleLogin = async (event) => {
+        console.log(state)
         event.preventDefault();
         if (!validateForm()) return;
 
@@ -43,7 +44,8 @@ function SignIn() {
             const response = await axios.post(Backend.USER_LOGIN, state);
             console.log("here is finduser", response)
             sessionStorage.setItem("current-user", JSON.stringify(response.data.findUser));
-
+            const chk = response.data.findUser
+            sessionStorage.setItem("current-user", JSON.stringify(response.data.findUser));
             toast.success("Sign In Successfully");
             redirectUser(response.data.userRole);
         } catch (err) {
@@ -86,6 +88,7 @@ function SignIn() {
 
     // Redirect based on role
     const redirectUser = (role) => {
+        console.log(role)
         if (role === "teacher") setTimeout(() => navigate("/teacher-portal"), 900);
         else if (role === "admin") setTimeout(() => navigate("/admin"), 900);
         else setTimeout(() => navigate("/student"), 900);
