@@ -57,9 +57,12 @@ function SignIn() {
     // Google Sign-In
     const handleGoogleSignIn = async () => {
         try {
+            console.log("user is here google sign in ")
             const result = await signInWithPopup(auth, provider);
+            console.log("sign in popup")
             const user = result.user;
             const response = await axios.post(Backend.GOOGLE_LOGIN, { email: user.email });
+            console.log("user email")
             console.log(JSON.stringify(response.data, null, 2));
             const chk = response.data.findUser
             console.log(chk)

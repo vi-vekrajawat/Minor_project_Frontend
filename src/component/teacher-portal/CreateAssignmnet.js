@@ -42,6 +42,7 @@ function CreateAssignmnet() {
       const formData = new FormData();
       formData.append("title", task.title);
       formData.append("batchId", task.batchId);
+      formData.append("teacherId", user._id);
       formData.append("description", task.description);
       formData.append("instructions", task.instructions);
       formData.append("subject", task.subject);
@@ -62,6 +63,7 @@ function CreateAssignmnet() {
           description: "",
           instructions: "",
           batchId: "",
+          teacherId: user._id,
           subject: "",
           deadline: "",
           file: null,

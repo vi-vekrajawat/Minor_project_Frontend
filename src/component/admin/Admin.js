@@ -9,7 +9,8 @@ import { getCurrentUser } from "../auth/Auth";
 
 function Admin() {
     const [studnet, setStudnet] = useState([]);
-    const [selectedBatch, setSelectedBatch] = useState("all"); 
+    const [selectedBatch, setSelectedBatch] = useState("all");
+    const [selectedRole, setSelectedRole] = useState("all"); // New state for role filtering
     const { task } = useContext(AssignmentContext);
     const { batchState } = useContext(BatchContext);
     const user = getCurrentUser();
@@ -21,6 +22,14 @@ function Admin() {
     const loadStudents = async () => {
         const response = await axios.get(backend.STUDENT_LIST);
         setStudnet(response.data.allStudents);
+    };
+
+    // Filter function to apply both batch and role filters
+    const getFilteredUsers = () => {
+        return studnet
+            .filter(user => user.role !== 'admin')
+            .filter(user => selectedBatch === "all" || user.batch?.batchName === selectedBatch)
+            .filter(user => selectedRole === "all" || user.role === selectedRole);
     };
 
     return (
@@ -78,30 +87,41 @@ function Admin() {
                             <span>{(studnet?.filter(user => user.role === 'student') || []).length}</span>
                         </div>
                         <div
-                            className="text-center p-3 m-2 flex-fill"
-                            style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "pink" }}
+                            className="text-center text-white p-3 m-2 flex-fill"
+                            style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "orange" }}
                         >
                             <span>Total Teachers</span><br />
                             <span>{(studnet?.filter(user => user.role === 'teacher') || []).length}</span>
                         </div>
-                        <div
+                        {/* <div
                             className="text-center p-3 m-2 flex-fill"
                             style={{ minWidth: "200px", maxWidth: "250px", backgroundColor: "orange" }}
                         >
                             <span>Total Assignments</span><br />
                             <span>{task.length}</span>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="mt-5 p-2" style={{ boxShadow: "0px 0px 3px grey" }}>
                         <div className="d-flex justify-content-between flex-wrap">
                             <h6><b>Recent Users</b></h6>
-                            <div className="d-flex">
+                            <div className="d-flex flex-wrap">
+                                {/* Role Filter Dropdown */}
+                                <select
+                                    className="form-select mr-2 btn btn-warning"
+                                    value={selectedRole}
+                                    onChange={(e) => setSelectedRole(e.target.value)}
+                                >
+                                    <option value="all" className="btn btn-danger">All Roles</option>
+                                    <option value="student" className="btn btn-success">Students Only</option>
+                                    <option value="teacher" className="btn btn-info">Teachers Only</option>
+                                </select>
+                                {/* Batch Filter Dropdown */}
                                 <select
                                     className="form-select mr-2 btn btn-success"
                                     value={selectedBatch}
                                     onChange={(e) => setSelectedBatch(e.target.value)}
                                 >
-                                    <option value="all"  className="btn btn-danger">All Batches</option>
+                                    <option value="all" className="btn btn-danger">All Batches</option>
                                     {batchState.map((batch, index) => (
                                         <option key={index} value={batch.batchName} className="btn btn-info">
                                             {batch.batchName}
@@ -123,14 +143,14 @@ function Admin() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {studnet.filter(user => user.role !== 'admin').filter(user => selectedBatch === "all" || user.batch?.batchName === selectedBatch).map((data, index) => (
-                                            <tr key={index}>
-                                                <td>{data.name}</td>
-                                                <td>{data.email}</td>
-                                                <td>{data.role}</td>
-                                                <td>{data.batch?.batchName}</td>
-                                            </tr>
-                                        ))}
+                                    {getFilteredUsers().map((data, index) => (
+                                        <tr key={index}>
+                                            <td>{data.name}</td>
+                                            <td>{data.email}</td>
+                                            <td>{data.role}</td>
+                                            <td>{data.batch?.batchName}</td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

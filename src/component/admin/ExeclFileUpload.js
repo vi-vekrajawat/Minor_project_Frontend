@@ -4,8 +4,10 @@ import { useState } from "react";
 import Backend from "../../apis/Backend";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 function ExcelFileUpload() {
+  const navigate = useNavigate()
   const [excelFile, setExcelFile] = useState(null);
   const [fileName, setFileName] = useState("");
 
@@ -29,6 +31,8 @@ function ExcelFileUpload() {
       toast.success("File uploaded successfully!");
       setFileName("");
       setExcelFile(null);
+      setTimeout(() => navigate(-1), 900)
+
     } catch (err) {
       console.error("Upload error:", err);
       toast.error("Failed to upload file.");
@@ -40,7 +44,7 @@ function ExcelFileUpload() {
       <ToastContainer />
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "100vh",  width:"100vw",backgroundColor: "#f8f9fa" }}
+        style={{ minHeight: "100vh", width: "100vw", backgroundColor: "#f8f9fa" }}
       >
         <div
           className="card shadow-lg p-4"

@@ -3,8 +3,10 @@ import { useState } from "react";
 import Backend from "../../apis/Backend";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function CreateBatch() {
+  const navigate = useNavigate()
   const [batchInfo, setBatchInfo] = useState({
     batchName: "",
     launchDate: "",
@@ -22,6 +24,9 @@ function CreateBatch() {
         launchDate: "",
         expireDate: "",
       });
+      setTimeout(()=>navigate(-1),900)
+      
+      
     } catch (err) {
       console.log(err);
       toast.error("Something went Wrong");
@@ -33,10 +38,12 @@ function CreateBatch() {
       <ToastContainer />
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{
-          width: "100%",
-          height: "100vh", // full viewport height
-        }}
+                        style={{ minHeight: "100vh", width:"100vw", backgroundColor: "#f8f9fa" }}
+
+        // style={{
+        //   width: "100%",
+        //   height: "100vh", // full viewport height
+        // }}
       >
         <form
           onSubmit={submitBatch}

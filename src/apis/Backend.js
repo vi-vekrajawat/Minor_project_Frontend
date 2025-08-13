@@ -16,7 +16,9 @@ export default {
     GOOGLE_LOGIN : BASE_URL+"/admin/google-login",
     COUNT_ASSIGNMENT : BASE_URL+"/student/submission",
     SUBMMITED_ASSIGNMENT : BASE_URL+"/student",
-    PROFILE_UPDATE:BASE_URL+"/admin/profile-data"
+    PROFILE_UPDATE:BASE_URL+"/admin/profile-data",
+    ASSIGNMENT_TEACHER_BY_ID:BASE_URL+"/teacher/teacherId",
+    SUBMIT_ASSIGNMENT_BYID:BASE_URL+"/student/submitted-assignments"
 
 
 

@@ -71,7 +71,7 @@ function Home() {
             </div>
 
             {/* Key Features */}
-            <div className="mt-4 p-3" style={{ boxShadow: "1px 0px 2px 0px grey", borderRadius: "5px" }}>
+            <div className="mt-4 p-3 ml-4" style={{ boxShadow: "1px 0px 2px 0px grey", borderRadius: "5px" }}>
                 <h4 className="text-center mt-3">Key Features</h4>
                 <div className="row justify-content-center text-center">
 
