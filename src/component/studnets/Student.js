@@ -325,7 +325,7 @@ function Student() {
                       {status === "complete" && (
                         <button className="btn btn-success btn-sm mr-2" disabled>Completed</button>
                       )}
-                      <Link className="btn btn-primary btn-sm">View Details</Link>
+                      {/* <Link className="btn btn-primary btn-sm">View Details</Link> */}
                     </div>
                   </div>
                 );
