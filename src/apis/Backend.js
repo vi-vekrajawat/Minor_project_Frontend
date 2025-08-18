@@ -18,7 +18,9 @@ export default {
     SUBMMITED_ASSIGNMENT : BASE_URL+"/student",
     PROFILE_UPDATE:BASE_URL+"/admin/profile-data",
     ASSIGNMENT_TEACHER_BY_ID:BASE_URL+"/teacher/teacherId",
-    SUBMIT_ASSIGNMENT_BYID:BASE_URL+"/student/submitted-assignments"
+    SUBMIT_ASSIGNMENT_BYID:BASE_URL+"/student/submitted-assignments",
+    UPDATE_TEACHER_BATCH:BASE_URL+"/admin//assign-teacher",
+    DELETE_TEACHER:BASE_URL+"/admin"
 
 
 

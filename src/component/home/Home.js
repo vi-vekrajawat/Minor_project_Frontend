@@ -2,108 +2,168 @@
 import { Link } from "react-router-dom";
 
 function Home() {
-    return <>
-        <div className="container-fluid" style={{ maxWidth: "1200px" }}>
+  const features = [
+    {
+      title: "Assignments",
+      description: "Create, assign, and manage tasks efficiently.",
+      icon: "📝",
+    },
+    {
+      title: "Tracking",
+      description: "Monitor student progress in real-time.",
+      icon: "📊",
+    },
+    {
+      title: "Notifications",
+      description: "Receive timely updates and reminders.",
+      icon: "🔔",
+    },
+    {
+      title: "Secure Access",
+      description: "Role-based secure login for all users.",
+      icon: "🔒",
+    },
+  ];
 
-            {/* Header Section */}
-            <div>
-                <div>
-                    <h2 className="text-center">
-                        ITEP-Assignment
-                    </h2>
-                    <div className="text-center mt-3">
-                        <span>Modern Assignment Management System for Educational Institutions</span>
-                    </div>
-                    <div className="text-center mt-3">
-                        <img
-                            src="https://cdn.theorg.com/e3f93e8e-1417-4771-b4ef-283263d4230f_medium.jpg"
-                            className="img-fluid"
-                            style={{ maxHeight: "60px" }}
-                            alt="logo"
-                        />
-                    </div>
-                </div>
-
-                {/* Portal Cards */}
-                <div className="mt-3">
-                    <div className="row no-gutters justify-content-center text-center">
-
-                        {/* Admin */}
-                        <div className="p-2 mx-2 flex-fill" style={{ boxShadow: "1px 0px 1px 2px grey", borderRadius: "5px", backgroundColor: "white", minWidth: "250px", maxWidth: "300px" }}>
-                            <img
-                                src="https://play-lh.googleusercontent.com/6kTjj47chEYx1LGlvqGiv661DvAiFrDPkjqaUpKqju-4J38mGBru2wi2S-SrCKZu_NaK=w240-h480-rw"
-                                className="img-fluid"
-                                style={{ maxHeight: "50px" }}
-                                alt="Admin"
-                            />
-                            <h5 className="mt-3">Admin Portal</h5>
-                            <span>Manage users, batches, and oversee the entire <br />system</span><br />
-                            <Link to="/sign-in"><button className="btn btn-success mt-3">Login as Admin</button></Link>
-                        </div>
-
-                        {/* Student */}
-                        <div className="p-2 mx-2 flex-fill" style={{ boxShadow: "1px 0px 1px 2px grey", borderRadius: "5px", backgroundColor: "white", minWidth: "250px", maxWidth: "300px" }}>
-                            <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTucvpHtMVPdMy3xB6DlJ_pRk-bUFOv1eziNXzF1QMK4eRJbPNb"
-                                className="img-fluid"
-                                style={{ maxHeight: "50px" }}
-                                alt="Student"
-                            />
-                            <h5 className="mt-3">Student Portal</h5>
-                            <span>View assignments, submit work, and track your <br />progress</span><br />
-                            <Link to="/sign-in"><button className="btn btn-success mt-3">Login as Student</button></Link>
-                        </div>
-
-                        {/* Teacher */}
-                        <div className="p-2 mx-2 flex-fill " style={{ boxShadow: "1px 0px 1px 2px grey", borderRadius: "5px", backgroundColor: "white", minWidth: "250px", maxWidth: "300px" }}>
-                            <img
-                                src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTkoq0NS0SsCzTS7ZgjVmcW1g3YkST0kt74Oqux0L48IO1-jI_7"
-                                className="img-fluid"
-                                style={{ maxHeight: "50px" }}
-                                alt="Teacher"
-                            />
-                            <h5 className="mt-3">Teacher Portal</h5>
-                            <span>Create assignments, manage batches, and <br />track submissions</span><br />
-                            <Link to="/sign-in"><button className="btn btn-success mt-3">Login as Teacher</button></Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Key Features */}
-            <div className="mt-4 p-3 ml-4" style={{ boxShadow: "1px 0px 2px 0px grey", borderRadius: "5px" }}>
-                <h4 className="text-center mt-3">Key Features</h4>
-                <div className="row justify-content-center text-center">
-
-                    <div className="p-3 mx-3" style={{ minWidth: "150px", flex: "1 1 200px" }}>
-                        <img src="https://compact-pay-product-frontend.vercel.app/static/media/creatAccount.8b9e975005d743c681e2ee5aca28543f.svg" className="img-fluid" style={{ maxHeight: "50px" }} alt="Assignment" />
-                        <h6>Assignment Management</h6>
-                        <p>Create, assign, and track<br /> assignments efficiently</p>
-                    </div>
-
-                    <div className="p-3 mx-3" style={{ minWidth: "150px", flex: "1 1 200px" }}>
-                        <img src="https://cdn.prod.website-files.com/5c837a12af626286ed0fec32/5d68d7258dfed9f03659fa6e_ERG%20-%20Sunlight.png" className="img-fluid" style={{ maxHeight: "50px" }} alt="Batch" />
-                        <h6>Batch Management</h6>
-                        <p>Organize students into manageable<br /> batches</p>
-                    </div>
-
-                    <div className="p-3 mx-3" style={{ minWidth: "150px", flex: "1 1 200px" }}>
-                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..." className="img-fluid" style={{ maxHeight: "50px" }} alt="File" />
-                        <h6>File Submissions</h6>
-                        <p>Easy file upload and submission<br /> system</p>
-                    </div>
-
-                    <div className="p-3 mx-3" style={{ minWidth: "150px", flex: "1 1 200px" }}>
-                        <img src="https://a.thumbs.redditmedia.com/ZuJ04A6Rngx8PSr-Clk5mkLuhi9lCfrDJuFLvNHz--8.jpg" className="img-fluid" style={{ maxHeight: "50px" }} alt="Role" />
-                        <h6>Role-based Dashboards</h6>
-                        <p>Customized experience for each user type</p>
-                    </div>
-
-                </div>
-            </div>
-
+  return (
+    <>
+      <div
+        style={{
+          width: "100vw",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          backgroundImage:
+            "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://miro.medium.com/v2/resize:fit:1400/1*NwLwD8boGZ7BdIEwzGrviQ.jpeg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          padding: "40px 20px",
+        }}
+      >
+        {/* Header */}
+        <div className="text-center text-white mb-5">
+          <img
+            src="https://cdn.theorg.com/e3f93e8e-1417-4771-b4ef-283263d4230f_medium.jpg"
+            className="img-fluid mb-3"
+            style={{ maxHeight: "60px" }}
+            alt="ITEP Logo"
+          />
+          <h2>ITEP-Assignment</h2>
+          <span>Modern Assignment Management System for Educational Institutions</span>
         </div>
+
+        {/* Single Portal Card */}
+        <div
+          className="p-4 text-center portal-card d-flex flex-column align-items-center"
+          style={{
+            minWidth: "600px",
+            maxWidth: "700px",
+            borderRadius: "16px",
+            // background: "rgba(255,255,255,0.12)",
+            // border: "1px solid rgba(255,255,255,0.18)",
+            // backdropFilter: "blur(15px)",
+            // WebkitBackdropFilter: "blur(15px)",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+            color: "white",
+            transition: "all 0.3s ease",
+          }}
+        >
+          <img
+            src="https://play-lh.googleusercontent.com/6kTjj47chEYx1LGlvqGiv661DvAiFrDPkjqaUpKqju-4J38mGBru2wi2S-SrCKZu_NaK=w240-h480-rw"
+            className="img-fluid mb-3"
+            style={{ maxHeight: "60px" }}
+            alt="Portal"
+          />
+          <h5>Login Portal</h5>
+          <p>Select your role to access the system</p>
+
+          <div className="d-flex flex-wrap mt-3 flex-wrap justify-content-center w-100" style={{gap:"35px"}}>
+            <Link to="/sign-in">
+              <button className="btn btn-success portal-btn">Admin</button>
+            </Link>
+            <Link to="/sign-in">
+              <button className="btn btn-primary portal-btn">Student</button>
+            </Link>
+            <Link to="/sign-in">
+              <button className="btn btn-warning portal-btn">Teacher</button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Key Features */}
+        <div className="d-flex flex-wrap justify-content-center mt-5 gap-3 w-100">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className="feature-card p-4 text-center d-flex flex-column align-items-center"
+              style={{
+                minWidth: "200px",
+                maxWidth: "250px",
+                color: "white",
+              }}
+            >
+              <div style={{ fontSize: "2rem", marginBottom: "12px" }}>{feature.icon}</div>
+              <h6>{feature.title}</h6>
+              <p style={{ fontSize: "0.85rem" }}>{feature.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <footer
+          style={{
+            width: "90%",
+            maxWidth: "1200px",
+            background: "rgba(255,255,255,0.08)",
+            border: "1px solid rgba(255,255,255,0.18)",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            borderRadius: "16px",
+            padding: "12px 20px",
+            textAlign: "center",
+            color: "#e5e7eb",
+            fontSize: "0.85rem",
+            boxShadow: "0 8px 18px rgba(0,0,0,0.15)",
+            margin: "40px auto 20px auto",
+          }}
+        >
+          Secure • Modern • Efficient • © 2025 ITEP Assignment
+        </footer>
+      </div>
+
+      {/* Hover Effects */}
+      <style>{`
+        .portal-card:hover {
+          transform: translateY(-8px) scale(1.03);
+          box-shadow: 0 25px 50px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.2) inset;
+          border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .feature-card {
+          border-radius: 12px;
+          background: rgba(255,255,255,0.08);
+          border: 1px solid rgba(255,255,255,0.15);
+          backdrop-filter: blur(8px);
+          Webkit-backdrop-filter: blur(8px);
+          transition: all 0.3s ease;
+          margin: 8px;
+        }
+
+        .feature-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 28px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.2) inset;
+          border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        .portal-btn:hover {
+          transform: scale(1.05);
+        }
+      `}</style>
     </>
+  );
 }
 
 export default Home;

@@ -1,11 +1,11 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Backend from "../../apis/Backend";
+import Backend, { BASE_URL } from "../../apis/Backend";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
-function CreateAssignmnet() {
+function SubmitAssignment() {
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -13,81 +13,97 @@ function CreateAssignmnet() {
     batchId: "",
     subject: "",
     deadline: "",
-    file: null, 
+    file: null,
   });
 
-  const user = JSON.parse(sessionStorage.getItem("current-user"));
-  const [batch, setAllBatch] = useState([]);
+  const [allBatch, setAllBatch] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = JSON.parse(sessionStorage.getItem("current-user"));
 
-  // Send Assignment Function
-  const SendAssignment = async (event) => {
-    event.preventDefault();
+  // 🔹 Load Batches
+  useEffect(() => {
+    loadBatch();
+    // eslint-disable-next-line
+  }, []);
+
+  const loadBatch = async () => {
+    try {
+      const response = await axios.get(Backend.ALL_BATCHES);
+      let batches = response.data.getAll || response.data.batches || response.data;
+
+      // Fix accessibleBatches
+      const accessible = user?.accessibleBatches || []; // directly use array
+      const userBatch = user.batch ? [user.batch] : [];
+      const allowedBatchIds = [...new Set([...accessible, ...userBatch])];
+
+      // Filter batches that are allowed
+      const filtered = batches.filter((b) => allowedBatchIds.includes(b._id));
+
+      setAllBatch(filtered);
+
+      // Default selection for student
+      if (user.role === "student" && filtered.length > 0) {
+        setTask((prev) => ({ ...prev, batchId: filtered[0]._id }));
+      }
+    } catch (err) {
+      console.log("Error loading batches:", err);
+      toast.error("Failed to load batches");
+    }
+  };
+
+  const handleBatchChange = (e) => {
+    setTask({ ...task, batchId: e.target.value });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setTask({ ...task, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setTask({ ...task, file: e.target.files[0] });
+  };
+
+  const submitAssignment = async (e) => {
+    e.preventDefault();
     setLoading(true);
 
+    if (!task.title.trim()) return toast.error("Assignment title required");
+    if (!task.batchId) return toast.error("Please select a batch");
+    if (!task.subject) return toast.error("Please select a subject");
+
+    const formData = new FormData();
+    formData.append("title", task.title);
+    formData.append("batchId", task.batchId);
+    formData.append("teacherId", user._id);
+    formData.append("description", task.description);
+    formData.append("instructions", task.instructions);
+    formData.append("subject", task.subject);
+    formData.append("deadline", task.deadline);
+    if (task.file) formData.append("assignFileName", task.file);
+
     try {
-      if (!task.title.trim()) {
-        toast.error("Assignment title required");
-        return;
-      }
-      if (!task.batchId) {
-        toast.error("Please select a batch");
-        return;
-      }
-      if (!task.subject) {
-        toast.error("Please select subject");
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append("title", task.title);
-      formData.append("batchId", task.batchId);
-      formData.append("teacherId", user._id);
-      formData.append("description", task.description);
-      formData.append("instructions", task.instructions);
-      formData.append("subject", task.subject);
-      formData.append("deadline", task.deadline);
-
-      if (task.file) {
-        formData.append("assignFileName", task.file); 
-      }
-
-      const response = await axios.post(Backend.ASSIGNMENT_CREATE, formData, {
+      const res = await axios.post(Backend.ASSIGNMENT_CREATE, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      if (response.data.message) {
-        toast.success(response.data.message);
+      if (res.data.message) {
+        toast.success(res.data.message);
         setTask({
           title: "",
           description: "",
           instructions: "",
           batchId: "",
-          teacherId: user._id,
           subject: "",
           deadline: "",
           file: null,
         });
       }
     } catch (err) {
-      console.log("Error:", err);
+      console.log(err);
       toast.error(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    loadBatch();
-  }, []);
-
-  const loadBatch = async () => {
-    try {
-      const response = await axios.get(Backend.ALL_BATCHES);
-      const batches = response.data.getAll || response.data.batches || response.data;
-      setAllBatch(batches);
-    } catch (err) {
-      console.log("Error loading batches:", err);
     }
   };
 
@@ -113,7 +129,6 @@ function CreateAssignmnet() {
           </div>
         </div>
 
-        {/* Main Section */}
         <div className="row m-0">
           {/* Sidebar */}
           <div className="col-12 col-md-3 col-lg-2 p-0 text-center" style={{ boxShadow: "0px 0px 3px grey" }}>
@@ -125,24 +140,34 @@ function CreateAssignmnet() {
             </div>
           </div>
 
-          {/* Assignment Form */}
+          {/* Form Section */}
           <div className="col-12 col-md-9 col-lg-10 d-flex justify-content-center p-3">
             <div className="shadow p-4 rounded bg-white w-100" style={{ maxWidth: "800px" }}>
-              <h3 className="text-center mb-4 text-primary">Create New Assignment</h3>
-              <form onSubmit={SendAssignment}>
+              <h3 className="text-center mb-4 text-primary">Submit Assignment</h3>
+              <form onSubmit={submitAssignment}>
                 <div className="row">
                   <div className="col-md-6">
                     <div className="mb-3">
                       <label>Assignment Title *</label>
-                      <input type="text" className="form-control" value={task.title}
-                        onChange={(e) => setTask({ ...task, title: e.target.value })} />
+                      <input
+                        type="text"
+                        name="title"
+                        className="form-control"
+                        value={task.title}
+                        onChange={handleInputChange}
+                      />
                     </div>
                     <div className="mb-3">
                       <label>Select Batch *</label>
-                      <select className="form-control" value={task.batchId}
-                        onChange={(e) => setTask({ ...task, batchId: e.target.value })}>
+                      <select
+                        name="batchId"
+                        className="form-control"
+                        value={task.batchId}
+                        onChange={handleBatchChange}
+                        disabled={user.role === "student"}
+                      >
                         <option value="">Choose batch</option>
-                        {batch.map((b) => (
+                        {allBatch.map((b) => (
                           <option key={b._id} value={b._id}>{b.batchName}</option>
                         ))}
                       </select>
@@ -152,42 +177,60 @@ function CreateAssignmnet() {
                   <div className="col-md-6">
                     <div className="mb-3">
                       <label>Select Subject *</label>
-                      <select className="form-control" value={task.subject}
-                        onChange={(e) => setTask({ ...task, subject: e.target.value })}>
+                      <select
+                        name="subject"
+                        className="form-control"
+                        value={task.subject}
+                        onChange={handleInputChange}
+                      >
                         <option value="">Choose subject</option>
                         <option value="technical">Technical</option>
-                        <option value="softskil">Soft Skill</option>
+                        <option value="softskill">Soft Skill</option>
                         <option value="aptitude">Aptitude</option>
                       </select>
                     </div>
                     <div className="mb-3">
                       <label>Deadline</label>
-                      <input type="date" className="form-control" value={task.deadline}
-                        onChange={(e) => setTask({ ...task, deadline: e.target.value })} />
+                      <input
+                        type="date"
+                        name="deadline"
+                        className="form-control"
+                        value={task.deadline}
+                        onChange={handleInputChange}
+                      />
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-3">
                   <label>Description</label>
-                  <textarea className="form-control" rows="3"
-                    value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })}></textarea>
+                  <textarea
+                    name="description"
+                    className="form-control"
+                    rows="3"
+                    value={task.description}
+                    onChange={handleInputChange}
+                  ></textarea>
                 </div>
 
                 <div className="mb-3">
                   <label>Instructions</label>
-                  <textarea className="form-control" rows="3"
-                    value={task.instructions} onChange={(e) => setTask({ ...task, instructions: e.target.value })}></textarea>
+                  <textarea
+                    name="instructions"
+                    className="form-control"
+                    rows="3"
+                    value={task.instructions}
+                    onChange={handleInputChange}
+                  ></textarea>
                 </div>
 
                 <div className="mb-4">
                   <label>Upload File (Optional)</label>
-                  <input type="file" className="form-control"
-                    onChange={(e) => setTask({ ...task, file: e.target.files[0] })} />
+                  <input type="file" className="form-control" onChange={handleFileChange} />
                 </div>
 
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                  {loading ? "Creating..." : "Create Assignment"}
+                  {loading ? "Submitting..." : "Submit Assignment"}
                 </button>
               </form>
             </div>
@@ -198,4 +241,4 @@ function CreateAssignmnet() {
   );
 }
 
-export default CreateAssignmnet;
+export default SubmitAssignment;
