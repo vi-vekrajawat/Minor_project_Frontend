@@ -1,5 +1,6 @@
 
 import { Link } from "react-router-dom";
+import "../home/Home.css"
 
 function Home() {
   const features = [
@@ -27,23 +28,7 @@ function Home() {
 
   return (
     <>
-      <div
-        style={{
-          width: "100vw",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "flex-start",
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://miro.medium.com/v2/resize:fit:1400/1*NwLwD8boGZ7BdIEwzGrviQ.jpeg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          padding: "40px 20px",
-        }}
-      >
-        {/* Header */}
+      <div className="main-div">
         <div className="text-center text-white mb-5">
           <img
             src="https://cdn.theorg.com/e3f93e8e-1417-4771-b4ef-283263d4230f_medium.jpg"
@@ -55,21 +40,9 @@ function Home() {
           <span>Modern Assignment Management System for Educational Institutions</span>
         </div>
 
-        {/* Single Portal Card */}
         <div
-          className="p-4 text-center portal-card d-flex flex-column align-items-center"
-          style={{
-            minWidth: "600px",
-            maxWidth: "700px",
-            borderRadius: "16px",
-            // background: "rgba(255,255,255,0.12)",
-            // border: "1px solid rgba(255,255,255,0.18)",
-            // backdropFilter: "blur(15px)",
-            // WebkitBackdropFilter: "blur(15px)",
-            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
-            color: "white",
-            transition: "all 0.3s ease",
-          }}
+          className="p-4 text-center portal-card d-flex flex-column align-items-center div-card-style"
+        
         >
           <img
             src="https://play-lh.googleusercontent.com/6kTjj47chEYx1LGlvqGiv661DvAiFrDPkjqaUpKqju-4J38mGBru2wi2S-SrCKZu_NaK=w240-h480-rw"
@@ -93,7 +66,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Key Features */}
         <div className="d-flex flex-wrap justify-content-center mt-5 gap-3 w-100">
           {features.map((feature, index) => (
             <div
@@ -112,56 +84,12 @@ function Home() {
           ))}
         </div>
 
-        {/* Footer */}
-        <footer
-          style={{
-            width: "90%",
-            maxWidth: "1200px",
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.18)",
-            backdropFilter: "blur(10px)",
-            WebkitBackdropFilter: "blur(10px)",
-            borderRadius: "16px",
-            padding: "12px 20px",
-            textAlign: "center",
-            color: "#e5e7eb",
-            fontSize: "0.85rem",
-            boxShadow: "0 8px 18px rgba(0,0,0,0.15)",
-            margin: "40px auto 20px auto",
-          }}
-        >
+        <footer className="footer">
           Secure • Modern • Efficient • © 2025 ITEP Assignment
         </footer>
       </div>
 
-      {/* Hover Effects */}
-      <style>{`
-        .portal-card:hover {
-          transform: translateY(-8px) scale(1.03);
-          box-shadow: 0 25px 50px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.2) inset;
-          border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .feature-card {
-          border-radius: 12px;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.15);
-          backdrop-filter: blur(8px);
-          Webkit-backdrop-filter: blur(8px);
-          transition: all 0.3s ease;
-          margin: 8px;
-        }
-
-        .feature-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 12px 28px rgba(0,0,0,0.25), 0 0 0 1px rgba(255,255,255,0.2) inset;
-          border: 1px solid rgba(255,255,255,0.25);
-        }
-
-        .portal-btn:hover {
-          transform: scale(1.05);
-        }
-      `}</style>
+    
     </>
   );
 }

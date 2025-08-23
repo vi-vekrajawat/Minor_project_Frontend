@@ -1,0 +1,55 @@
+/* Sidebar */
+.submit-sidebar {
+  width: 200px;
+  background-color: #fff;
+  box-shadow: 0px 0px 3px grey;
+  min-height: 100vh;
+  padding-top: 50px;
+}
+
+/* Header */
+.submit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d6efd;
+  color: white;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+}
+
+.submit-header img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Form Container */
+.submit-form-container {
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0px 0px 5px grey;
+  border-radius: 8px;
+  margin: 20px auto;
+}
+
+/* Form fields */
+.submit-form-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.submit-form-container .form-control {
+  margin-bottom: 15px;
+}
+
+/* Button */
+.submit-form-container button {
+  padding: 10px;
+  font-size: 16px;
+}

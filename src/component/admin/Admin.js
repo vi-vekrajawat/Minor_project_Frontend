@@ -1,15 +1,18 @@
-
 import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
 import backend, { BASE_URL } from "../../apis/Backend";
 import { Link } from "react-router-dom";
 import { BatchContext } from "../../context/BatchProvider";
 import { getCurrentUser } from "../auth/Auth";
+import Backend from "../../apis/Backend";
+import "./Admin.css";   // ✅ New CSS import
 
 function Admin() {
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState("students");
   const { batchState } = useContext(BatchContext);
+  const [openFormFor, setOpenFormFor] = useState(null);
+  const [selectedBatch, setSelectedBatch] = useState("");
   const user = getCurrentUser();
 
   useEffect(() => {
@@ -60,32 +63,50 @@ function Admin() {
     return [...new Set(names.filter(Boolean))];
   };
 
-  // ✅ Updated Delete Teacher Function
-  const deleteTeacher = async (teacherId, batchId = null) => {
+  const deleteTeacher = async (teacherId) => {
     try {
-      const url = batchId
-        ? `${backend.DELETE_TEACHER}/${teacherId}/${batchId}`
-        : `${backend.DELETE_TEACHER}/${teacherId}`;
-
-      await axios.delete(url);
-
+      await axios.delete(`${backend.DELETE_TEACHER}/${teacherId}`);
       alert("Teacher deleted ✅");
       loadUsers();
     } catch (e) {
       console.error(e);
-      alert(e.response?.data?.error || "Error deleting teacher ❌");
+      alert(e.response?.data?.error || "Error deleting teacher ");
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      await axios.delete(`${Backend.DELETE_STUDENT}/${id}`);
+      loadUsers();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const assignBatchToTeacher = async (teacherId, batchId) => {
+    try {
+      await axios.put(
+        `http://localhost:3000/admin/assign-batch/${teacherId}`,
+        { batchId }
+      );
+      alert("Batch assigned successfully ");
+      setOpenFormFor(null);
+      setSelectedBatch("");
+      loadUsers();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to assign batch ");
     }
   };
 
   return (
-    <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
-      {/* Header */}
-      <div className="d-flex justify-content-between align-items-center bg-primary text-white p-3">
+    <div className="admin-container">
+      <div className="admin-navbar">
         <div className="d-flex flex-wrap align-items-center">
-          <div className="me-3 fw-bold">ITEP</div>
-          <div className="me-3">Dashboard</div>
-          <div className="me-3">Batch Management</div>
-          <Link to="/admin-profile" className="text-white">
+          <div className="logo">ITEP</div>
+          <div className="me-3 ml-3">Dashboard</div>
+          <div className="me-3 ml-3">Batch Management</div>
+          <Link to="/admin-profile" className="text-white ml-3">
             Profile
           </Link>
         </div>
@@ -93,29 +114,16 @@ function Admin() {
           <img
             src={`${BASE_URL}/uploads/profile/${user.profile}`}
             alt="Profile"
-            style={{
-              height: "40px",
-              width: "40px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              marginRight: "8px",
-            }}
           />
           <div>{user.name}</div>
         </div>
       </div>
 
+      {/* Sidebar + Main */}
       <div className="d-flex flex-column flex-md-row">
         {/* Sidebar */}
-        <aside
-          style={{
-            width: "200px",
-            backgroundColor: "#f8f9fa",
-            boxShadow: "0px 0px 3px grey",
-          }}
-          className="text-center"
-        >
-          <div className="mt-5">
+        <aside className="admin-sidebar">
+          <div>
             <div className="list-group-item list-group-item-action mt-5">
               Dashboard
             </div>
@@ -139,29 +147,26 @@ function Admin() {
           <h2>Admin Dashboard</h2>
           <p>Manage your educational platform</p>
 
-          {/* Summary Cards */}
+          {/* Cards */}
           <div className="d-flex flex-wrap">
-            <div className="text-center bg-primary text-white p-3 m-2 flex-fill rounded">
+            <div className="dashboard-card dashboard-batches">
               <span>Total Batches</span>
               <br />
               <span className="fw-bold fs-5">{batchState.length}</span>
             </div>
-            <div className="text-center bg-success text-white p-3 m-2 flex-fill rounded">
+            <div className="dashboard-card dashboard-students">
               <span>Total Students</span>
               <br />
               <span className="fw-bold fs-5">{students.length}</span>
             </div>
-            <div
-              className="text-center text-white p-3 m-2 flex-fill rounded"
-              style={{ backgroundColor: "orange" }}
-            >
+            <div className="dashboard-card dashboard-teachers">
               <span>Total Teachers</span>
               <br />
               <span className="fw-bold fs-5">{teachers.length}</span>
             </div>
           </div>
 
-          {/* Toggle */}
+          {/* Tabs */}
           <div className="mt-4 d-flex">
             <button
               className={`btn me-2 ${
@@ -181,7 +186,7 @@ function Admin() {
             </button>
           </div>
 
-          {/* Students List */}
+          {/* Students Section */}
           {activeTab === "students" && (
             <section className="mt-4 p-3 bg-white rounded">
               <div className="d-flex justify-content-between flex-wrap">
@@ -204,6 +209,7 @@ function Admin() {
                       <th>Name</th>
                       <th>Email</th>
                       <th>Batch</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -218,6 +224,14 @@ function Admin() {
                               ? batchNames.join(", ")
                               : "—"}
                           </td>
+                          <td>
+                            <button
+                              onClick={() => deleteUser(s._id)}
+                              className="btn btn-danger"
+                            >
+                              Delete
+                            </button>
+                          </td>
                         </tr>
                       );
                     })}
@@ -227,14 +241,14 @@ function Admin() {
             </section>
           )}
 
-          {/* Teachers List */}
+          {/* Teachers Section */}
           {activeTab === "teachers" && (
             <section className="mt-4 p-3 bg-white rounded">
               <div className="d-flex justify-content-between flex-wrap">
                 <h6 className="mb-0">
                   <b>Teachers List</b>
                 </h6>
-                <Link to="/add-teacher" className="btn btn-primary">
+                <Link to="/add-student" className="btn btn-primary">
                   + Add Teacher
                 </Link>
               </div>
@@ -259,13 +273,7 @@ function Admin() {
                             {batchNames.length > 0 ? (
                               <div className="d-flex flex-wrap gap-1">
                                 {batchNames.map((bn) => (
-                                  <span
-                                    key={bn}
-                                    className="badge bg-secondary"
-                                    style={{ fontWeight: 500 }}
-                                  >
-                                    {bn}
-                                  </span>
+                                  <p key={bn}>{bn}</p>
                                 ))}
                               </div>
                             ) : (
@@ -273,44 +281,30 @@ function Admin() {
                             )}
                           </td>
                           <td>
-                            {batchNames.length > 0 ? (
-                              batchNames.map((b) => (
-                                <button
-                                  key={b}
-                                  className="btn btn-danger btn-sm me-1 mb-1"
-                                  onClick={async () => {
-                                    if (
-                                      window.confirm(
-                                        `Remove teacher "${t.name}" from batch "${b}"?`
-                                      )
-                                    ) {
-                                      // Find batchId by name
-                                      const batchObj = batchState.find(
-                                        (x) => x.batchName === b
-                                      );
-                                      await deleteTeacher(t._id, batchObj?._id);
-                                    }
-                                  }}
-                                >
-                                  Remove from {b}
-                                </button>
-                              ))
-                            ) : (
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={async () => {
-                                  if (
-                                    window.confirm(
-                                      `Delete teacher "${t.name}" completely?`
-                                    )
-                                  ) {
-                                    await deleteTeacher(t._id);
-                                  }
-                                }}
-                              >
-                                Delete
-                              </button>
-                            )}
+                            <button
+                              className="btn btn-danger btn-sm"
+                              onClick={async () => {
+                                if (
+                                  window.confirm(
+                                    `Delete teacher "${t.name}" completely?`
+                                  )
+                                ) {
+                                  await deleteTeacher(t._id);
+                                }
+                              }}
+                            >
+                              Delete
+                            </button>
+                            <button
+                              className="btn btn-info ms-2"
+                              onClick={() =>
+                                setOpenFormFor(
+                                  openFormFor === t._id ? null : t._id
+                                )
+                              }
+                            >
+                              Edit Batch
+                            </button>
                           </td>
                         </tr>
                       );
@@ -322,6 +316,41 @@ function Admin() {
           )}
         </main>
       </div>
+
+      {/* Assign Batch Modal */}
+      {openFormFor && (
+        <div className="assign-batch-modal">
+          <div className="assign-batch-modal-content">
+            <h3>Select Batch</h3>
+            <select
+              className="form-select"
+              value={selectedBatch}
+              onChange={(e) => setSelectedBatch(e.target.value)}
+            >
+              <option value="">-- Select Batch --</option>
+              {batchState.map((batch) => (
+                <option key={batch._id} value={batch._id}>
+                  {batch.batchName}
+                </option>
+              ))}
+            </select>
+            <div className="mt-3">
+              <button
+                className="btn btn-primary"
+                onClick={() => assignBatchToTeacher(openFormFor, selectedBatch)}
+              >
+                Assign Batch
+              </button>
+              <button
+                className="btn btn-secondary ms-2"
+                onClick={() => setOpenFormFor(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

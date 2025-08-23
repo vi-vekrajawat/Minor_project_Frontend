@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from "react";
 import { AssignmentContext } from "../../context/AssignmentProvider";
 import axios from "axios";
@@ -7,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
 import { BatchContext } from "../../context/BatchProvider";
+import "./SubmitAssignment.css";
 
 function SubmitAssignment() {
   const { task } = useContext(AssignmentContext);
@@ -160,108 +160,46 @@ function SubmitAssignment() {
   return (
     <>
       <ToastContainer />
-      <div
-        style={{
-          backgroundColor: "#f0f0f0",
-          minHeight: "100vh",
-          width: "100vw",
-          overflowX: "hidden",
-          fontFamily: "Arial, sans-serif",
-        }}
-      >
+      <div className="submit-container">
         {/* Header */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            backgroundColor: "#007bff",
-            color: "white",
-            padding: "15px 20px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-            <div style={{ fontWeight: "bold", marginRight: "15px" }}>ITEP</div>
-            <Link to="/student" style={{ color: "white", marginRight: "15px", textDecoration: "none" }}>Dashboard</Link>
-            <Link style={{ color: "white", marginRight: "15px", textDecoration: "none" }}>My Assignment</Link>
-            <Link to="/student-profile" style={{ color: "white", textDecoration: "none" }}>Profile</Link>
+        <div className="submit-header">
+          <div className="header-links">
+            <div>ITEP</div>
+            <Link to="/student">Dashboard</Link>
+            <Link>My Assignment</Link>
+            <Link to="/student-profile">Profile</Link>
           </div>
-          <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
-            <img
-              src={`${BASE_URL}/uploads/profile/${user.profile}`}
-              alt="Profile"
-              style={{
-                height: "40px",
-                width: "40px",
-                borderRadius: "50%",
-                objectFit: "cover",
-                marginRight: "10px",
-              }}
-            />
+          <div className="header-profile">
+            <img src={`${BASE_URL}/uploads/profile/${user.profile}`} alt="Profile" />
             <span>{user.name}</span>
           </div>
         </div>
 
-        {/* Main */}
-        <div style={{ display: "flex", flexDirection: "row", padding: "20px" }}>
-          {/* Sidebar */}
-          <div style={{
-            backgroundColor: "white",
-            boxShadow: "0 0 5px gray",
-            minHeight: "500px",
-            width: "200px",
-            paddingTop: "40px",
-          }}>
-            <Link to="/student" style={linkStyle}>Dashboard</Link>
-            <Link style={linkStyle}>My Assignment</Link>
-            <Link to="/student-profile" style={linkStyle}>Profile</Link>
+        {/* Main layout */}
+        <div className="submit-main">
+          <div className="sidebar">
+            <Link to="/student">Dashboard</Link>
+            <Link>My Assignment</Link>
+            <Link to="/student-profile">Profile</Link>
           </div>
 
-          {/* Content */}
           <div style={{ flexGrow: 1, marginLeft: "20px" }}>
-            <h2 style={{ marginBottom: "10px" }}>Submit Assignment</h2>
+            <h2>Submit Assignment</h2>
             <p>Choose an assignment to submit your work</p>
 
-            <div style={{
-              backgroundColor: "#e9ecef",
-              padding: "10px",
-              borderRadius: "5px",
-              marginBottom: "15px",
-              fontSize: "0.9rem",
-            }}>
-              {/* Debug Info: User Batch: {user.batch} | Available Assignments: {unsubmittedTasks.length} */}
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "row", gap: "20px", flexWrap: "wrap" }}>
-              {/* Assignment List */}
-              <div style={{
-                flex: 1,
-                maxHeight: "400px",
-                overflowY: "auto",
-                padding: "10px",
-                backgroundColor: "#fff",
-                boxShadow: "0 0 5px gray",
-                borderRadius: "5px",
-              }}>
-                <h4 style={{ position: "sticky", top: 0, backgroundColor: "#6c757d", color: "white", padding: "5px", margin: 0 }}>Available Assignment ({unsubmittedTasks.length})</h4>
+            <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
+              <div className="assignment-list">
+                <h4>Available Assignment ({unsubmittedTasks.length})</h4>
                 {unsubmittedTasks.length > 0 ? (
                   unsubmittedTasks.map((data, index) => (
                     <div
                       key={data._id}
                       onClick={() => slectAssignment(index)}
-                      style={{
-                        marginTop: "10px",
-                        padding: "10px",
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                        backgroundColor: "#f8f9fa",
-                      }}
+                      className="assignment-item"
                     >
-                      <b>Title:</b> {data.title}<br/>
-                      <b>Subject:</b> {data.subject}<br/>
-                      <b>Deadline:</b> {data.deadline?.slice(0,10)}
+                      <b>Title:</b> {data.title}<br />
+                      <b>Subject:</b> {data.subject}<br />
+                      <b>Deadline:</b> {data.deadline?.slice(0, 10)}
                     </div>
                   ))
                 ) : (
@@ -269,71 +207,18 @@ function SubmitAssignment() {
                 )}
               </div>
 
-              {/* Submission Form */}
-              <form onSubmit={taskSubmit} style={{ flex: 1 }}>
-                <div style={{
-                  padding: "15px",
-                  backgroundColor: "#fff",
-                  boxShadow: "0 0 5px gray",
-                  borderRadius: "5px",
-                }}>
-                  <div id="select" style={{
-                    minHeight: "80px",
-                    border: "2px dashed #ccc",
-                    padding: "10px",
-                    overflowY: "auto",
-                    marginBottom: "10px",
-                    borderRadius: "5px",
-                    backgroundColor: "#f1f3f5",
-                  }}>
-                    Select an Assignment
-                  </div>
-
-                  {submitData.assignmentId && (
-                    <div style={{
-                      padding: "5px 10px",
-                      backgroundColor: "#28a745",
-                      color: "white",
-                      borderRadius: "5px",
-                      marginBottom: "10px",
-                    }}>
-                      Selected Assignment: {submitData.assignmentId}
-                    </div>
-                  )}
-
-                  <input
-                    type="file"
-                    onChange={(e) => setFileName(e.target.files[0])}
-                    style={{ marginBottom: "10px" }}
-                  />
-
+              <form onSubmit={taskSubmit} className="submit-form">
+                <div className="submit-form-inner">
+                  <div id="select" className="assignment-select-box">Select an Assignment</div>
+                  <input type="file" onChange={(e) => setFileName(e.target.files[0])} />
                   <select
                     value={submitData.status}
-                    onChange={(e) =>
-                      setSubmitData((prev) => ({
-                        ...prev,
-                        status: e.target.value,
-                      }))
-                    }
-                    style={{ width: "100%", padding: "8px", marginBottom: "10px" }}
+                    onChange={(e) => setSubmitData(prev => ({ ...prev, status: e.target.value }))}
                   >
                     <option value="pending">Pending</option>
                     <option value="complete">Complete</option>
                   </select>
-
-                  <button
-                    type="submit"
-                    disabled={!submitData.assignmentId}
-                    style={{
-                      width: "100%",
-                      padding: "10px",
-                      backgroundColor: "#007bff",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
-                  >
+                  <button type="submit" disabled={!submitData.assignmentId} className="submit-btn">
                     Submit Assignment
                   </button>
                 </div>
@@ -345,14 +230,5 @@ function SubmitAssignment() {
     </>
   );
 }
-
-const linkStyle = {
-  display: "block",
-  padding: "10px",
-  color: "#333",
-  textDecoration: "none",
-  borderBottom: "1px solid #ccc",
-  transition: "0.3s",
-};
 
 export default SubmitAssignment;

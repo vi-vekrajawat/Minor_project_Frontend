@@ -1,0 +1,63 @@
+.student-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+/* Header */
+.student-header {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+}
+.student-header .brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.student-header .nav-link {
+  color: white !important;
+  margin-right: 15px;
+  text-decoration: none;
+}
+.profile-img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Sidebar */
+.student-sidebar {
+  width: 200px;
+  background: white;
+  box-shadow: 0px 0px 3px grey;
+  flex-shrink: 0;
+}
+
+/* Stats cards */
+.stat-card {
+  text-align: center;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0px 0px 3px grey;
+}
+.gradient-pink {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+}
+
+/* Assignment list */
+.assignment-list {
+  margin-top: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0px 0px 3px grey;
+  max-height: 350px;
+  overflow-y: auto;
+}
+.assignment-card {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}

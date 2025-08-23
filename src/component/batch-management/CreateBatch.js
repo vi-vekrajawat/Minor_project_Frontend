@@ -50,7 +50,7 @@ function CreateBatch() {
           className="bg-white shadow p-4 rounded"
           style={{
             width: "100%",
-            maxWidth: "500px", // form size limit
+            maxWidth: "500px", 
           }}
         >
           <div className="form-group">

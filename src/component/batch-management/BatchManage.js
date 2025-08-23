@@ -35,13 +35,13 @@ function BatchManage() {
           }}
         >
           <h2>EduAssign</h2>
-          <ul className="list-unstyled mt-4">
+          <ul className="list-unstyled mt-5">
             <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
               <li className="mb-3">📊 Dashboard</li>
             </Link>
             <li className="mb-3">📚 Batch Management</li>
             <Link to="/admin-profile" style={{ textDecoration: "none", color: "inherit" }}>
-              <li className="mb-3">👤 Profile</li>
+              <li className="mb-3 ">👤 Profile</li>
             </Link>
           </ul>
         </aside>

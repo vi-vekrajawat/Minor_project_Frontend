@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
@@ -6,6 +5,7 @@ import { AssignmentContext } from "../../context/AssignmentProvider";
 import { BatchContext } from "../../context/BatchProvider";
 import Backend, { BASE_URL } from "../../apis/Backend";
 import axios from "axios";
+import "./TeacherPortal.css";
 
 function TeacherPortal() {
   const { task } = useContext(AssignmentContext);
@@ -36,18 +36,15 @@ function TeacherPortal() {
     0
   );
 
-  // Filter assignments created by this teacher
   const teacherAssignments = assignment.filter(
     (assignment) => assignment.teacherId === user._id
   );
 
-  // Filter by selected batch if not "all"
   const filteredAssignments = teacherAssignments.filter(
     (assignment) =>
       selectedBatch === "all" || assignment.batchId === selectedBatch
   );
 
-  // Batches assigned to this teacher
   const teacherBatches = batchState.filter(
     (batch) => batch.teachers && batch.teachers.some((t) => t._id === user._id)
   );
@@ -55,131 +52,73 @@ function TeacherPortal() {
   return (
     <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
       {/* Header */}
-      <div
-        className="d-flex justify-content-between align-items-center bg-primary text-white p-3"
-        style={{ width: "100vw" }}
-      >
-        <div className="d-flex flex-wrap">
-          <div className="mr-3">ITEP</div>
-          <div className="mr-3">Dashboard</div>
-          <Link to="/create-assignment" className="text-white mr-3">
+      <div className="teacher-header">
+        <div>
+          <span className="me-3">ITEP</span>
+          <Link to="/create-assignment" className="text-white me-3 ml-3">
             Create Assignment
           </Link>
-          <Link to="/teacher-profile" className="text-white">
+          <Link to="/teacher-profile" className="text-white ml-3">
             Profile
           </Link>
         </div>
-        <div className="d-flex mt-2 mt-md-0 align-items-center">
+        <div>
           <img
             src={`${BASE_URL}/uploads/profile/${user.profile}`}
             alt="Profile"
-            style={{
-              height: "40px",
-              width: "40px",
-              borderRadius: "50%",
-              objectFit: "cover",
-              marginRight: "10px",
-            }}
           />
-          <div>{user.name}</div>
+          <span>{user.name}</span>
         </div>
       </div>
 
-      {/* Sidebar + Content */}
-      <div
-        className="d-flex flex-column flex-md-row"
-        style={{ width: "100vw", minHeight: "calc(100vh - 50px)" }}
-      >
+      <div style={{ display: "flex", width: "100vw", minHeight: "calc(100vh - 50px)" }}>
         {/* Sidebar */}
-        <div
-          style={{
-            width: "200px",
-            backgroundColor: "#f8f9fa",
-            boxShadow: "0px 0px 3px grey",
-          }}
-          className="text-center"
-        >
-          <div className="mt-5">
-            <div className="list-group-item list-group-item-action mt-5">
-              Dashboard
-            </div>
-            <Link
-              to="/create-assignment"
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Create Assignment
-            </Link>
-            <Link
-              to="/teacher-profile"
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Profile
-            </Link>
-            <Link
-              to="/submitted"
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Submitted Assignment
-            </Link>
-          </div>
+        <div className="teacher-sidebar text-center">
+          <Link to="/teacher-portal" className="list-group-item">
+            Dashboard
+          </Link>
+          <Link to="/create-assignment" className="list-group-item ">
+            Create Assignment
+          </Link>
+          <Link to="/teacher-profile" className="list-group-item">
+            Profile
+          </Link>
+          <Link to="/submitted" className="list-group-item">
+            Submitted Assignment
+          </Link>
         </div>
 
         {/* Main Content */}
-        <div className="flex-grow-1 p-4">
+        <div style={{ flexGrow: 1, padding: "20px" }}>
           <h2>Teacher Dashboard</h2>
           <p>Manage your classes and assignments</p>
 
-          {/* Stats Cards */}
-          <div className="d-flex flex-wrap">
-            <div
-              className="text-center bg-primary text-white p-3 m-2 flex-fill"
-              style={{ minWidth: "200px", maxWidth: "250px" }}
-            >
-              <span>Total Batches</span>
-              <br />
-              <span>{batchState.length}</span>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div className="info-card bg-primary">
+              <div>Total Batches</div>
+              <div>{batchState.length}</div>
             </div>
-            <div
-              className="text-center bg-success text-white p-3 m-2 flex-fill"
-              style={{ minWidth: "200px", maxWidth: "250px" }}
-            >
-              <span>Total Students</span>
-              <br />
-              <span>{totalStudents}</span>
+            <div className="info-card bg-success">
+              <div>Total Students</div>
+              <div>{totalStudents}</div>
             </div>
-            <div
-              className="text-center text-white p-3 m-2 flex-fill"
-              style={{
-                minWidth: "200px",
-                maxWidth: "250px",
-                backgroundColor: "purple",
-              }}
-            >
-              <span>Total Assignments</span>
-              <br />
-              <span>{teacherAssignments.length}</span>
+            <div className="info-card bg-info">
+              <div>Total Assignments</div>
+              <div>{teacherAssignments.length}</div>
             </div>
-            <div
-              className="text-center text-white p-3 m-2 flex-fill"
-              style={{
-                minWidth: "200px",
-                maxWidth: "250px",
-                backgroundColor: "orange",
-              }}
-            >
-              <span>Pending Reviews</span>
-              <br />
-              <span>Not Working</span>
+            <div className="info-card bg-secondary">
+              <div>Pending Reviews</div>
+              <div>Not Working</div>
             </div>
           </div>
 
-          {/* Batch select + Show Students button */}
-          <div className="d-flex justify-content-between flex-wrap mt-4">
-            <div className="d-flex">
+          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", marginTop: "20px" }}>
+            <div>
               <select
-                className="form-select mr-2 btn btn-success"
+                className="form-select"
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
+                style={{position:"relative",left:"120%",top:"55%"}}
               >
                 <option value="all">All Batches</option>
                 {batchState.map((batch, index) => (
@@ -188,34 +127,22 @@ function TeacherPortal() {
                   </option>
                 ))}
               </select>
-              <button
-                className="btn btn-info ml-2"
-                style={{ marginLeft: "10px" }}
-                onClick={() => setShowStudents(!showStudents)}
-              >
+              <button onClick={() => setShowStudents(!showStudents)} className="btn btn-info" style={{ marginLeft: "10px" }}>
                 Students Batch
               </button>
             </div>
-            <Link to="/create-assignment" className="btn btn-primary">
+          </div>
+            <Link to="/create-assignment" className="btn btn-primary" style={{position:"relative",left:"81%",bottom:"7%"}}>
               + Create Assignment
             </Link>
-          </div>
 
           {showStudents && (
-            <div
-              className="mt-4 p-2"
-              style={{
-                boxShadow: "0px 0px 3px grey",
-                maxHeight: "400px",
-                overflowY: "auto",
-              }}
-            >
+            <div className="students-container">
               <h5>Students in Your Batches</h5>
-
               {selectedBatch === "all"
                 ? teacherBatches.length > 0
                   ? teacherBatches.map((batch) => (
-                      <div key={batch._id} className="mb-4">
+                      <div key={batch._id} style={{ marginBottom: "20px" }}>
                         <h6>{batch.batchName}</h6>
                         {batch.students && batch.students.length > 0 ? (
                           <table className="table table-striped">
@@ -239,13 +166,9 @@ function TeacherPortal() {
                         )}
                       </div>
                     ))
-                  : (
-                    <p>No batches found.</p>
-                  )
+                  : <p>No batches found.</p>
                 : (() => {
-                    const batch = teacherBatches.find(
-                      (b) => b._id === selectedBatch
-                    );
+                    const batch = teacherBatches.find((b) => b._id === selectedBatch);
                     if (!batch) return <p>No batch found.</p>;
                     return batch.students && batch.students.length > 0 ? (
                       <table className="table table-striped">
@@ -264,22 +187,14 @@ function TeacherPortal() {
                           ))}
                         </tbody>
                       </table>
-                    ) : (
-                      <p>No students in this batch.</p>
-                    );
+                    ) : <p>No students in this batch.</p>;
                   })()}
             </div>
           )}
 
-          {/* Assignment List */}
-          <div className="mt-5 p-2" style={{ boxShadow: "0px 0px 3px grey" }}>
-            <div className="d-flex justify-content-between flex-wrap">
-              <h6>
-                <b>Recent Assignments</b>
-              </h6>
-            </div>
-
-            <div className="table-responsive mt-3">
+          <div className="recent-assignments">
+            <h6><b>Recent Assignments</b></h6>
+            <div style={{ overflowX: "auto" }}>
               <table className="table">
                 <thead className="table-dark">
                   <tr>
@@ -293,9 +208,7 @@ function TeacherPortal() {
                 <tbody>
                   {filteredAssignments.length > 0 ? (
                     filteredAssignments.map((task, index) => {
-                      const batchName =
-                        batchState.find((b) => b._id === task.batchId)
-                          ?.batchName || "Unknown";
+                      const batchName = batchState.find((b) => b._id === task.batchId)?.batchName || "Unknown";
                       return (
                         <tr key={index}>
                           <td>{task.title}</td>
@@ -304,25 +217,17 @@ function TeacherPortal() {
                           <td>{batchName}</td>
                           <td>
                             {task.file ? (
-                              <a
-                                href={`${BASE_URL}/assignment/files/${task.file}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
+                              <a href={`${BASE_URL}/assignment/files/${task.file}`} target="_blank" rel="noopener noreferrer">
                                 {task.file}
                               </a>
-                            ) : (
-                              "No File"
-                            )}
+                            ) : "No File"}
                           </td>
                         </tr>
                       );
                     })
                   ) : (
                     <tr>
-                      <td colSpan="5" className="text-center">
-                        No assignments found.
-                      </td>
+                      <td colSpan="5" className="text-center">No assignments found.</td>
                     </tr>
                   )}
                 </tbody>
@@ -336,4 +241,3 @@ function TeacherPortal() {
 }
 
 export default TeacherPortal;
-

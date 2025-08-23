@@ -1,0 +1,40 @@
+/* TeacherProfile.css */
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar {
+  min-height: 100vh;
+  max-width: 220px;
+}
+
+.profile-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+}
+
+.change-photo-btn {
+  margin-top: 10px;
+  display: inline-block;
+  background: #28a745;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.info-card {
+  padding: 15px;
+  margin: 10px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
