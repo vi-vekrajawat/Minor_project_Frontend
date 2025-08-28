@@ -88,7 +88,7 @@ function Admin() {
    const assignBatchToTeacher = async (teacherId, batchId) => {
   try {
     const res = await axios.put(
-      `http://localhost:3000/admin/assign-batch/${teacherId}`,
+      `${Backend.ASSIGN_BATCH}${teacherId}`,
       { batchId }
     );
     console.log(res)

@@ -21,7 +21,8 @@ export default {
     SUBMIT_ASSIGNMENT_BYID:BASE_URL+"/student/submitted-assignments",
     UPDATE_TEACHER_BATCH:BASE_URL+"/admin//assign-teacher",
     DELETE_STUDENT:BASE_URL+"/admin/delete",
-    DELETE_TEACHER:BASE_URL+"/admin/teacher"
+    DELETE_TEACHER:BASE_URL+"/admin/teacher",
+    ASSIGN_BATCH:BASE_URL+"/admin/assign-batch"
 
 
 
