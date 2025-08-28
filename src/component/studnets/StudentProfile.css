@@ -13,14 +13,14 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  height: fit-content;
   background-color: #007bff;
   color: white;
-  padding: 15px;
 }
 
 .profile-header .header-links {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: center;
 }
 
@@ -60,6 +60,7 @@
   background-color: white;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
   min-height: 100vh;
+  border-style: none;
   width: 100%;
   max-width: 220px;
   flex-shrink: 0;

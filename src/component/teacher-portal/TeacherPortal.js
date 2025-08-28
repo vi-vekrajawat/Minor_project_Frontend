@@ -1,3 +1,4 @@
+
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
@@ -14,7 +15,7 @@ function TeacherPortal() {
   const user = getCurrentUser();
 
   const [selectedBatch, setSelectedBatch] = useState("all");
-  const [showStudents, setShowStudents] = useState(false);
+  const [activeTab, setActiveTab] = useState("students"); // 👈 NEW toggle state
 
   useEffect(() => {
     getAssignmentbyId();
@@ -48,6 +49,10 @@ function TeacherPortal() {
   const teacherBatches = batchState.filter(
     (batch) => batch.teachers && batch.teachers.some((t) => t._id === user._id)
   );
+  const totalStudents1 = teacherBatches.reduce(
+  (acc, batch) => acc + (batch.students?.length || 0),
+  0
+);
 
   return (
     <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
@@ -74,16 +79,16 @@ function TeacherPortal() {
       <div style={{ display: "flex", width: "100vw", minHeight: "calc(100vh - 50px)" }}>
         {/* Sidebar */}
         <div className="teacher-sidebar text-center">
-          <Link to="/teacher-portal" className="list-group-item">
+          <Link to="/teacher-portal" className="list-group-item list-group-item-action mt-5 active">
             Dashboard
           </Link>
-          <Link to="/create-assignment" className="list-group-item ">
+          <Link to="/create-assignment" className="list-group-item list-group-item-action mt-5 ">
             Create Assignment
           </Link>
-          <Link to="/teacher-profile" className="list-group-item">
+          <Link to="/teacher-profile"className="list-group-item list-group-item-action mt-5 ">
             Profile
           </Link>
-          <Link to="/submitted" className="list-group-item">
+          <Link to="/submitted" className="list-group-item list-group-item-action mt-5 " >
             Submitted Assignment
           </Link>
         </div>
@@ -93,89 +98,58 @@ function TeacherPortal() {
           <h2>Teacher Dashboard</h2>
           <p>Manage your classes and assignments</p>
 
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {/* Stats Cards */}
+          <div className="d-flex justify-content-between flex-wrap" >
             <div className="info-card bg-primary">
               <div>Total Batches</div>
               <div>{batchState.length}</div>
             </div>
             <div className="info-card bg-success">
               <div>Total Students</div>
-              <div>{totalStudents}</div>
+              <div>{totalStudents1}</div>
+            <div></div>
             </div>
             <div className="info-card bg-info">
               <div>Total Assignments</div>
               <div>{teacherAssignments.length}</div>
             </div>
-            <div className="info-card bg-secondary">
+            {/* <div className="info-card bg-secondary">
               <div>Pending Reviews</div>
               <div>Not Working</div>
-            </div>
+            </div> */}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", marginTop: "20px" }}>
-            <div>
-              <select
-                className="form-select"
-                value={selectedBatch}
-                onChange={(e) => setSelectedBatch(e.target.value)}
-                style={{position:"relative",left:"120%",top:"55%"}}
-              >
-                <option value="all">All Batches</option>
-                {batchState.map((batch, index) => (
-                  <option key={index} value={batch._id}>
-                    {batch.batchName}
-                  </option>
-                ))}
-              </select>
-              <button onClick={() => setShowStudents(!showStudents)} className="btn btn-info" style={{ marginLeft: "10px" }}>
-                Students Batch
-              </button>
-            </div>
+          {/* Toggle Buttons */}
+          <div className="mt-4">
+            <button
+              className={`btn me-2 ${activeTab === "students" ? "btn-success" : "btn-success"}`}
+              onClick={() => setActiveTab("students")}
+            >
+              Students
+            </button>
+            <button
+              className={`btn ${activeTab === "assignments" ? "btn-warning" : "btn-warning"}`}
+              onClick={() => setActiveTab("assignments")}
+            >
+              Assignments
+            </button>
           </div>
-            <Link to="/create-assignment" className="btn btn-primary" style={{position:"relative",left:"81%",bottom:"7%"}}>
-              + Create Assignment
-            </Link>
 
-          {showStudents && (
-            <div className="students-container">
+          {/* Students Section */}
+          {activeTab === "students" && (
+            <div className="students-container mt-4">
               <h5>Students in Your Batches</h5>
-              {selectedBatch === "all"
-                ? teacherBatches.length > 0
-                  ? teacherBatches.map((batch) => (
-                      <div key={batch._id} style={{ marginBottom: "20px" }}>
-                        <h6>{batch.batchName}</h6>
-                        {batch.students && batch.students.length > 0 ? (
-                          <table className="table table-striped">
-                            <thead className="table-dark">
-                              <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {batch.students.map((student, idx) => (
-                                <tr key={idx}>
-                                  <td>{student.name}</td>
-                                  <td>{student.email || "-"}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        ) : (
-                          <p>No students in this batch.</p>
-                        )}
-                      </div>
-                    ))
-                  : <p>No batches found.</p>
-                : (() => {
-                    const batch = teacherBatches.find((b) => b._id === selectedBatch);
-                    if (!batch) return <p>No batch found.</p>;
-                    return batch.students && batch.students.length > 0 ? (
+              {teacherBatches.length > 0 ? (
+                teacherBatches.map((batch) => (
+                  <div key={batch._id} style={{ marginBottom: "20px" }}>
+                    <h6>{batch.batchName}</h6>
+                    {batch.students && batch.students.length > 0 ? (
                       <table className="table table-striped">
                         <thead className="table-dark">
                           <tr>
                             <th>Name</th>
                             <th>Email</th>
+                            <th>Batch</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -183,57 +157,78 @@ function TeacherPortal() {
                             <tr key={idx}>
                               <td>{student.name}</td>
                               <td>{student.email || "-"}</td>
+                              <td>{batch.batchName}</td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
-                    ) : <p>No students in this batch.</p>;
-                  })()}
+                    ) : (
+                      <p>No students in this batch.</p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No batches found.</p>
+              )}
             </div>
           )}
 
-          <div className="recent-assignments">
-            <h6><b>Recent Assignments</b></h6>
-            <div style={{ overflowX: "auto" }}>
-              <table className="table">
-                <thead className="table-dark">
-                  <tr>
-                    <th>Title</th>
-                    <th>Subject</th>
-                    <th>Deadline</th>
-                    <th>Batch</th>
-                    <th>File</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredAssignments.length > 0 ? (
-                    filteredAssignments.map((task, index) => {
-                      const batchName = batchState.find((b) => b._id === task.batchId)?.batchName || "Unknown";
-                      return (
-                        <tr key={index}>
-                          <td>{task.title}</td>
-                          <td>{task.subject}</td>
-                          <td>{task.deadline?.slice(0, 10)}</td>
-                          <td>{batchName}</td>
-                          <td>
-                            {task.file ? (
-                              <a href={`${BASE_URL}/assignment/files/${task.file}`} target="_blank" rel="noopener noreferrer">
-                                {task.file}
-                              </a>
-                            ) : "No File"}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  ) : (
+          {/* Assignments Section */}
+          {activeTab === "assignments" && (
+            <div className="recent-assignments mt-4">
+              <div className="d-flex justify-content-between align-items-center">
+                <h6><b>Recent Assignments</b></h6>
+                <Link to="/create-assignment" className="btn btn-primary">
+                  + Create Assignment
+                </Link>
+              </div>
+              <div style={{ overflowX: "auto" }}>
+                <table className="table mt-3">
+                  <thead className="table-dark">
                     <tr>
-                      <td colSpan="5" className="text-center">No assignments found.</td>
+                      <th>Title</th>
+                      <th>Subject</th>
+                      <th>Deadline</th>
+                      <th>Batch</th>
+                      <th>File</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {filteredAssignments.length > 0 ? (
+                      filteredAssignments.map((task, index) => {
+                        const batchName = batchState.find((b) => b._id === task.batchId)?.batchName || "Unknown";
+                        return (
+                          <tr key={index}>
+                            <td>{task.title}</td>
+                            <td>{task.subject}</td>
+                            <td>{task.deadline?.slice(0, 10)}</td>
+                            <td>{batchName}</td>
+                            <td>
+                              {task.file ? (
+                                <a
+                                  href={`${BASE_URL}/assignment/files/${task.file}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Download
+                                </a>
+                              ) : "No File"}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="text-center">
+                          No assignments found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

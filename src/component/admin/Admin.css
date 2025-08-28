@@ -16,10 +16,6 @@
   align-items: center;
 }
 
-.admin-navbar .logo {
-  font-weight: bold;
-  margin-right: 16px;
-}
 
 .admin-navbar img {
   height: 40px;
@@ -86,4 +82,26 @@
   border-radius: 8px;
   width: 350px;
   text-align: center;
+}
+/* Scrollable table area (works for both Students & Teachers) */
+.table-scroll {
+  max-height: 420px;      /* or use height: 420px; if you want a fixed pane */
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* keep header visible while scrolling */
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: #212529;    /* matches .table-dark */
+  color: #fff;
+  z-index: 1;
+}
+
+/* avoid extra bottom space that can push the scrollbar weirdly */
+.table-scroll table {
+  margin-bottom: 0;
 }

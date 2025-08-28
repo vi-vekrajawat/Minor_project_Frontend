@@ -1,12 +1,13 @@
-import "./TeacherProfile.css"
 import axios from "axios";
 import Backend, { BASE_URL } from "../../apis/Backend";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
+import "./TeacherProfile.css";
 
 function TeacherProfile() {
   const user = getCurrentUser();
+
   const [profile, setFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(user.name || "");
@@ -14,8 +15,10 @@ function TeacherProfile() {
   const [bio, setBio] = useState(user.bio || "");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    if (e.target.files && e.target.files.length > 0) setFile(e.target.files[0]);
+  const handleChange = (event) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFile(event.target.files[0]);
+    }
   };
 
   const uploadPhoto = async () => {
@@ -41,15 +44,23 @@ function TeacherProfile() {
   };
 
   const updateProfileData = async () => {
-    if (!name.trim() || !email.trim()) return alert("Name and email cannot be empty.");
+    if (!name.trim() || !email.trim())
+      return alert("Name and email cannot be empty.");
     setLoading(true);
     try {
-      const updateData = { name: name.trim(), email: email.trim(), bio: bio.trim() };
+      const updateData = {
+        name: name.trim(),
+        email: email.trim(),
+        bio: bio.trim(),
+      };
       const response = await axios.patch(
         `${Backend.PROFILE_UPDATE}/${user._id}`,
         updateData
       );
-      sessionStorage.setItem("current-user", JSON.stringify(response.data.userProfile));
+      sessionStorage.setItem(
+        "current-user",
+        JSON.stringify(response.data.userProfile)
+      );
       alert("Profile info updated!");
       setEditMode(false);
     } catch (err) {
@@ -61,98 +72,184 @@ function TeacherProfile() {
   };
 
   const formattedJoinDate = user.joindate
-    ? new Date(user.joindate).toLocaleDateString("en-IN", { year: "numeric", month: "short", day: "numeric" })
+    ? new Date(user.joindate).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
     : "N/A";
 
   return (
-    <div className="teacher-profile-page">
+    <div className="profile-container">
       {/* Header */}
-      <div className="header-bar">
-        <div className="header-left">
-          <div className="logo">ITEP</div>
-          <Link to="/teacher-portal" className="header-link">Dashboard</Link>
-          <Link to="/create-assignment" className="header-link">Create Assignment</Link>
-          <Link to="/teacher-profile" className="header-link active">Profile</Link>
+      <div className="profile-header">
+        <div className="header-links">
+          <div>ITEP</div>
+          <Link to="/teacher-portal">Dashboard</Link>
+          <Link to="/create-assignment">Create Assignment</Link>
+          <Link to="/teacher-profile">Profile</Link>
         </div>
-        <div className="header-right">
+        <div className="header-profile mb-2">
           <img
-            src={user?.profile ? `${BASE_URL}/uploads/profile/${user.profile}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+            src={
+              user?.profile
+                ? `${BASE_URL}/uploads/profile/${user.profile}`
+                : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            }
             alt="Profile"
-            className="header-profile-img"
           />
           <span>{user.name || "Teacher"}</span>
         </div>
       </div>
 
-      <div className="d-flex">
+      {/* Sidebar + Content */}
+      <div className="d-flex flex-column flex-md-row">
         {/* Sidebar */}
-        <div className="sidebar">
-          <Link to="/teacher-portal" className="sidebar-link">Dashboard</Link>
-          <Link to="/create-assignment" className="sidebar-link">Create Assignment</Link>
-          <Link to="/teacher-profile" className="sidebar-link active">Profile</Link>
+        <div className="text-center bg-white shadow-sm admin-sidebar">
+          <div className="mt-5 d-flex flex-column align-items-start">
+            <Link
+              to="/teacher-portal"
+              className="list-group-item list-group-item-action w-100"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/create-assignment"
+              className="list-group-item list-group-item-action w-100"
+            >
+              Create Assignment
+            </Link>
+            <Link
+
+              className="list-group-item list-group-item-action w-100 active"
+            >
+              Profile
+            </Link>
+            <Link
+to="/submitted"
+              className="list-group-item list-group-item-action w-100 "
+            >
+              Submitted Assignment
+            </Link>
+          </div>
         </div>
 
-        {/* Main Content */}
-        <div className="main-content">
-          <div className="card-box">
+        {/* Main Profile Card */}
+        <div className="profile-card">
+          <div className="profile-card-inner">
             <h2>Teacher Profile</h2>
-            <p className="text-muted">Manage your account and personal information</p>
+            <p>Manage your account and personal information</p>
 
-            <div className="profile-section">
-              {/* Profile Photo */}
-              <div className="profile-photo-box">
+            <div className="d-flex flex-column flex-lg-row mt-4">
+              {/* Photo */}
+              <div className="profile-photo-section">
                 <img
-                  src={user?.profile ? `${BASE_URL}/uploads/profile/${user.profile}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
+                  src={
+                    user?.profile
+                      ? `${BASE_URL}/uploads/profile/${user.profile}`
+                      : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                  }
                   alt="Profile"
-                  className="profile-photo"
                 />
-                <div className="change-photo-btn" onClick={() => document.getElementById("fileInput").click()}>
+                <div
+                  className="change-photo-btn"
+                  onClick={() => document.getElementById("fileInput").click()}
+                >
                   Change Photo
                 </div>
-                <input type="file" id="fileInput" style={{ display: "none" }} onChange={handleChange} disabled={loading} />
-                <button className="btn btn-success mt-2 w-100" onClick={uploadPhoto} disabled={!profile || loading}>
+                <input
+                  type="file"
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+                <button
+                  className="upload-btn"
+                  onClick={uploadPhoto}
+                  disabled={!profile || loading}
+                >
                   {loading ? "Uploading..." : "Upload Photo"}
                 </button>
               </div>
 
               {/* Info */}
-              <div className="profile-info-box">
-                <div className="info-header">
+              <div className="profile-info-section">
+                <div className="profile-info-header">
                   <h5>Personal Information</h5>
-                  <button className={`btn ${editMode ? "btn-secondary" : "btn-primary"}`} onClick={() => setEditMode(!editMode)} disabled={loading}>
+                  <button
+                    className={`btn ${editMode ? "btn-secondary" : "btn-primary"
+                      }`}
+                    onClick={() => setEditMode(!editMode)}
+                    disabled={loading}
+                  >
                     {editMode ? "Cancel" : "Edit Profile"}
                   </button>
                 </div>
 
-                <div className="info-grid">
+                <div className="profile-info-fields">
                   <div className="info-card">
                     <p className="label">Full Name</p>
-                    {editMode ? <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" /> : <p>{name || "N/A"}</p>}
+                    {editMode ? (
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="form-control"
+                        disabled={loading}
+                      />
+                    ) : (
+                      <p className="value">{name || "N/A"}</p>
+                    )}
                   </div>
 
                   <div className="info-card">
                     <p className="label">Email</p>
-                    {editMode ? <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" /> : <p>{email || "N/A"}</p>}
+                    {editMode ? (
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="form-control"
+                        disabled={loading}
+                      />
+                    ) : (
+                      <p className="value">{email || "N/A"}</p>
+                    )}
                   </div>
 
                   <div className="info-card">
                     <p className="label">Bio</p>
-                    {editMode ? <textarea value={bio} onChange={(e) => setBio(e.target.value)} className="form-control" rows={3} /> : <p>{bio || "No bio added"}</p>}
+                    {editMode ? (
+                      <textarea
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        className="form-control"
+                        rows={3}
+                        disabled={loading}
+                      />
+                    ) : (
+                      <p className="value">{bio || "No bio added"}</p>
+                    )}
                   </div>
 
                   <div className="info-card">
                     <p className="label">Role</p>
-                    <p>{user?.role || "Teacher"}</p>
+                    <p className="value">{user?.role || "Teacher"}</p>
                   </div>
 
                   <div className="info-card">
                     <p className="label">Join Date</p>
-                    <p>{formattedJoinDate}</p>
+                    <p className="value">{formattedJoinDate}</p>
                   </div>
                 </div>
 
                 {editMode && (
-                  <button className="btn btn-success mt-3" onClick={updateProfileData} disabled={loading}>
+                  <button
+                    className="btn btn-success mt-3"
+                    onClick={updateProfileData}
+                    disabled={loading}
+                  >
                     {loading ? "Saving..." : "Save Changes"}
                   </button>
                 )}

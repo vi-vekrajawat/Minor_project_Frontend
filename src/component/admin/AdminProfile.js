@@ -86,9 +86,9 @@ function AdminProfile() {
   return (
     <div className="admin-profile-page">
       {/* Navbar */}
-      <div className="d-flex justify-content-between align-items-center bg-primary text-white p-3 flex-wrap">
+      <div className="d-flex justify-content-between align-items-center bg-primary text-white flex-wrap">
         <div className="d-flex flex-wrap align-items-center">
-          <div className="mr-3 admin-navbar">ITEP</div>
+          <div className=" admin-navbar">ITEP</div>
           <Link to="/admin" className="mr-3 text-white nav-link">
             Dashboard
           </Link>

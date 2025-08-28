@@ -164,7 +164,7 @@ function SubmitAssignment() {
         {/* Header */}
         <div className="submit-header">
           <div className="header-links">
-            <div>ITEP</div>
+            <div >ITEP</div>
             <Link to="/student">Dashboard</Link>
             <Link>My Assignment</Link>
             <Link to="/student-profile">Profile</Link>
@@ -176,12 +176,29 @@ function SubmitAssignment() {
         </div>
 
         {/* Main layout */}
-        <div className="submit-main">
-          <div className="sidebar">
-            <Link to="/student">Dashboard</Link>
-            <Link>My Assignment</Link>
-            <Link to="/student-profile">Profile</Link>
+        <div className=" d-flex flex-column flex-md-row ">
+       <div className="text-center bg-white shadow-sm " style={{minWidth:"200px"}}>
+          <div className="mt-5 d-flex flex-column align-items-start">
+            <Link
+              to="/student"
+              className="list-group-item list-group-item-action w-100"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/submission"
+              className="list-group-item list-group-item-action w-100 active"
+            >
+              My Assignment
+            </Link>
+            <Link
+              to="/student-profile"
+              className="list-group-item list-group-item-action w-100 "
+            >
+              Profile
+            </Link>
           </div>
+        </div>
 
           <div style={{ flexGrow: 1, marginLeft: "20px" }}>
             <h2>Submit Assignment</h2>

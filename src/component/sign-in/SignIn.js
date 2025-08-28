@@ -83,7 +83,7 @@ function SignIn() {
           className="p-4 rounded shadow main-div-second"
          
         >
-          <h2 className="text-center mb-4 fw-bold text-dark">ITEP-Assignment</h2>
+          <h2 className="text-center mb-4 fw-bold text-white">ITEP-Assignment</h2>
           <form onSubmit={handleLogin}>
             <div className="mb-3">
               <input

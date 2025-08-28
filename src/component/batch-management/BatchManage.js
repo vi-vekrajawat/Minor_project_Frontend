@@ -25,26 +25,27 @@ function BatchManage() {
   return (
     <div style={{ width: "100vw", minHeight: "100vh", backgroundColor: "#f8f9fa", overflowX: "hidden" }}>
       <div className="d-flex flex-column flex-md-row" style={{ width: "100vw", minHeight: "100vh" }}>
-        <aside
-          className="bg-white"
-          style={{
-            boxShadow: "0px 0px 3px grey",
-            width: "100%",
-            maxWidth: "220px",
-            padding: "20px",
-          }}
-        >
-          <h2>EduAssign</h2>
+        <div className="admin-sidebar">
           <ul className="list-unstyled mt-5">
-            <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
-              <li className="mb-3">📊 Dashboard</li>
-            </Link>
-            <li className="mb-3">📚 Batch Management</li>
-            <Link to="/admin-profile" style={{ textDecoration: "none", color: "inherit" }}>
-              <li className="mb-3 ">👤 Profile</li>
-            </Link>
+            <div className="list-group-item list-group-item-action mt-5">
+              <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
+                <li className="mb-3">Dashboard</li>
+              </Link>
+            </div >
+            <div className="mt-5">
+
+              <li className="mb-3 active list-group-item">Batch Management</li>
+            </div >
+            <div className="list-group-item list-group-item-action mt-5">
+
+              <Link to="/admin-profile" style={{ textDecoration: "none", color: "inherit" }}>
+                <li className="mb-3 ">Profile</li>
+              </Link>
+            </div >
           </ul>
-        </aside>
+        </div>
+
+        {/* </aside> */}
         <main className="flex-grow-1 p-3">
           <header
             className="d-flex justify-content-between align-items-center bg-primary text-white p-2 flex-wrap"
@@ -105,8 +106,8 @@ function BatchManage() {
             ))}
           </section>
         </main>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

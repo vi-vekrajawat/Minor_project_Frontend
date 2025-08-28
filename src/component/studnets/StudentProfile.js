@@ -90,12 +90,28 @@ function StudentProfile() {
       </div>
 
       <div className="d-flex flex-column flex-md-row">
-        <div className="profile-sidebar">
-          <Link to="/student">Dashboard</Link>
-          <Link to="/submission">My Submissions</Link>
-          <Link to="/student-profile" className="active">Profile</Link>
+       <div className="text-center bg-white shadow-sm " style={{minWidth:"200px"}}>
+          <div className="mt-5 d-flex flex-column align-items-start">
+            <Link
+              to="/student"
+              className="list-group-item list-group-item-action w-100"
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/submission"
+              className="list-group-item list-group-item-action w-100 "
+            >
+              My Assignment
+            </Link>
+            <Link
+              to="/student-profile"
+              className="list-group-item list-group-item-action w-100 active"
+            >
+              Profile
+            </Link>
+          </div>
         </div>
-
         <div className="profile-card">
           <div className="profile-card-inner">
             <h2>Student Profile</h2>

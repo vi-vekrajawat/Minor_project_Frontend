@@ -9,6 +9,8 @@ import "./Admin.css";   // ✅ New CSS import
 
 function Admin() {
   const [users, setUsers] = useState([]);
+  const [studentBatchFilter, setStudentBatchFilter] = useState("");
+
   const [activeTab, setActiveTab] = useState("students");
   const { batchState } = useContext(BatchContext);
   const [openFormFor, setOpenFormFor] = useState(null);
@@ -83,29 +85,31 @@ function Admin() {
     }
   };
 
-  const assignBatchToTeacher = async (teacherId, batchId) => {
-    try {
-      await axios.put(
-        `http://localhost:3000/admin/assign-batch/${teacherId}`,
-        { batchId }
-      );
-      alert("Batch assigned successfully ");
-      setOpenFormFor(null);
-      setSelectedBatch("");
-      loadUsers();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to assign batch ");
-    }
-  };
+   const assignBatchToTeacher = async (teacherId, batchId) => {
+  try {
+    const res = await axios.put(
+      `http://localhost:3000/admin/assign-batch/${teacherId}`,
+      { batchId }
+    );
+    console.log(res)
+
+    alert("Batch assigned successfully ✅");
+       setOpenFormFor(null);
+    setSelectedBatch("");
+    loadUsers();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to assign batch ❌");
+  }
+};
 
   return (
     <div className="admin-container">
       <div className="admin-navbar">
         <div className="d-flex flex-wrap align-items-center">
           <div className="logo">ITEP</div>
-          <div className="me-3 ml-3">Dashboard</div>
-          <div className="me-3 ml-3">Batch Management</div>
+          <Link className="me-3 ml-3 text-white">Dashboard</Link>
+          <Link to="/batch-management" className="me-3 ml-3 text-white">Batch Management</Link>
           <Link to="/admin-profile" className="text-white ml-3">
             Profile
           </Link>
@@ -124,7 +128,7 @@ function Admin() {
         {/* Sidebar */}
         <aside className="admin-sidebar">
           <div>
-            <div className="list-group-item list-group-item-action mt-5">
+            <div className="list-group-item list-group-item-action mt-5 active">
               Dashboard
             </div>
             <Link
@@ -169,17 +173,15 @@ function Admin() {
           {/* Tabs */}
           <div className="mt-4 d-flex">
             <button
-              className={`btn me-2 ${
-                activeTab === "students" ? "btn-success" : "btn-success"
-              }`}
+              className={`btn me-2 ${activeTab === "students" ? "btn-success" : "btn-success"
+                }`}
               onClick={() => setActiveTab("students")}
             >
               Students
             </button>
             <button
-              className={`btn ${
-                activeTab === "teachers" ? "btn-warning" : "btn-warning"
-              }`}
+              className={`btn ${activeTab === "teachers" ? "btn-warning" : "btn-warning"
+                }`}
               onClick={() => setActiveTab("teachers")}
             >
               Teachers
@@ -194,6 +196,14 @@ function Admin() {
                   <b>Students List</b>
                 </h6>
                 <div>
+                  <select value={studentBatchFilter} className="form-select" 
+                    onChange={(e) => setStudentBatchFilter(e.target.value)}>
+                    <option>select-batch
+                    </option>
+                    {batchState.map((batch) => (<option key={batch._id} value={batch._id}>{batch.batchName}</option>))}
+                  </select>
+                </div>
+                <div>
                   <Link to="/add-student" className="btn btn-primary me-2">
                     + Add Student
                   </Link>
@@ -202,7 +212,7 @@ function Admin() {
                   </Link>
                 </div>
               </div>
-              <div className="table-responsive">
+              <div className="table-scroll" >
                 <table className="table mt-3 table-striped align-middle">
                   <thead className="table-dark">
                     <tr>
@@ -213,28 +223,35 @@ function Admin() {
                     </tr>
                   </thead>
                   <tbody>
-                    {students.map((s) => {
-                      const batchNames = getBatchNames(s);
-                      return (
-                        <tr key={s._id}>
-                          <td>{s.name}</td>
-                          <td>{s.email}</td>
-                          <td>
-                            {batchNames.length > 0
-                              ? batchNames.join(", ")
-                              : "—"}
-                          </td>
-                          <td>
-                            <button
-                              onClick={() => deleteUser(s._id)}
-                              className="btn btn-danger"
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {students
+                      .filter((s) => {
+                        if (!studentBatchFilter) return true; 
+                        const batchIds = [
+                          ...(Array.isArray(s.batches) ? s.batches : []),
+                          ...(s.batch ? [s.batch] : []),
+                        ].map((b) => (typeof b === "string" ? b : b._id));
+                        return batchIds.includes(studentBatchFilter);
+                      })
+                      .map((s) => {
+                        const batchNames = getBatchNames(s);
+                        return (
+                          <tr key={s._id}>
+                            <td>{s.name}</td>
+                            <td>{s.email}</td>
+                            <td>
+                              {batchNames.length > 0 ? batchNames.join(", ") : "—"}
+                            </td>
+                            <td>
+                              <button
+                                onClick={() => deleteUser(s._id)}
+                                className="btn btn-danger"
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
