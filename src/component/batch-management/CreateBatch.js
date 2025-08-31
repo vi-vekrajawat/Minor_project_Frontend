@@ -92,10 +92,14 @@ function CreateBatch() {
               required
             />
           </div>
-
+<div className="d-flex justify-content-between">
           <button type="submit" className="btn btn-primary form-control mt-4">
             Create
           </button>
+          <button onClick={()=>navigate(-1)} type="submit" className="btn btn-secondary form-control mt-4">
+            Cancel
+          </button>
+          </div>
         </form>
       </div>
     </>

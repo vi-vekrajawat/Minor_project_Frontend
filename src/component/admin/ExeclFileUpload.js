@@ -82,13 +82,20 @@ function ExcelFileUpload() {
             >
               <i className="fa fa-upload mr-2"></i> Upload
             </button>
+            <button
+            onClick={()=>navigate(-1)}
+              className="btn btn-secondary btn-block mt-3"
+              style={{ borderRadius: "10px" }}
+            >
+              <i className="fa fa-upload mr-2"></i> Cancel
+            </button>
           </form>
 
-          <div className="text-center mt-3">
+          {/* <div className="text-center mt-3">
             <small className="text-muted">
               Supported formats: <b>.xlsx</b>, <b>.xls</b>
             </small>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

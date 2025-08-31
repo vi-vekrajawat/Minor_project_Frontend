@@ -83,7 +83,7 @@ function TeacherProfile() {
     <div className="profile-container">
       {/* Header */}
       <div className="profile-header">
-        <div className="header-links">
+        <div className="header-links p-2">
           <div>ITEP</div>
           <Link to="/teacher-portal">Dashboard</Link>
           <Link to="/create-assignment">Create Assignment</Link>
@@ -98,7 +98,7 @@ function TeacherProfile() {
             }
             alt="Profile"
           />
-          <span>{user.name || "Teacher"}</span>
+          <span className="mr-3">{user.name || "Teacher"}</span>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ function TeacherProfile() {
       <div className="d-flex flex-column flex-md-row">
         {/* Sidebar */}
         <div className="text-center bg-white shadow-sm admin-sidebar">
-          <div className="mt-5 d-flex flex-column align-items-start">
+          <div className="d-flex flex-column align-items-start">
             <Link
               to="/teacher-portal"
               className="list-group-item list-group-item-action w-100"

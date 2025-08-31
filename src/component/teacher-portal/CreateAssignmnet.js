@@ -106,7 +106,7 @@ function SubmitAssignment() {
         <div style={{ display: "flex", minHeight: "calc(100vh - 60px)" }}>
           {/* Sidebar */}
           <div className="submit-sidebar text-center">
-            <Link to="/teacher-portal" className="list-group-item list-group-item-action mt-5 ">Dashboard</Link>
+            <Link to="/teacher-portal" className="list-group-item list-group-item-action  ">Dashboard</Link>
             <Link className="list-group-item list-group-item-action mt-5 active">Create Assignment</Link>
             <Link to="/teacher-profile" className="list-group-item list-group-item-action mt-5 ">Profile</Link>
             <Link to="/submitted" className="list-group-item list-group-item-action mt-5 ">Submitted Assignment</Link>

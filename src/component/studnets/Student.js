@@ -96,7 +96,7 @@ function Student() {
     return dateB - dateA;
   });
 
-  if (loading) return <div className="text-center mt-5">Loading...</div>;
+  // if (loading) return <div className="text-center mt-5">Loading...</div>;
 
   return (
     <div className="student-container">
@@ -112,7 +112,7 @@ function Student() {
          
              <img
             src={user?.profile ? `${BASE_URL}/uploads/profile/${user.profile}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
-            alt="Profile" height="40px" width="40px" style={{borderRadius:"50%"}}          />
+            alt="Profile" height="40px" width="40px" style={{borderRadius:"50%",marginRight:"8px"}}          />
           <span>{user.name || "Student"}</span>
         </div>
       </div>

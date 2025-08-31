@@ -201,8 +201,8 @@ function SubmitAssignment() {
         </div>
 
           <div style={{ flexGrow: 1, marginLeft: "20px" }}>
-            <h2>Submit Assignment</h2>
-            <p>Choose an assignment to submit your work</p>
+            {/* <h2>Submit Assignment</h2>
+            <p>Choose an assignment to submit your work</p> */}
 
             <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
               <div className="assignment-list">
@@ -224,7 +224,7 @@ function SubmitAssignment() {
                 )}
               </div>
 
-              <form onSubmit={taskSubmit} className="submit-form">
+              <form onSubmit={taskSubmit} className="submit-form mt-3 mr-2">
                 <div className="submit-form-inner">
                   <div id="select" className="assignment-select-box">Select an Assignment</div>
                   <input type="file" onChange={(e) => setFileName(e.target.files[0])} />

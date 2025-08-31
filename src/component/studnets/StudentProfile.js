@@ -73,14 +73,14 @@ function StudentProfile() {
 
   return (
     <div className="profile-container">
-      <div className="profile-header">
+      <div className="profile-header p-1">
         <div className="header-links">
           <div>ITEP</div>
           <Link to="/student">Dashboard</Link>
           <Link to="/submission">My Submissions</Link>
           <Link to="/student-profile">Profile</Link>
         </div>
-        <div className="header-profile">
+        <div className="header-profile mb-1">
           <img
             src={user?.profile ? `${BASE_URL}/uploads/profile/${user.profile}` : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"}
             alt="Profile"
@@ -100,13 +100,13 @@ function StudentProfile() {
             </Link>
             <Link
               to="/submission"
-              className="list-group-item list-group-item-action w-100 "
+              className="list-group-item list-group-item-action w-100 mt-5"
             >
               My Assignment
             </Link>
             <Link
               to="/student-profile"
-              className="list-group-item list-group-item-action w-100 active"
+              className="list-group-item list-group-item-action w-100 active mt-5"
             >
               Profile
             </Link>
@@ -114,7 +114,7 @@ function StudentProfile() {
         </div>
         <div className="profile-card">
           <div className="profile-card-inner">
-            <h2>Student Profile</h2>
+            {/* <h2>Student Profile</h2> */}
             <p>Manage your account and personal information</p>
 
             <div className="d-flex flex-column flex-lg-row mt-4">

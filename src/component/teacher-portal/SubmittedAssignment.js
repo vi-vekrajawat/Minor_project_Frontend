@@ -125,7 +125,7 @@ const loadSubmitAssignment = async () => {
         {/* Sidebar */}
         <div className="submitted-sidebar text-center">
         <div className="text-center bg-white shadow-sm admin-sidebar">
-          <div className="mt-5 d-flex flex-column align-items-start">
+          <div className="d-flex flex-column align-items-start">
             <Link
               to="/teacher-portal"
               className="list-group-item list-group-item-action w-100"

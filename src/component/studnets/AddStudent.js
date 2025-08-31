@@ -53,7 +53,7 @@ function AddStudent() {
       <ToastContainer />
       <div className="d-flex justify-content-center align-items-center add-student-container">
         <div className="card shadow-lg p-4 add-student-card">
-          <h3 className="text-center mb-3 text-primary">Add Student</h3>
+          <h3 className="text-center mb-3 text-primary">Add User</h3>
           <p className="text-center text-muted">
             Enter student details and assign a batch
           </p>
@@ -119,8 +119,15 @@ function AddStudent() {
               type="submit"
               className="btn btn-primary btn-block mt-4 add-student-btn"
             >
-              Add Student
+              Add User
             </button>
+            <button
+            onClick={()=>navigate(-1)}
+              className="btn btn-secondary btn-block mt-4 add-student-btn"
+            >
+              Cancel
+            </button>
+
           </form>
         </div>
       </div>

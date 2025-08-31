@@ -39,7 +39,7 @@
 .profile-header .header-profile {
   display: flex;
   align-items: center;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .profile-header .header-profile img {
@@ -51,8 +51,8 @@
 }
 
 .profile-header .header-profile span {
-  margin-left: 10px;
-  font-weight: 500;
+  /* margin-left: 10px; */
+  /* font-weight: 500; */
 }
 
 /* Sidebar */
