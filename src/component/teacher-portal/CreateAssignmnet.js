@@ -115,7 +115,7 @@ function SubmitAssignment() {
           {/* Form */}
           <div style={{ flexGrow: 1, padding: "20px" }}>
             <div className="submit-form-container">
-              <h3 className="text-center mb-4 text-primary">Submit Assignment</h3>
+              <h3 className="text-center mb-4 text-primary">Create New Assignment</h3>
               <form onSubmit={submitAssignment}>
                 <label>Assignment Title *</label>
                 <input type="text" name="title" className="form-control" value={task.title} onChange={handleInputChange} />
@@ -147,7 +147,7 @@ function SubmitAssignment() {
                 <input type="file" className="form-control" onChange={handleFileChange} />
 
                 <button type="submit" className="btn btn-primary w-100" disabled={loading}>
-                  {loading ? "Submitting..." : "Submit Assignment"}
+                  {loading ? "Submitting..." : "New Assignment"}
                 </button>
               </form>
             </div>

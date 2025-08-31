@@ -58,7 +58,16 @@ const getAssignmentbyId = async () => {
     (acc, batch) => acc + (batch.students?.length || 0),
     0
   );
-
+const deleteTask = async(id)=>{
+  try{
+let response = await axios.delete(`${Backend.DELETE_TASK}/${id}`)
+getAssignmentbyId()
+alert("deleted Successfully")
+  }
+  catch(err){
+    alert("Something is error")
+  }
+}
   return (
     <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
       {/* Header */}
@@ -133,8 +142,8 @@ const getAssignmentbyId = async () => {
 
         {/* Main Content */}
         <div style={{ flexGrow: 1, padding: "20px" }}>
-          <h2>Teacher Dashboard</h2>
-          <p>Manage your classes and assignments</p>
+          {/* <h2>Teacher Dashboard</h2>
+          <p>Manage your classes and assignments</p> */}
 
           {/* Stats Cards */}
           <div className="d-flex justify-content-between flex-wrap" >
@@ -229,6 +238,7 @@ const getAssignmentbyId = async () => {
                       <th>Deadline</th>
                       <th>Batch</th>
                       <th>File</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -251,6 +261,9 @@ const getAssignmentbyId = async () => {
                                   Download
                                 </a>
                               ) : "No File"}
+                            </td>
+                             <td>
+                              <button onClick={()=>deleteTask(task._id)} className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
                         );

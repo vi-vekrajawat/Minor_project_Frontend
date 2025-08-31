@@ -137,8 +137,8 @@ to="/submitted"
         {/* Main Profile Card */}
         <div className="profile-card">
           <div className="profile-card-inner">
-            <h2>Teacher Profile</h2>
-            <p>Manage your account and personal information</p>
+            {/* <h2>Teacher Profile</h2>
+            <p>Manage your account and personal information</p> */}
 
             <div className="d-flex flex-column flex-lg-row mt-4">
               {/* Photo */}

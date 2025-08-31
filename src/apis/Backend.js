@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
-export const BASE_URL = "http://localhost:3000"
+export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
+// export const BASE_URL = "http://localhost:3000"
 export default {
     STUDENT_LIST: BASE_URL+'/admin',
     USER_LOGIN: BASE_URL+'/admin/login',
@@ -26,7 +26,8 @@ export default {
     CHANGE_PASSWORD:BASE_URL+"/admin/change-password",
     FETCH_EVENT:BASE_URL+"/notice/get-notice",
     CREATE_NOTICE:BASE_URL+"/notice/new-notice",
-    DELETE_NOTICE:BASE_URL+"/notice"
+    DELETE_NOTICE:BASE_URL+"/notice",
+    DELETE_TASK:BASE_URL+"/teacher/assignment"
 
 
 
