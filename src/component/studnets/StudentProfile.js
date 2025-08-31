@@ -90,7 +90,7 @@ function StudentProfile() {
       </div>
 
       <div className="d-flex flex-column flex-md-row">
-       <div className="text-center bg-white shadow-sm " style={{minWidth:"200px"}}>
+        <div className="text-center bg-white shadow-sm " style={{ minWidth: "200px" }}>
           <div className="mt-5 d-flex flex-column align-items-start">
             <Link
               to="/student"
@@ -135,7 +135,21 @@ function StudentProfile() {
               <div className="profile-info-section">
                 <div className="profile-info-header">
                   <h5>Personal Information</h5>
-                  <button className={`btn ${editMode ? "btn-secondary" : "btn-primary"}`} onClick={() => setEditMode(!editMode)} disabled={loading}>
+                  <button
+                    className={`btn ${editMode ? "btn-secondary" : "btn-primary"}`}
+                    onClick={() => {
+                      if (editMode) {
+                        // 👇 Reset values when cancelling
+                        setName(user.name || "");
+                        setEmail(user.email || "");
+                        setBio(user.bio || "");
+                        setEditMode(false);
+                      } else {
+                        setEditMode(true);
+                      }
+                    }}
+                    disabled={loading}
+                  >
                     {editMode ? "Cancel" : "Edit Profile"}
                   </button>
                 </div>

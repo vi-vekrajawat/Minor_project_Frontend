@@ -56,12 +56,12 @@ function BatchManage() {
               <span className="mr-3">Batch Management</span>
               <span className="mr-3">Profile</span>
             </nav>
-            <div className="admin-profile">👤 Admin User</div>
+            {/* <div className="admin-profile">👤 Admin User</div> */}
           </header>
-          <section className="mt-4">
+          {/* <section className="mt-4">
             <h1>Batch Management</h1>
             <p>Manage student batches and teacher assignments</p>
-          </section>
+          </section> */}
           <section className="d-flex flex-wrap mt-3">
             <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#007bff", flex: "1 1 200px" }}>
               Total Batches <span>{batchState.length}</span>

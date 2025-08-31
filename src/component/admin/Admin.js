@@ -207,8 +207,8 @@ const dleteNotice = async(id)=>{
 
         {/* Main */}
         <main className="flex-grow-1 p-4">
-          <h2>Admin Dashboard</h2>
-          <p>Manage your educational platform</p>
+          {/* <h2>Admin Dashboard</h2>
+          <p>Manage your educational platform</p> */}
 
           {/* Cards */}
           <div className="d-flex flex-wrap">

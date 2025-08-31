@@ -3,7 +3,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
-import "./AdminProfile.css"; 
+import "./AdminProfile.css";
 
 function AdminProfile() {
   const user = getCurrentUser();
@@ -77,10 +77,10 @@ function AdminProfile() {
 
   const formattedJoinDate = user.joindate
     ? new Date(user.joindate).toLocaleDateString("en-IN", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
     : "N/A";
 
   return (
@@ -187,10 +187,18 @@ function AdminProfile() {
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <h5 className="mb-0 text-dark">Personal Information</h5>
                   <button
-                    className={`btn ${
-                      editMode ? "btn-secondary" : "btn-primary"
-                    }`}
-                    onClick={() => setEditMode(!editMode)}
+                    className={`btn ${editMode ? "btn-secondary" : "btn-primary"}`}
+                    onClick={() => {
+                      if (editMode) {
+                        // 👇 Reset values when cancelling
+                        setName(user.name || "");
+                        setEmail(user.email || "");
+                        setBio(user.bio || "");
+                        setEditMode(false);
+                      } else {
+                        setEditMode(true);
+                      }
+                    }}
                     disabled={loading}
                   >
                     {editMode ? "Cancel" : "Edit Profile"}
@@ -209,7 +217,7 @@ function AdminProfile() {
                         disabled={loading}
                       />
                     ) : (
-                      <p className="text-dark">{name || "N/A"}</p>
+                      <p className="text-dark">{name}</p>
                     )}
                   </div>
 

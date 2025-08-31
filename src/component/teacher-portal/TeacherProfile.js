@@ -126,7 +126,7 @@ function TeacherProfile() {
               Profile
             </Link>
             <Link
-to="/submitted"
+              to="/submitted"
               className="list-group-item list-group-item-action w-100 "
             >
               Submitted Assignment
@@ -178,13 +178,23 @@ to="/submitted"
                 <div className="profile-info-header">
                   <h5>Personal Information</h5>
                   <button
-                    className={`btn ${editMode ? "btn-secondary" : "btn-primary"
-                      }`}
-                    onClick={() => setEditMode(!editMode)}
+                    className={`btn ${editMode ? "btn-secondary" : "btn-primary"}`}
+                    onClick={() => {
+                      if (editMode) {
+                        // 👇 Reset values when cancelling
+                        setName(user.name || "");
+                        setEmail(user.email || "");
+                        setBio(user.bio || "");
+                        setEditMode(false);
+                      } else {
+                        setEditMode(true);
+                      }
+                    }}
                     disabled={loading}
                   >
                     {editMode ? "Cancel" : "Edit Profile"}
                   </button>
+
                 </div>
 
                 <div className="profile-info-fields">
