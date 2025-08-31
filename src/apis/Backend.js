@@ -22,7 +22,11 @@ export default {
     UPDATE_TEACHER_BATCH:BASE_URL+"/admin//assign-teacher",
     DELETE_STUDENT:BASE_URL+"/admin/delete",
     DELETE_TEACHER:BASE_URL+"/admin/teacher",
-    ASSIGN_BATCH:BASE_URL+"/admin/assign-batch"
+    ASSIGN_BATCH:BASE_URL+"/admin/assign-batch",
+    CHANGE_PASSWORD:BASE_URL+"/admin/change-password",
+    FETCH_EVENT:BASE_URL+"/notice/get-notice",
+    CREATE_NOTICE:BASE_URL+"/notice/new-notice",
+    DELETE_NOTICE:BASE_URL+"/notice"
 
 
 

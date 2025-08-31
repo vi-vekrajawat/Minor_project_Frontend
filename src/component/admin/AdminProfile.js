@@ -85,7 +85,6 @@ function AdminProfile() {
 
   return (
     <div className="admin-profile-page">
-      {/* Navbar */}
       <div className="d-flex justify-content-between align-items-center bg-primary text-white flex-wrap">
         <div className="d-flex flex-wrap align-items-center">
           <div className=" admin-navbar">ITEP</div>
@@ -116,7 +115,6 @@ function AdminProfile() {
       </div>
 
       <div className="d-flex flex-column flex-md-row">
-        {/* Sidebar */}
         <div className="text-center bg-white shadow-sm admin-sidebar">
           <div className="mt-5 d-flex flex-column align-items-start">
             <Link

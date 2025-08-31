@@ -1,0 +1,17 @@
+.notice-card {
+    margin-left: 500px;
+    margin-top: 100px;
+  max-width: 500px;
+  /* margin: 40px auto; */
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  background: #fff;
+}
+
+.notice-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d6efd;
+  font-weight: 600;
+}

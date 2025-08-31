@@ -1,9 +1,8 @@
 
-
 import axios from "axios";
 import { useState } from "react";
 import Backend from "../../apis/Backend";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../sign-in/firebase";
@@ -13,6 +12,13 @@ function SignIn() {
   const navigate = useNavigate();
   const [state, setState] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const [showForgotPassword,setShowForgotPassword] = useState(false);
+  const [newpassword,setNewPassword] = useState({
+    email:"",
+    password:""
+  });
+  const [forgotError,setForgotError] = useState(""); // new error state for forgot password
 
   const validateForm = () => {
     let newErrors = { email: "", password: "" };
@@ -68,6 +74,34 @@ function SignIn() {
       toast.error("Google Sign-In Failed");
     }
   };
+  
+  const handleChangePassword = async(event) =>{
+    event.preventDefault();
+
+    // check password length here
+    if(newpassword.password.length <= 4){
+      setForgotError("Password must be greater than 4 characters");
+      return;
+    } else {
+      setForgotError("");
+    }
+
+    try{
+      let response = await axios.post(`${Backend.CHANGE_PASSWORD}`,newpassword);
+      console.log(response);
+      alert("password change successfully");
+      setShowForgotPassword(false);
+      setNewPassword({
+        email:"",
+        password:""
+      });
+
+    }
+    catch(err){
+      setForgotError("Something went wrong, please try again.");
+      console.log(err);
+    }
+  }
 
   const redirectUser = (role) => {
     if (role === "teacher") setTimeout(() => navigate("/teacher-portal"), 900);
@@ -78,11 +112,55 @@ function SignIn() {
   return (
     <>
       <ToastContainer />
+      
       <div className="d-flex justify-content-center align-items-center main-div">
-        <div
-          className="p-4 rounded shadow main-div-second"
-         
-        >
+        <div className="p-4 rounded shadow main-div-second">
+        
+        {showForgotPassword && (
+          <div style={{
+            position: "fixed",
+            top: -110,
+            right:-430,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}>
+            <div className="bg-white p-4 rounded shadow" style={{width:"450px"}}>
+              <form onSubmit={handleChangePassword}>
+                <h4>Change Password</h4>
+                <input 
+                  className="form-control my-2" 
+                  type="text" 
+                  placeholder="Enter Email"
+                  value={newpassword.email}
+                  onChange={(e)=>setNewPassword({...newpassword,email:e.target.value})}
+                />
+                <input 
+                  className="form-control my-2" 
+                  type="password" 
+                  placeholder="New Password"
+                  value={newpassword.password}
+                  onChange={(e)=>setNewPassword({...newpassword,password:e.target.value})}
+                />
+                {/* show error below password */}
+                {forgotError && <small className="text-danger">{forgotError}</small>}
+
+                <button className="btn btn-primary w-100 mt-3">Change Password</button>
+                <button 
+                  type="button" 
+                  className="btn btn-secondary w-100 mt-2" 
+                  onClick={()=>setShowForgotPassword(false)}
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
           <h2 className="text-center mb-4 fw-bold text-white">ITEP-Assignment</h2>
           <form onSubmit={handleLogin}>
             <div className="mb-3">
@@ -104,19 +182,21 @@ function SignIn() {
                 placeholder="Enter Your Password"
               />
               {errors.password && <small className="text-danger">{errors.password}</small>}
+              <br />
+              <Link className="text-white" onClick={()=>setShowForgotPassword(true)} style={{marginLeft:"240px"}}>Forgot Password</Link>
             </div>
-            <div className="mb-3">
+            <div className="mb-2">
               <button className="btn btn-primary btn-lg w-100 fw-semibold">Sign In</button>
             </div>
           </form>
-          <div className="text-center">
-            <button
+          <div className="text-center ">
+            <Link
               onClick={handleGoogleSignIn}
-              className="btn btn-danger btn-lg w-100 fw-semibold"
+              className="w-100 fw-semibold text-white"
               style={{ marginTop: "10px" }}
             >
-              Sign in with Google
-            </button>
+              SignIn with Google
+            </Link>
           </div>
         </div>
       </div>     

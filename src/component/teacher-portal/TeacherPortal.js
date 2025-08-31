@@ -7,8 +7,14 @@ import { BatchContext } from "../../context/BatchProvider";
 import Backend, { BASE_URL } from "../../apis/Backend";
 import axios from "axios";
 import "./TeacherPortal.css";
+import { useSelector } from "react-redux";
 
 function TeacherPortal() {
+
+  const [notice, setNotices] = useState(false)
+const {noticeList} = useSelector((store)=>store.noticeData)
+
+
   const { task } = useContext(AssignmentContext);
   const { batchState } = useContext(BatchContext);
   const [assignment, setAssignment] = useState([]);
@@ -20,8 +26,7 @@ function TeacherPortal() {
   useEffect(() => {
     getAssignmentbyId();
   }, []);
-
-  const getAssignmentbyId = async () => {
+const getAssignmentbyId = async () => {
     try {
       const response = await axios.get(
         `${Backend.ASSIGNMENT_TEACHER_BY_ID}/${user._id}`
@@ -50,9 +55,9 @@ function TeacherPortal() {
     (batch) => batch.teachers && batch.teachers.some((t) => t._id === user._id)
   );
   const totalStudents1 = teacherBatches.reduce(
-  (acc, batch) => acc + (batch.students?.length || 0),
-  0
-);
+    (acc, batch) => acc + (batch.students?.length || 0),
+    0
+  );
 
   return (
     <div style={{ width: "100vw", minHeight: "100vh", overflowX: "hidden" }}>
@@ -79,19 +84,52 @@ function TeacherPortal() {
       <div style={{ display: "flex", width: "100vw", minHeight: "calc(100vh - 50px)" }}>
         {/* Sidebar */}
         <div className="teacher-sidebar text-center">
-          <Link to="/teacher-portal" className="list-group-item list-group-item-action mt-5 active">
+          <Link to="/teacher-portal" className="list-group-item list-group-item-action  active">
             Dashboard
           </Link>
           <Link to="/create-assignment" className="list-group-item list-group-item-action mt-5 ">
             Create Assignment
           </Link>
-          <Link to="/teacher-profile"className="list-group-item list-group-item-action mt-5 ">
+          <Link to="/teacher-profile" className="list-group-item list-group-item-action mt-5 ">
             Profile
           </Link>
           <Link to="/submitted" className="list-group-item list-group-item-action mt-5 " >
             Submitted Assignment
           </Link>
+          <Link onClick={() => setNotices(true)}
+            className="list-group-item list-group-item-action mt-5 " >
+            Notices
+          </Link>
         </div>
+
+        {/* Here is our event */}
+        {notice && (
+          <div className="ml-2 mt-2 notice-board p-2 bg-white text-dark"
+            style={{ width: "30%", minHeight: "50vh", boxShadow: "0px 30px 30px 0px gray" }}>
+            <p onClick={() => setNotices(false)} style={{ cursor: "pointer", textAlign: "right" }}>❌</p>
+            <h2 className="mb-4 mt-2 text-center">📢 Notices</h2>
+            <div className="d-flex flex-column gap-3">
+              {noticeList.length === 0 ? (
+                <p className="text-center">No notices available</p>
+              ) : (
+                noticeList.map((n) => (
+                  <div key={n._id}
+                    className="p-3 d-flex flex-column mt-2 rounded shadow-sm bg-secondary text-white">
+                    <h5>Subject: {n.title}</h5>
+                    <small><b>Description:</b> {n.description}</small>
+                    <small className="text-white">
+                      {n.createdAt.slice(0,10)}
+                    </small>
+                    <small className="d-block">
+                      Posted by: {n.createdBy?.name || "Admin"}
+                    </small>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
 
         {/* Main Content */}
         <div style={{ flexGrow: 1, padding: "20px" }}>
@@ -107,16 +145,16 @@ function TeacherPortal() {
             <div className="info-card bg-success">
               <div>Total Students</div>
               <div>{totalStudents1}</div>
-            <div></div>
+              <div></div>
             </div>
             <div className="info-card bg-info">
               <div>Total Assignments</div>
               <div>{teacherAssignments.length}</div>
             </div>
-            {/* <div className="info-card bg-secondary">
-              <div>Pending Reviews</div>
-              <div>Not Working</div>
-            </div> */}
+            <div className="info-card bg-secondary">
+              <div>Notices</div>
+              <div>{noticeList.length}</div>
+            </div>
           </div>
 
           {/* Toggle Buttons */}
@@ -232,7 +270,8 @@ function TeacherPortal() {
         </div>
       </div>
     </div>
-  );
+  )
 }
+
 
 export default TeacherPortal;

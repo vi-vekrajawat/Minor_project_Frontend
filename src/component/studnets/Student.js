@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 import Backend, { BASE_URL } from "../../apis/Backend";
 import { AssignmentContext } from "../../context/AssignmentProvider";
 import "./Student.css";   // custom css import
+import { useSelector } from "react-redux";
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem("current-user")) || {};
   const { task = [] } = useContext(AssignmentContext);
+  const [notice, setNotices] = useState(false)
+
+  const {noticeList} = useSelector((store)=>store.noticeData)
 
   const [submissions, setSubmissions] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -113,6 +117,8 @@ function Student() {
         </div>
       </div>
 
+
+
       {/* Sidebar + Content */}
       <div className="d-flex flex-column flex-md-row">
         <div className="student-sidebar text-center">
@@ -120,8 +126,36 @@ function Student() {
             <Link className="list-group-item list-group-item-action mt-3">Dashboard</Link>
             <Link to="/submission" className="list-group-item list-group-item-action mt-3">My Assignment</Link>
             <Link to="/student-profile" className="list-group-item list-group-item-action mt-3">Profile</Link>
+            <Link onClick={() => setNotices(true)} className="list-group-item list-group-item-action mt-3">Notice</Link>
           </div>
         </div>
+
+ {notice && (
+          <div className="ml-2 mt-2 notice-board p-2 bg-white text-dark"
+            style={{ width: "30%", minHeight: "50vh", boxShadow: "0px 30px 30px 0px gray" }}>
+            <p onClick={() => setNotices(false)} style={{ cursor: "pointer", textAlign: "right" }}>❌</p>
+            <h2 className="mb-4 mt-2 text-center">📢 Notices</h2>
+            <div className="d-flex flex-column gap-3">
+              {noticeList.length === 0 ? (
+                <p className="text-center">No notices available</p>
+              ) : (
+                noticeList.map((n) => (
+                  <div key={n._id}
+                    className="p-3 d-flex flex-column mt-2 rounded shadow-sm bg-secondary text-white">
+                    <h5>Subject: {n.title}</h5>
+                    <small><b>Description:</b> {n.description}</small>
+                    <small className="text-white">
+                      <b>Date : </b>{n?.createdAt?.slice(0,10)}
+                    </small>
+                    <small className="d-block">
+                      Posted by: {"Admin"}
+                    </small>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="flex-grow-1 p-4">
           {/* Stats Cards */}
@@ -162,8 +196,8 @@ function Student() {
               const submission = data.submission || null;
               const status = submission ? String(submission.status || "").toLowerCase() : "not_submitted";
               let badgeClass, statusText;
-              if (status === "complete") { badgeClass = "badge-success"; statusText = "✅ Completed"; }
-              else if (status === "pending") { badgeClass = "badge-warning"; statusText = "⏳ Submitted (Pending)"; }
+              if (status === "complete") { badgeClass = "badge-success"; statusText = " Completed"; }
+              else if (status === "pending") { badgeClass = "badge-warning"; statusText = " Submitted (Pending)"; }
               else { badgeClass = "badge-secondary"; statusText = "Not Submitted"; }
 
               return (

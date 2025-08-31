@@ -1,13 +1,20 @@
 import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
 import backend, { BASE_URL } from "../../apis/Backend";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BatchContext } from "../../context/BatchProvider";
 import { getCurrentUser } from "../auth/Auth";
 import Backend from "../../apis/Backend";
-import "./Admin.css";   // ✅ New CSS import
+import "./Admin.css";   
+import { div, h2 } from "framer-motion/client";
+import { useSelector } from "react-redux";
 
 function Admin() {
+
+  const navigate = useNavigate()
+  const [notice, setNotices] = useState(false)
+  const { noticeList } = useSelector((store) => store.noticeData)
+
   const [users, setUsers] = useState([]);
   const [studentBatchFilter, setStudentBatchFilter] = useState("");
 
@@ -20,6 +27,7 @@ function Admin() {
   useEffect(() => {
     loadUsers();
   }, []);
+
 
   const loadUsers = async () => {
     try {
@@ -68,7 +76,7 @@ function Admin() {
   const deleteTeacher = async (teacherId) => {
     try {
       await axios.delete(`${backend.DELETE_TEACHER}/${teacherId}`);
-      alert("Teacher deleted ✅");
+      alert("Teacher deleted ");
       loadUsers();
     } catch (e) {
       console.error(e);
@@ -85,24 +93,35 @@ function Admin() {
     }
   };
 
-   const assignBatchToTeacher = async (teacherId, batchId) => {
-  try {
-    const res = await axios.put(
-      `${Backend.ASSIGN_BATCH}${teacherId}`,
-      { batchId }
-    );
-    console.log(res)
+  const assignBatchToTeacher = async (teacherId, batchId) => {
+    try {
+      const res = await axios.put(
+        `${Backend.ASSIGN_BATCH}${teacherId}`,
+        { batchId }
+      );
+      console.log(res)
 
-    alert("Batch assigned successfully ✅");
-       setOpenFormFor(null);
-    setSelectedBatch("");
-    loadUsers();
-  } catch (err) {
-    console.error(err);
-    alert("Failed to assign batch ❌");
+      alert("Batch assigned successfully ");
+      setOpenFormFor(null);
+      setSelectedBatch("");
+      loadUsers();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to assign batch ");
+    }
+  };
+const dleteNotice = async(id)=>{
+  try{
+    let response = await axios.delete(`${Backend.DELETE_NOTICE}/${id}`)
+    alert("deleted Successfully")
+    window.location.reload()
+
   }
-};
+  catch(err){
+    console.log(err)
 
+  }
+}
   return (
     <div className="admin-container">
       <div className="admin-navbar">
@@ -143,8 +162,48 @@ function Admin() {
             >
               Profile
             </Link>
+            <Link
+              onClick={() => setNotices(true)}
+              className="list-group-item list-group-item-action mt-5"
+            >
+              Notices
+            </Link>
           </div>
         </aside>
+
+        {/* Here is Events */}
+        {notice && (
+          <div className="ml-2 mt-2 notice-board p-2 bg-white text-white "
+            style={{ width: "30%", minHeight: "50vh", boxShadow: "0px 30px 30px 0px gray" }}>
+              <div className="d-flex justify-content-between">
+            <button onClick={()=>navigate(`/create-notice/${user._id}`)} className="btn btn-success">Create New</button>
+            <p onClick={() => setNotices(false)} style={{ cursor: "pointer", textAlign: "right" }}>❌</p>
+            </div>
+            <h2 className="mb-4 mt-5 text-center text-dark">📢 Notices</h2>
+            <div className="d-flex flex-column gap-4">
+              {noticeList.length === 0 ? (
+                <p className="text-center">No notices available</p>
+              ) : (
+                noticeList.map((n) => (
+                  <div key={n._id}
+                    className="p-3 mt-2 d-flex flex-column  rounded shadow-sm bg-secondary">
+                    <h5>Subject : {n.title}</h5>
+                    <small><b>Description :</b> {n.description}</small>
+                    <small className="text-white">
+                     <b>Date :</b> {n?.createdAt.slice(0,10)}
+                    </small>
+                    <small className="d-block">
+                      <b>Posted by:</b> { "Admin"}
+                    </small>
+                    <small style={{textAlign:"right"}}>
+                      <button onClick={()=>dleteNotice(n._id)} className="btn-danger">Delete</button>
+                    </small>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Main */}
         <main className="flex-grow-1 p-4">
@@ -167,6 +226,11 @@ function Admin() {
               <span>Total Teachers</span>
               <br />
               <span className="fw-bold fs-5">{teachers.length}</span>
+            </div>
+            <div className="dashboard-card dashboard-notice">
+              <span>Total Notices</span>
+              <br />
+              <span className="fw-bold fs-5">{noticeList.length}</span>
             </div>
           </div>
 
@@ -196,7 +260,7 @@ function Admin() {
                   <b>Students List</b>
                 </h6>
                 <div>
-                  <select value={studentBatchFilter} className="form-select" 
+                  <select value={studentBatchFilter} className="form-select"
                     onChange={(e) => setStudentBatchFilter(e.target.value)}>
                     <option>select-batch
                     </option>
@@ -225,7 +289,7 @@ function Admin() {
                   <tbody>
                     {students
                       .filter((s) => {
-                        if (!studentBatchFilter) return true; 
+                        if (!studentBatchFilter) return true;
                         const batchIds = [
                           ...(Array.isArray(s.batches) ? s.batches : []),
                           ...(s.batch ? [s.batch] : []),
@@ -335,40 +399,42 @@ function Admin() {
       </div>
 
       {/* Assign Batch Modal */}
-      {openFormFor && (
-        <div className="assign-batch-modal">
-          <div className="assign-batch-modal-content">
-            <h3>Select Batch</h3>
-            <select
-              className="form-select"
-              value={selectedBatch}
-              onChange={(e) => setSelectedBatch(e.target.value)}
-            >
-              <option value="">-- Select Batch --</option>
-              {batchState.map((batch) => (
-                <option key={batch._id} value={batch._id}>
-                  {batch.batchName}
-                </option>
-              ))}
-            </select>
-            <div className="mt-3">
-              <button
-                className="btn btn-primary"
-                onClick={() => assignBatchToTeacher(openFormFor, selectedBatch)}
+      {
+        openFormFor && (
+          <div className="assign-batch-modal">
+            <div className="assign-batch-modal-content">
+              <h3>Select Batch</h3>
+              <select
+                className="form-select"
+                value={selectedBatch}
+                onChange={(e) => setSelectedBatch(e.target.value)}
               >
-                Assign Batch
-              </button>
-              <button
-                className="btn btn-secondary ms-2"
-                onClick={() => setOpenFormFor(null)}
-              >
-                Cancel
-              </button>
+                <option value="">-- Select Batch --</option>
+                {batchState.map((batch) => (
+                  <option key={batch._id} value={batch._id}>
+                    {batch.batchName}
+                  </option>
+                ))}
+              </select>
+              <div className="mt-3">
+                <button
+                  className="btn btn-primary"
+                  onClick={() => assignBatchToTeacher(openFormFor, selectedBatch)}
+                >
+                  Assign Batch
+                </button>
+                <button
+                  className="btn btn-secondary ms-2"
+                  onClick={() => setOpenFormFor(null)}
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }
 

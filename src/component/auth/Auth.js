@@ -11,7 +11,7 @@ export const isUSerExist = () =>{
  }
 
  function Auth({children}){
-    if(isUSerExist)
+    if(isUSerExist())
         return children
     return <Navigate to="/sign-in"/>
 
