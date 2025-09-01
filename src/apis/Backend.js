@@ -1,5 +1,5 @@
-// export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
-export const BASE_URL = "http://localhost:3000"
+export const BASE_URL = "https://assignmentmanagementproject.onrender.com"
+// export const BASE_URL = "http://localhost:3000"
 export default {
     STUDENT_LIST: BASE_URL+'/admin',
     USER_LOGIN: BASE_URL+'/admin/login',
