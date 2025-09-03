@@ -1,55 +1,62 @@
-/* Sidebar */
-.submitted-sidebar {
-  width: 200px;
-  background-color: #fff;
-  box-shadow: 0px 0px 3px grey;
-  min-height: 100vh;
-  /* padding-top: 50px; */
-}
-
-/* Header */
 .submitted-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0d6efd;
+  padding: 15px 30px;
+  background-color: #007bff;
   color: white;
-  padding: 10px 20px;
 }
 
-/* Profile Image */
+.submitted-header span {
+  /* font-weight: bold; */
+  font-size: 20px;
+}
+
 .submitted-header img {
-  height: 40px;
-  width: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  object-fit: cover;
   margin-right: 10px;
 }
 
-/* Filters Section */
-.filters {
+.submitted-sidebar {
+  width: 220px;
+  /* padding: 20px 0; */
+}
+
+.info-filters-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 20px;
+  align-items: center;
 }
 
-.filters label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-/* Info Card */
 .info-card {
-  max-width: 300px;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0px 0px 3px grey;
-  border-radius: 8px;
+  min-width: 200px;
+  padding: 20px;
+  border-radius: 10px;
 }
 
-/* Table Container */
-.table-container {
-  overflow-x: auto;
+.filters .filter-card {
+  min-width: 150px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.filters .filter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-select {
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 14px;
 }

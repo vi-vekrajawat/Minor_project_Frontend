@@ -36,14 +36,14 @@ function SubmitAssignment() {
         setSubmitted(response.data.submissions);
 
         const batchTasks = task.filter((t) => t.batchId === user.batch);
-        const remainingTasks = batchTasks.filter(
+        const remainingTasks = batchTasks?.filter(
           (t) =>
             !response.data.submissions.some((s) => {
               const submittedId =
                 typeof s.assignmentId === "object"
-                  ? s.assignmentId._id
+                  ? s.assignmentId?._id
                   : s.assignmentId;
-              return submittedId === t._id;
+              return submittedId === t?._id;
             })
         );
 
@@ -139,13 +139,13 @@ function SubmitAssignment() {
       );
       setSubmitted(submittedRes.data.submissions);
       const remainingTasks = task
-        .filter((t) => t.batchId === user.batch)
+        .filter((t) => t?.batchId === user.batch)
         .filter(
           (t) =>
             !submittedRes.data.submissions.some((s) => {
               const submittedId =
                 typeof s.assignmentId === "object"
-                  ? s.assignmentId._id
+                  ? s.assignmentId?._id
                   : s.assignmentId;
               return submittedId === t._id;
             })

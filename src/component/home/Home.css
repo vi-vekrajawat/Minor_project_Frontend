@@ -5,11 +5,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), 
+    background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),  
                       url("https://miro.medium.com/v2/resize:fit:1400/1*NwLwD8boGZ7BdIEwzGrviQ.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-size: contain; 
+     background-position: right;
+     background-repeat: no-repeat;
     padding: 40px 20px;
 }
 
