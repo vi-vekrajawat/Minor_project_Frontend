@@ -80,7 +80,7 @@ function SignIn() {
 
     // check password length here
     if(newpassword.password.length <= 4){
-      setForgotError("Password must be greater than 4 characters");
+      setForgotError("Password must be greater than 4 characters got it");
       return;
     } else {
       setForgotError("");
