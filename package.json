@@ -1,7 +1,10 @@
 {
   "name": "assignmentproject",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+   "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.0",
