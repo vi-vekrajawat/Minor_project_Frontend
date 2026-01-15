@@ -37,6 +37,7 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
+          scope: '@vi-vekrajawat'
 
       - run: npm ci
 
