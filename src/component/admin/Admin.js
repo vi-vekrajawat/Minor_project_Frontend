@@ -7,9 +7,10 @@ import { getCurrentUser } from "../auth/Auth";
 import Backend from "../../apis/Backend";
 import "./Admin.css";   
 import { div, h2 } from "framer-motion/client";
-import { Trash2 } from "lucide-react";
+import { Boxes, GraduationCap, Megaphone, Pencil, Trash2, UsersRound } from "lucide-react";
 import { useSelector } from "react-redux";
 import AppSidebar from "../shared/AppSidebar";
+import StatsCard from "../shared/StatsCard";
 
 function Admin() {
 
@@ -194,27 +195,11 @@ const dleteNotice = async(id)=>{
           <p>Manage your educational platform</p> */}
 
           {/* Cards */}
-          <div className="d-flex flex-wrap">
-            <div className="dashboard-card dashboard-batches">
-              <span>Total Batches</span>
-              <br />
-              <span className="fw-bold fs-5">{batchState.length}</span>
-            </div>
-            <div className="dashboard-card dashboard-students">
-              <span>Total Students</span>
-              <br />
-              <span className="fw-bold fs-5">{students.length}</span>
-            </div>
-            <div className="dashboard-card dashboard-teachers">
-              <span>Total Teachers</span>
-              <br />
-              <span className="fw-bold fs-5">{teachers.length}</span>
-            </div>
-            <div className="dashboard-card dashboard-notice">
-              <span>Total Notices</span>
-              <br />
-              <span className="fw-bold fs-5">{noticeList.length}</span>
-            </div>
+          <div className="stats-card-grid">
+            <StatsCard title="Total Batches" value={batchState.length} icon={Boxes} color="blue" onClick={() => navigate("/batch-management")} />
+            <StatsCard title="Total Students" value={students.length} icon={GraduationCap} color="green" onClick={() => navigate("/excel-file")} />
+            <StatsCard title="Total Teachers" value={teachers.length} icon={UsersRound} color="amber" onClick={() => setActiveTab("teachers")} />
+            <StatsCard title="Total Notices" value={noticeList.length} icon={Megaphone} color="teal" onClick={() => window.dispatchEvent(new Event("itep:show-notices"))} />
           </div>
 
           {/* Tabs */}
@@ -364,14 +349,16 @@ const dleteNotice = async(id)=>{
                               <Trash2 size={15} aria-hidden="true" />
                             </button>
                             <button
-                              className="btn btn-info ms-2"
+                              className="admin-edit-button"
+                              aria-label={`Edit batches for ${t.name}`}
+                              title="Edit batches"
                               onClick={() =>
                                 setOpenFormFor(
                                   openFormFor === t._id ? null : t._id
                                 )
                               }
                             >
-                              Edit Batch
+                              <Pencil size={15} aria-hidden="true" />
                             </button>
                           </td>
                         </tr>

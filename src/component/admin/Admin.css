@@ -108,3 +108,24 @@
   outline: 2px solid #dc3545;
   outline-offset: 2px;
 }
+.admin-edit-button {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  margin-left: 6px;
+  padding: 0;
+  color: #2878e8;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.admin-edit-button:hover {
+  color: #1769d7;
+  background: #eaf3ff;
+}
+.admin-edit-button:focus-visible {
+  outline: 2px solid #2878e8;
+  outline-offset: 2px;
+}

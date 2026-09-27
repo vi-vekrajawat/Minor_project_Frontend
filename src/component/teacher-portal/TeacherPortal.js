@@ -9,6 +9,8 @@ import axios from "axios";
 import "./TeacherPortal.css";
 import { useSelector } from "react-redux";
 import AppSidebar from "../shared/AppSidebar";
+import { BookOpenCheck, Boxes, GraduationCap, Megaphone } from "lucide-react";
+import StatsCard from "../shared/StatsCard";
 
 function TeacherPortal() {
 
@@ -135,24 +137,11 @@ alert("deleted Successfully")
           <p>Manage your classes and assignments</p> */}
 
           {/* Stats Cards */}
-          <div className="d-flex justify-content-between flex-wrap" >
-            <div className="info-card bg-primary">
-              <div>Total Batches</div>
-              <div>{batchState.length}</div>
-            </div>
-            <div className="info-card bg-success">
-              <div>Total Students</div>
-              <div>{totalStudents1}</div>
-              <div></div>
-            </div>
-            <div className="info-card bg-info">
-              <div>Total Assignments</div>
-              <div>{teacherAssignments.length}</div>
-            </div>
-            <div className="info-card bg-secondary">
-              <div>Notices</div>
-              <div>{noticeList.length}</div>
-            </div>
+          <div className="stats-card-grid">
+            <StatsCard title="Total Batches" value={batchState.length} icon={Boxes} color="blue" />
+            <StatsCard title="Total Students" value={totalStudents1} icon={GraduationCap} color="green" />
+            <StatsCard title="Total Assignments" value={teacherAssignments.length} icon={BookOpenCheck} color="violet" />
+            <StatsCard title="Notices" value={noticeList.length} icon={Megaphone} color="coral" />
           </div>
 
           {/* Toggle Buttons */}
