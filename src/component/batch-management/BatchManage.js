@@ -5,8 +5,11 @@ import axios from "axios";
 import Backend from "../../apis/Backend";
 import { button } from "framer-motion/client";
 import { BatchContext } from "../../context/BatchProvider";
+import { getCurrentUser } from "../auth/Auth";
+import AppSidebar from "../shared/AppSidebar";
 
 function BatchManage() {
+  const user = getCurrentUser();
   const { batchState } = useContext(BatchContext)
   const totalStudent = batchState.reduce((acc, batch) => acc + (batch.students?.length), 0);
   const totalTeacher = batchState.reduce((acc, batch) => acc + (batch.teachers?.length), 0);
@@ -24,26 +27,8 @@ function BatchManage() {
   }
   return (
     <div style={{ width: "100vw", minHeight: "100vh", backgroundColor: "#f8f9fa", overflowX: "hidden" }}>
-      <div className="d-flex flex-column flex-md-row" style={{ width: "100vw", minHeight: "100vh" }}>
-        <div className="admin-sidebar">
-          <ul className="list-unstyled mt-5">
-            <div className="list-group-item list-group-item-action mt-5">
-              <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
-                <li className="mb-3">Dashboard</li>
-              </Link>
-            </div >
-            <div className="mt-5">
-
-              <li className="mb-3 active list-group-item">Batch Management</li>
-            </div >
-            <div className="list-group-item list-group-item-action mt-5">
-
-              <Link to="/admin-profile" style={{ textDecoration: "none", color: "inherit" }}>
-                <li className="mb-3 ">Profile</li>
-              </Link>
-            </div >
-          </ul>
-        </div>
+      <div className="app-layout" style={{ width: "100%", minHeight: "100vh" }}>
+        <AppSidebar user={user} role="admin" activePath="/batch-management" />
 
         {/* </aside> */}
         <main className="flex-grow-1 p-3">

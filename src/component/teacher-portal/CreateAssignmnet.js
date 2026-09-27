@@ -4,6 +4,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "./SubmitAssignment.css";
+import AppSidebar from "../shared/AppSidebar";
 
 function SubmitAssignment() {
   const [task, setTask] = useState({
@@ -103,14 +104,8 @@ function SubmitAssignment() {
         </div>
 
         {/* Main Section */}
-        <div style={{ display: "flex", minHeight: "calc(100vh - 60px)" }}>
-          {/* Sidebar */}
-          <div className="submit-sidebar text-center">
-            <Link to="/teacher-portal" className="list-group-item list-group-item-action  ">Dashboard</Link>
-            <Link className="list-group-item list-group-item-action mt-5 active">Create Assignment</Link>
-            <Link to="/teacher-profile" className="list-group-item list-group-item-action mt-5 ">Profile</Link>
-            <Link to="/submitted" className="list-group-item list-group-item-action mt-5 ">Submitted Assignment</Link>
-          </div>
+        <div className="app-layout" style={{ minHeight: "calc(100vh - 60px)" }}>
+          <AppSidebar user={user} role="teacher" activePath="/create-assignment" />
 
           {/* Form */}
           <div style={{ flexGrow: 1, padding: "20px" }}>

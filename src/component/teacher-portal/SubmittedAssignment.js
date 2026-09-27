@@ -599,6 +599,7 @@ import { useEffect, useState } from "react";
 import Backend, { BASE_URL } from "../../apis/Backend";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
+import AppSidebar from "../shared/AppSidebar";
 import "./SubmittedAssignment.css";
 
 function SubmittedAssignment() {
@@ -711,26 +712,8 @@ function SubmittedAssignment() {
         </div>
       </div>
 
-      <div style={{ display: "flex", width: "100vw", minHeight: "calc(100vh - 60px)" }}>
-        {/* Sidebar */}
-        <div className="submitted-sidebar text-center">
-          <div className="text-center bg-white shadow-sm admin-sidebar">
-            <div className="d-flex flex-column align-items-start">
-              <Link to="/teacher-portal" className="list-group-item list-group-item-action w-100">
-                Dashboard
-              </Link>
-              <Link to="/create-assignment" className="list-group-item list-group-item-action w-100">
-                Create Assignment
-              </Link>
-              <Link to="/teacher-profile" className="list-group-item list-group-item-action w-100">
-                Profile
-              </Link>
-              <Link className="list-group-item list-group-item-action w-100 active">
-                Submitted Assignment
-              </Link>
-            </div>
-          </div>
-        </div>
+      <div className="app-layout" style={{ minHeight: "calc(100vh - 60px)" }}>
+        <AppSidebar user={user} role="teacher" activePath="/submitted" />
 
         {/* Main Content */}
         <div style={{ flexGrow: 1, padding: "20px" }}>
