@@ -1,10 +1,12 @@
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Backend from "../../apis/Backend";
 import { useNavigate,Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { signInWithPopup } from "firebase/auth";
+import { ArrowLeft } from "lucide-react";
 import { auth, provider } from "../sign-in/firebase";
 import "../sign-in/SignIn.css"
 
@@ -18,7 +20,17 @@ function SignIn() {
     email:"",
     password:""
   });
-  const [forgotError,setForgotError] = useState(""); // new error state for forgot password
+  const [forgotError, setForgotError] = useState("");
+
+  useEffect(() => {
+    if (!showForgotPassword) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showForgotPassword]);
 
   const validateForm = () => {
     let newErrors = { email: "", password: "" };
@@ -78,9 +90,8 @@ function SignIn() {
   const handleChangePassword = async(event) =>{
     event.preventDefault();
 
-    // check password length here
     if(newpassword.password.length <= 4){
-      setForgotError("Password must be greater than 4 characters got it");
+      setForgotError("Password must be at least 5 characters.");
       return;
     } else {
       setForgotError("");
@@ -89,7 +100,7 @@ function SignIn() {
     try{
       let response = await axios.post(`${Backend.CHANGE_PASSWORD}`,newpassword);
       console.log(response);
-      alert("password change successfully");
+      toast.success("Password changed successfully");
       setShowForgotPassword(false);
       setNewPassword({
         email:"",
@@ -112,56 +123,64 @@ function SignIn() {
   return (
     <>
       <ToastContainer />
-      
-      <div className="d-flex justify-content-center align-items-center main-div">
-        <div className="p-4 rounded shadow main-div-second">
-        
-        {showForgotPassword && (
-          <div style={{
-            position: "fixed",
-            top: -110,
-            right:-430,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}>
-            <div className="bg-white p-4 rounded shadow" style={{width:"450px"}}>
+      <div className="sign-in-page">
+        {showForgotPassword && createPortal(
+          <div className="forgot-password-backdrop">
+            <div
+              className="forgot-password-dialog bg-white p-4 rounded shadow"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="forgot-password-title"
+            >
               <form onSubmit={handleChangePassword}>
-                <h4>Change Password</h4>
-                <input 
-                  className="form-control my-2" 
-                  type="text" 
-                  placeholder="Enter Email"
-                  value={newpassword.email}
-                  onChange={(e)=>setNewPassword({...newpassword,email:e.target.value})}
-                />
-                <input 
-                  className="form-control my-2" 
-                  type="password" 
-                  placeholder="New Password"
-                  value={newpassword.password}
-                  onChange={(e)=>setNewPassword({...newpassword,password:e.target.value})}
-                />
-                {/* show error below password */}
-                {forgotError && <small className="text-danger">{forgotError}</small>}
+              <h4 id="forgot-password-title">Change Password</h4>
+              <input
+                className="form-control my-2"
+                type="email"
+                required
+                placeholder="Enter Email"
+                value={newpassword.email}
+                onChange={(e)=>setNewPassword({...newpassword,email:e.target.value})}
+              />
+              <input
+                className="form-control my-2"
+                type="password"
+                required
+                placeholder="New Password"
+                value={newpassword.password}
+                onChange={(e)=>setNewPassword({...newpassword,password:e.target.value})}
+              />
+              {forgotError && <small className="text-danger">{forgotError}</small>}
 
-                <button className="btn btn-primary w-100 mt-3">Change Password</button>
-                <button 
-                  type="button" 
-                  className="btn btn-secondary w-100 mt-2" 
-                  onClick={()=>setShowForgotPassword(false)}
-                >
-                  Cancel
-                </button>
-              </form>
-            </div>
+              <button className="btn btn-primary w-100 mt-3">Change Password</button>
+              <button
+                type="button"
+                className="btn btn-secondary w-100 mt-2"
+                onClick={()=>{
+                  setShowForgotPassword(false);
+                  setForgotError("");
+                }}
+              >
+                Cancel
+              </button>
+            </form>
           </div>
-        )}
+        </div>,
+        document.body
+      )}
 
-          <h2 className="text-center mb-4 fw-bold text-white">ITEP-Assignment</h2>
+        <div className="p-4 rounded shadow main-div-second">
+          <div className="sign-in-header">
+            <button
+              type="button"
+              className="back-home-btn"
+              aria-label="Back to home"
+              onClick={() => navigate("/")}
+            >
+              <ArrowLeft size={26} strokeWidth={2.5} />
+            </button>
+            <h2 className="mb-0 fw-bold text-white sign-in-title">ITEP-Assignment</h2>
+          </div>
           <form onSubmit={handleLogin}>
             <div className="mb-3">
               <input
@@ -183,7 +202,18 @@ function SignIn() {
               />
               {errors.password && <small className="text-danger">{errors.password}</small>}
               <br />
-              <Link className="text-white" onClick={()=>setShowForgotPassword(true)} style={{marginLeft:"240px"}}>Forgot Password</Link>
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="forgot-password-link text-white"
+                  onClick={()=>{
+                    setForgotError("");
+                    setShowForgotPassword(true);
+                  }}
+                >
+                  Forgot Password
+                </button>
+              </div>
             </div>
             <div className="mb-2">
               <button className="btn btn-primary btn-lg w-100 fw-semibold">Sign In</button>
@@ -199,7 +229,7 @@ function SignIn() {
             </Link>
           </div>
         </div>
-      </div>     
+      </div>
     </>
   );
 }
