@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
 import { BatchContext } from "../../context/BatchProvider";
+import AppSidebar from "../shared/AppSidebar";
 import "./StudentProfile.css";
 
 function StudentProfile() {
@@ -89,29 +90,8 @@ function StudentProfile() {
         </div>
       </div>
 
-      <div className="d-flex flex-column flex-md-row">
-        <div className="text-center bg-white shadow-sm " style={{ minWidth: "200px" }}>
-          <div className="mt-5 d-flex flex-column align-items-start">
-            <Link
-              to="/student"
-              className="list-group-item list-group-item-action w-100"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/submission"
-              className="list-group-item list-group-item-action w-100 mt-5"
-            >
-              My Assignment
-            </Link>
-            <Link
-              to="/student-profile"
-              className="list-group-item list-group-item-action w-100 active mt-5"
-            >
-              Profile
-            </Link>
-          </div>
-        </div>
+      <div className="app-layout">
+        <AppSidebar user={user} role="student" activePath="/student-profile" />
         <div className="profile-card">
           <div className="profile-card-inner">
             {/* <h2>Student Profile</h2> */}

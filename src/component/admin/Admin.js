@@ -8,6 +8,7 @@ import Backend from "../../apis/Backend";
 import "./Admin.css";   
 import { div, h2 } from "framer-motion/client";
 import { useSelector } from "react-redux";
+import AppSidebar from "../shared/AppSidebar";
 
 function Admin() {
 
@@ -26,6 +27,12 @@ function Admin() {
 
   useEffect(() => {
     loadUsers();
+  }, []);
+
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
   }, []);
 
 
@@ -143,33 +150,8 @@ const dleteNotice = async(id)=>{
       </div>
 
       {/* Sidebar + Main */}
-      <div className="d-flex flex-column flex-md-row">
-        {/* Sidebar */}
-        <aside className="admin-sidebar">
-          <div>
-            <div className="list-group-item list-group-item-action mt-5 active">
-              Dashboard
-            </div>
-            <Link
-              to="/batch-management"
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Batch Management
-            </Link>
-            <Link
-              to="/admin-profile"
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Profile
-            </Link>
-            <Link
-              onClick={() => setNotices(true)}
-              className="list-group-item list-group-item-action mt-5"
-            >
-              Notices
-            </Link>
-          </div>
-        </aside>
+      <div className="app-layout">
+        <AppSidebar user={user} role="admin" activePath="/admin" onNotices={() => setNotices(true)} />
 
         {/* Here is Events */}
         {notice && (

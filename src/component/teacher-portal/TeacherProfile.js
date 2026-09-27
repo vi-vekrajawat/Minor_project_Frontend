@@ -3,6 +3,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
+import AppSidebar from "../shared/AppSidebar";
 import "./TeacherProfile.css";
 
 function TeacherProfile() {
@@ -103,36 +104,8 @@ function TeacherProfile() {
       </div>
 
       {/* Sidebar + Content */}
-      <div className="d-flex flex-column flex-md-row">
-        {/* Sidebar */}
-        <div className="text-center bg-white shadow-sm admin-sidebar">
-          <div className="d-flex flex-column align-items-start">
-            <Link
-              to="/teacher-portal"
-              className="list-group-item list-group-item-action w-100"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/create-assignment"
-              className="list-group-item list-group-item-action w-100"
-            >
-              Create Assignment
-            </Link>
-            <Link
-
-              className="list-group-item list-group-item-action w-100 active"
-            >
-              Profile
-            </Link>
-            <Link
-              to="/submitted"
-              className="list-group-item list-group-item-action w-100 "
-            >
-              Submitted Assignment
-            </Link>
-          </div>
-        </div>
+      <div className="app-layout">
+        <AppSidebar user={user} role="teacher" activePath="/teacher-profile" />
 
         {/* Main Profile Card */}
         <div className="profile-card">

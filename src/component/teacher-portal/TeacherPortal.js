@@ -8,6 +8,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import axios from "axios";
 import "./TeacherPortal.css";
 import { useSelector } from "react-redux";
+import AppSidebar from "../shared/AppSidebar";
 
 function TeacherPortal() {
 
@@ -25,6 +26,12 @@ const {noticeList} = useSelector((store)=>store.noticeData)
 
   useEffect(() => {
     getAssignmentbyId();
+  }, []);
+
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
   }, []);
 const getAssignmentbyId = async () => {
     try {
@@ -90,26 +97,8 @@ alert("deleted Successfully")
         </div>
       </div>
 
-      <div style={{ display: "flex", width: "100vw", minHeight: "calc(100vh - 50px)" }}>
-        {/* Sidebar */}
-        <div className="teacher-sidebar text-center">
-          <Link to="/teacher-portal" className="list-group-item list-group-item-action  active">
-            Dashboard
-          </Link>
-          <Link to="/create-assignment" className="list-group-item list-group-item-action mt-5 ">
-            Create Assignment
-          </Link>
-          <Link to="/teacher-profile" className="list-group-item list-group-item-action mt-5 ">
-            Profile
-          </Link>
-          <Link to="/submitted" className="list-group-item list-group-item-action mt-5 " >
-            Submitted Assignment
-          </Link>
-          <Link onClick={() => setNotices(true)}
-            className="list-group-item list-group-item-action mt-5 " >
-            Notices
-          </Link>
-        </div>
+      <div className="app-layout" style={{ minHeight: "calc(100vh - 50px)" }}>
+        <AppSidebar user={user} role="teacher" activePath="/teacher-portal" onNotices={() => setNotices(true)} />
 
         {/* Here is our event */}
         {notice && (

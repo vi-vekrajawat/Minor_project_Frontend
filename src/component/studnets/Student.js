@@ -6,6 +6,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { AssignmentContext } from "../../context/AssignmentProvider";
 import "./Student.css";   // custom css import
 import { useSelector } from "react-redux";
+import AppSidebar from "../shared/AppSidebar";
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem("current-user")) || {};
@@ -17,6 +18,12 @@ function Student() {
   const [submissions, setSubmissions] = useState([]);
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
+  }, []);
 
   const normalize = (id) => {
     if (!id) return "";
@@ -120,15 +127,8 @@ function Student() {
 
 
       {/* Sidebar + Content */}
-      <div className="d-flex flex-column flex-md-row">
-        <div className="student-sidebar text-center">
-          <div className="mt-5">
-            <Link className="list-group-item list-group-item-action mt-3">Dashboard</Link>
-            <Link to="/submission" className="list-group-item list-group-item-action mt-3">My Assignment</Link>
-            <Link to="/student-profile" className="list-group-item list-group-item-action mt-3">Profile</Link>
-            <Link onClick={() => setNotices(true)} className="list-group-item list-group-item-action mt-3">Notice</Link>
-          </div>
-        </div>
+      <div className="app-layout">
+        <AppSidebar user={user} role="student" activePath="/student" onNotices={() => setNotices(true)} />
 
  {notice && (
           <div className="ml-2 mt-2 notice-board p-2 bg-white text-dark"

@@ -23,6 +23,9 @@ import axios from "axios";
 import Backend from "./apis/Backend";
 import { setNotice } from "./component/redux/NoticeSlice";
 import NoticeCreate from "./component/admin/NoticeCreate";
+import WorkspaceShell from "./component/shared/WorkspaceShell";
+
+const inWorkspace = (page) => <WorkspaceShell><Auth>{page}</Auth></WorkspaceShell>;
 
 function App() {
   const dispatch = useDispatch()
@@ -46,21 +49,21 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/batch-management" element={<Auth><BatchManage /></Auth>} />
-            <Route path="/add-student" element={<Auth><AddStudent /></Auth>} />
-            <Route path="/create-batch" element={<Auth><CreateBatch /></Auth>} />
-            <Route path="/create-assignment" element={<Auth><CreateAssignmnet /></Auth>} />
-            <Route path="/submitted" element={<SubmittedAssignment />} />
-            <Route path="/student-profile" element={<StudentProfile />} />
-            <Route path="/excel-file" element={<Auth><ExcelFileUpload /></Auth>} />
-            <Route path="/admin-profile" element={<Auth><AdminProfile /></Auth>} />
-            <Route path="/teacher-profile" element={<Auth><TeacherProfile /></Auth>} />
-            <Route path="/create-notice/:id" element={<Auth><NoticeCreate></NoticeCreate></Auth>}></Route>
+            <Route path="/batch-management" element={inWorkspace(<BatchManage />)} />
+            <Route path="/add-student" element={inWorkspace(<AddStudent />)} />
+            <Route path="/create-batch" element={inWorkspace(<CreateBatch />)} />
+            <Route path="/create-assignment" element={inWorkspace(<CreateAssignmnet />)} />
+            <Route path="/submitted" element={inWorkspace(<SubmittedAssignment />)} />
+            <Route path="/student-profile" element={inWorkspace(<StudentProfile />)} />
+            <Route path="/excel-file" element={inWorkspace(<ExcelFileUpload />)} />
+            <Route path="/admin-profile" element={inWorkspace(<AdminProfile />)} />
+            <Route path="/teacher-profile" element={inWorkspace(<TeacherProfile />)} />
+            <Route path="/create-notice/:id" element={inWorkspace(<NoticeCreate />)} />
 
-            <Route path="/teacher-portal"element={<Auth><TeacherPortal /></Auth>}/>
-            <Route path="/student"element={<Auth><Student /></Auth>}/>
-            <Route path="/admin" element={<Auth><Admin /></Auth>}/>
-            <Route path="/submission"element={<Auth><SubmitAssignment /></Auth>}/>
+            <Route path="/teacher-portal" element={inWorkspace(<TeacherPortal />)} />
+            <Route path="/student" element={inWorkspace(<Student />)} />
+            <Route path="/admin" element={inWorkspace(<Admin />)} />
+            <Route path="/submission" element={inWorkspace(<SubmitAssignment />)} />
           </Routes>
         </BatchProvider>
       </AssignmentProvider>

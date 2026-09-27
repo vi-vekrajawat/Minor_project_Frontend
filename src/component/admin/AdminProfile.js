@@ -3,6 +3,7 @@ import Backend, { BASE_URL } from "../../apis/Backend";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentUser } from "../auth/Auth";
+import AppSidebar from "../shared/AppSidebar";
 import "./AdminProfile.css";
 
 function AdminProfile() {
@@ -114,29 +115,8 @@ function AdminProfile() {
         </div>
       </div>
 
-      <div className="d-flex flex-column flex-md-row">
-        <div className="text-center bg-white shadow-sm admin-sidebar">
-          <div className="mt-5 d-flex flex-column align-items-start">
-            <Link
-              to="/admin"
-              className="list-group-item list-group-item-action w-100"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/batch-management"
-              className="list-group-item list-group-item-action w-100"
-            >
-              Batch Management
-            </Link>
-            <Link
-              to="/admin-profile"
-              className="list-group-item list-group-item-action w-100 active"
-            >
-              Profile
-            </Link>
-          </div>
-        </div>
+      <div className="app-layout">
+        <AppSidebar user={user} role="admin" activePath="/admin" />
 
         <div className="flex-grow-1 p-4">
           <div className="card shadow-sm p-4 admin-card">
