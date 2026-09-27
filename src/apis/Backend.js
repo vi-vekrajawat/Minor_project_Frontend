@@ -1,5 +1,4 @@
-export const BASE_URL = "https://project-backend-1-0.onrender.com"
-// export const BASE_URL = "http://localhost:3000"
+export const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 export default {
     STUDENT_LIST: BASE_URL+'/admin',
     USER_LOGIN: BASE_URL+'/admin/login',
