@@ -1,8 +1,11 @@
 .workspace-shell {
   display: flex;
   gap: 0;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   padding: 18px 20px;
+  overflow: hidden;
   color: #1b2a46;
   background: #edf4fd;
 }
@@ -121,6 +124,7 @@
 .workspace-main {
   display: flex;
   min-width: 0;
+  min-height: 0;
   flex: 1;
   flex-direction: column;
   margin-left: 14px;
@@ -256,8 +260,50 @@
 
 .workspace-content {
   min-width: 0;
+  min-height: 0;
   flex: 1;
   padding: 0 2px 2px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.workspace-content::-webkit-scrollbar {
+  display: none;
+}
+
+.workspace-content.is-admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workspace-content.is-admin-dashboard .admin-dashboard {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workspace-content.is-admin-dashboard .admin-dashboard > section {
+  display: flex;
+  min-height: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.workspace-content.is-admin-dashboard .admin-dashboard > section > .d-flex {
+  flex: 0 0 auto;
+}
+
+.workspace-content.is-admin-dashboard .admin-dashboard > section > .table-scroll,
+.workspace-content.is-admin-dashboard .admin-dashboard > section > .table-responsive {
+  min-height: 0;
+  flex: 1 1 0;
+  max-height: none;
+  overflow: auto;
 }
 
 .workspace-content .app-layout {

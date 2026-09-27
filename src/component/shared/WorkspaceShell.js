@@ -116,7 +116,9 @@ function WorkspaceShell({ children }) {
             </div>
           </div>
         </header>
-        <main className="workspace-content">{children}</main>
+        <main className={`workspace-content${location.pathname === "/admin" ? " is-admin-dashboard" : ""}`}>
+          {children}
+        </main>
       </div>
       {noticesOpen && (
         <div className="workspace-notice-overlay" role="presentation" onMouseDown={(event) => {
