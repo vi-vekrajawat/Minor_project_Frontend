@@ -7,6 +7,8 @@ import { AssignmentContext } from "../../context/AssignmentProvider";
 import "./Student.css";   // custom css import
 import { useSelector } from "react-redux";
 import AppSidebar from "../shared/AppSidebar";
+import { ClipboardCheck, ClipboardList, Clock3, CircleX } from "lucide-react";
+import StatsCard from "../shared/StatsCard";
 
 function Student() {
   const user = JSON.parse(sessionStorage.getItem("current-user")) || {};
@@ -159,27 +161,11 @@ function Student() {
 
         <div className="flex-grow-1 p-4">
           {/* Stats Cards */}
-          <div className="row mb-3">
-            <div className="col-6 col-md-3 mb-3">
-              <div className="stat-card bg-primary text-white">
-                <span>Total Assignment</span><br /><h4>{totalAssignments}</h4>
-              </div>
-            </div>
-            <div className="col-6 col-md-3 mb-3">
-              <div className="stat-card bg-success text-white">
-                <span>Completed</span><br /><h4>{submittedCount}</h4>
-              </div>
-            </div>
-            <div className="col-6 col-md-3 mb-3">
-              <div className="stat-card text-white gradient-pink">
-                <span>Submitted Pending</span><br /><h4>{pendingCount}</h4>
-              </div>
-            </div>
-            <div className="col-6 col-md-3 mb-3">
-              <div className="stat-card text-white bg-warning">
-                <span>Not Submitted</span><br /><h4>{notSubmittedCount}</h4>
-              </div>
-            </div>
+          <div className="stats-card-grid mb-3">
+            <StatsCard title="Total Assignments" value={totalAssignments} icon={ClipboardList} color="blue" />
+            <StatsCard title="Completed" value={submittedCount} icon={ClipboardCheck} color="green" />
+            <StatsCard title="Submitted Pending" value={pendingCount} icon={Clock3} color="amber" />
+            <StatsCard title="Not Submitted" value={notSubmittedCount} icon={CircleX} color="coral" />
           </div>
 
           {/* Filter Buttons */}

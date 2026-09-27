@@ -7,6 +7,8 @@ import { button } from "framer-motion/client";
 import { BatchContext } from "../../context/BatchProvider";
 import { getCurrentUser } from "../auth/Auth";
 import AppSidebar from "../shared/AppSidebar";
+import { BriefcaseBusiness, Boxes, CircleCheck, GraduationCap } from "lucide-react";
+import StatsCard from "../shared/StatsCard";
 
 function BatchManage() {
   const user = getCurrentUser();
@@ -36,19 +38,11 @@ function BatchManage() {
             <h1>Batch Management</h1>
             <p>Manage student batches and teacher assignments</p>
           </section> */}
-          <section className="d-flex flex-wrap mt-3">
-            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#007bff", flex: "1 1 200px" }}>
-              Total Batches <span>{batchState.length}</span>
-            </div>
-            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#28a745", flex: "1 1 200px" }}>
-              Active Batches <span>{batchState.length}</span>
-            </div>
-            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#6f42c1", flex: "1 1 200px" }}>
-              Total Students <span>{totalStudent}</span>
-            </div>
-            <div className="card text-white text-center p-3 m-2" style={{ backgroundColor: "#fd7e14", flex: "1 1 200px" }}>
-              Available Teachers <span>{totalTeacher}</span>
-            </div>
+          <section className="stats-card-grid mt-3">
+            <StatsCard title="Total Batches" value={batchState.length} icon={Boxes} color="blue" />
+            <StatsCard title="Active Batches" value={batchState.length} icon={CircleCheck} color="green" />
+            <StatsCard title="Total Students" value={totalStudent} icon={GraduationCap} color="violet" />
+            <StatsCard title="Available Teachers" value={totalTeacher} icon={BriefcaseBusiness} color="amber" />
           </section>
           <section className="mt-3">
             <Link to="/create-batch" className="btn btn-primary">
