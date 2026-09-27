@@ -29,7 +29,7 @@ function Home() {
   return (
     <>
       <div className="main-div">
-        <div className="text-center text-white mb-5">
+        <div className="text-center text-white home-heading">
           <img
             src="https://cdn.theorg.com/e3f93e8e-1417-4771-b4ef-283263d4230f_medium.jpg"
             className="img-fluid mb-3"
@@ -66,16 +66,12 @@ function Home() {
           </div>
         </div>
 
-        <div className="d-flex flex-wrap justify-content-center mt-5 gap-3 w-100">
+        <div className="d-flex flex-wrap justify-content-center home-features w-100">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="feature-card p-4 text-center d-flex flex-column align-items-center"
-              style={{
-                minWidth: "200px",
-                maxWidth: "250px",
-                color: "white",
-              }}
+              className="feature-card text-center d-flex flex-column align-items-center"
+              style={{ color: "white" }}
             >
               <div style={{ fontSize: "2rem", marginBottom: "12px" }}>{feature.icon}</div>
               <h6>{feature.title}</h6>

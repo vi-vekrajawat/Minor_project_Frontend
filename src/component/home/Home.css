@@ -1,16 +1,41 @@
 .main-div {
-    width: 100vw;
+    box-sizing: border-box;
+    width: 100%;
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),  
                       url("https://miro.medium.com/v2/resize:fit:1400/1*NwLwD8boGZ7BdIEwzGrviQ.jpeg");
-    background-size: contain; 
-     background-position: right;
+    background-size: cover;
+     background-position: center;
      background-repeat: no-repeat;
-    padding: 40px 20px;
+    gap: clamp(16px, 2.5vh, 24px);
+    padding: clamp(20px, 4vh, 36px) 16px;
+}
+
+.home-heading,
+.home-features,
+.footer {
+    margin: 0;
+}
+
+.home-heading {
+    width: 100%;
+}
+
+.home-features {
+    gap: 12px;
+}
+
+.home-features .feature-card {
+    box-sizing: border-box;
+    flex: 1 1 200px;
+    min-width: min(200px, 100%);
+    max-width: 250px;
+    padding: clamp(12px, 2vh, 20px);
 }
 
         .portal-card:hover {
@@ -26,7 +51,7 @@
           backdrop-filter: blur(8px);
           /* Webkit-backdrop-filter: blur(8px); */
           transition: all 0.3s ease;
-          margin: 8px;
+          margin: 0;
         }
 
         .feature-card:hover {
@@ -39,7 +64,8 @@
           transform: scale(1.05);
         }
    .footer {
-    width: 90%;
+    box-sizing: border-box;
+    width: min(90%, 1200px);
     max-width: 1200px;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.18);
@@ -51,15 +77,29 @@
     color: #e5e7eb;
     font-size: 0.85rem;
     box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-    margin: 40px auto 20px auto;
+    margin: 0 auto;
 }
 .div-card-style{
-     
-            min-width: 600px;
+            width: min(100%, 700px);
+            min-width: 0;
             max-width: 700px;
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
             color: white;
-            transition: all 0.3s ease,
-          
+            transition: all 0.3s ease;
+}
+
+@media (max-width: 576px) {
+    .main-div {
+        justify-content: flex-start;
+    }
+
+    .div-card-style {
+        padding: 20px !important;
+    }
+
+    .home-features .feature-card {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
 }
