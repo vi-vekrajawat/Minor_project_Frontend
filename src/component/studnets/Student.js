@@ -19,6 +19,12 @@ function Student() {
   const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
+  }, []);
+
   const normalize = (id) => {
     if (!id) return "";
     if (typeof id === "object") return String(id._id || "").trim();

@@ -29,6 +29,12 @@ function Admin() {
     loadUsers();
   }, []);
 
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
+  }, []);
+
 
   const loadUsers = async () => {
     try {

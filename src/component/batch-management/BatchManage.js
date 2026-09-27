@@ -32,17 +32,6 @@ function BatchManage() {
 
         {/* </aside> */}
         <main className="flex-grow-1 p-3">
-          <header
-            className="d-flex justify-content-between align-items-center bg-primary text-white p-2 flex-wrap"
-            style={{ width: "100%" }}
-          >
-            <nav className="d-flex flex-wrap">
-              <span className="mr-3">Dashboard</span>
-              <span className="mr-3">Batch Management</span>
-              <span className="mr-3">Profile</span>
-            </nav>
-            {/* <div className="admin-profile">👤 Admin User</div> */}
-          </header>
           {/* <section className="mt-4">
             <h1>Batch Management</h1>
             <p>Manage student batches and teacher assignments</p>

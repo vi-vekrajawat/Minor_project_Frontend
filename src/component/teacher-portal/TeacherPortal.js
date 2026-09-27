@@ -27,6 +27,12 @@ const {noticeList} = useSelector((store)=>store.noticeData)
   useEffect(() => {
     getAssignmentbyId();
   }, []);
+
+  useEffect(() => {
+    const showNotices = () => setNotices(true);
+    window.addEventListener("itep:show-notices", showNotices);
+    return () => window.removeEventListener("itep:show-notices", showNotices);
+  }, []);
 const getAssignmentbyId = async () => {
     try {
       const response = await axios.get(
