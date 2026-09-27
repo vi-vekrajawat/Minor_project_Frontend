@@ -7,6 +7,7 @@ import { getCurrentUser } from "../auth/Auth";
 import Backend from "../../apis/Backend";
 import "./Admin.css";   
 import { div, h2 } from "framer-motion/client";
+import { Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import AppSidebar from "../shared/AppSidebar";
 
@@ -188,7 +189,7 @@ const dleteNotice = async(id)=>{
         )}
 
         {/* Main */}
-        <main className="flex-grow-1 p-4">
+        <main className="admin-dashboard flex-grow-1 p-4">
           {/* <h2>Admin Dashboard</h2>
           <p>Manage your educational platform</p> */}
 
@@ -290,9 +291,11 @@ const dleteNotice = async(id)=>{
                             <td>
                               <button
                                 onClick={() => deleteUser(s._id)}
-                                className="btn btn-danger"
+                                className="admin-delete-button"
+                                aria-label={`Delete student ${s.name}`}
+                                title="Delete student"
                               >
-                                Delete
+                                <Trash2 size={16} aria-hidden="true" />
                               </button>
                             </td>
                           </tr>
@@ -345,7 +348,9 @@ const dleteNotice = async(id)=>{
                           </td>
                           <td>
                             <button
-                              className="btn btn-danger btn-sm"
+                              className="admin-delete-button"
+                              aria-label={`Delete teacher ${t.name}`}
+                              title="Delete teacher"
                               onClick={async () => {
                                 if (
                                   window.confirm(
@@ -356,7 +361,7 @@ const dleteNotice = async(id)=>{
                                 }
                               }}
                             >
-                              Delete
+                              <Trash2 size={15} aria-hidden="true" />
                             </button>
                             <button
                               className="btn btn-info ms-2"
