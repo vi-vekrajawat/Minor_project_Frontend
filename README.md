@@ -4,6 +4,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+## Environment Configuration
+
+Copy `.env.example` to `.env` and set the values for your backend and Firebase web app before starting or building the app. Create React App reads `REACT_APP_*` variables at build time, so restart the development server after changing `.env`.
+
+Values prefixed with `REACT_APP_` are included in the browser bundle and are visible to users. Firebase web configuration is public client configuration; protect the Firebase project with authorized domains, API restrictions, and Firebase security rules. Do not put private service-account credentials, database passwords, or other server secrets in this frontend project.
+
 In the project directory, you can run:
 
 ### `npm start`
